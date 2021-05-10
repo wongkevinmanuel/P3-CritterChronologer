@@ -1,5 +1,8 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.pet.domain.Pet;
+import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +14,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/pet")
 public class PetController {
+    @Autowired
+    PetService mascotaService;
+
+    private Pet DTOaPet(PetDTO petDTO){
+        Pet mascota = null;
+        return mascota;
+    }
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        throw new UnsupportedOperationException();
+        Pet mascota = DTOaPet(petDTO);
+        Long idGuardo = mascotaService.guardar(mascota);
+        if (idGuardo != 0)
+        {
+            petDTO.setId(idGuardo);
+            return petDTO;
+        }else{
+            throw new UnsupportedOperationException();
+        }
     }
 
     @GetMapping("/{petId}")
