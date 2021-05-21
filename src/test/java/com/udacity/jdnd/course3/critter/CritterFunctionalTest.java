@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * This is a set of functional tests to validate the basic capabilities desired for this application.
  * Students will need to configure the application to run these tests by adding application.properties file

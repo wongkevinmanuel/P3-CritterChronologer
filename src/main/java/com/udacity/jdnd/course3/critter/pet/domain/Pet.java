@@ -28,6 +28,8 @@ public class Pet {
     @Nationalized
     private String notes;
 
+
+
     //Metodos de acceso
     public long getId() {
         return id;
