@@ -12,10 +12,11 @@ public class Pet {
 
     //Propiedades
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="type_code", length = 1)
+    //@Column(name="type_code", length = 1)
+    @Column(name="type_code")
     private @Enumerated(EnumType.STRING) PetType type;
 
     @Nationalized

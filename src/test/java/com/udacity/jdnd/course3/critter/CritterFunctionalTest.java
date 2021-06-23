@@ -53,6 +53,19 @@ public class CritterFunctionalTest {
     private ScheduleController scheduleController;
 
     @Test
+    public void testCreatePet(){
+        PetDTO petDTO = new PetDTO();//createPetDTO();
+        petDTO.setOwnerId(1);
+        petDTO.setId(1000);
+        petDTO.setName("Kerin");
+        //petDTO.setType(PetType.CAT);
+        petDTO.setType(PetType.CAT);
+        petDTO.setNotes("Era el perro de Taty.");
+        PetDTO newPet = petController.savePet(petDTO);
+        Assertions.assertEquals(newPet.getId(),1);
+    }
+
+    @Test
     public void testCreateCustomer(){
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);

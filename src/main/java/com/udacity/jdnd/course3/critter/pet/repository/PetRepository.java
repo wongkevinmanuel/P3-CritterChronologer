@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 @Transactional
 public interface PetRepository extends JpaRepository<Pet,Long> {
-    Pet mascotaxId(Long id);
+    //Pet mascotaxId(Long id);
 
     //List<Pet> mascotaXCliente(Customer customer);
     //List<Pet> findByIdIn(List<Long> petIds);

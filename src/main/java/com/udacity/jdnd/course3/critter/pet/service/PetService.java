@@ -14,13 +14,21 @@ public class PetService {
     @Autowired
     PetRepository mascotaRepository;
 
-
     public Pet mascotaxId(Long id){
-        return mascotaRepository.mascotaxId(id);
+        //mascotaRepository.getOne(id);
+        return mascotaRepository.getOne(id); // null;//mascotaRepository.mascotaxId(id);
     }
 
     public Long guardar(Pet pet){
-        return mascotaRepository.save(pet).getId();
+        Long id = Long.valueOf(0);
+        //try {
+            //mascotaRepository.save(pet).getId();
+            return mascotaRepository.save(pet).getId();
+        //}catch (Exception ex){
+        //    return id;
+        //}
+
+        //return mascotaRepository.save(pet).getId();
     }
 
     public List<Pet> mascotas(){
