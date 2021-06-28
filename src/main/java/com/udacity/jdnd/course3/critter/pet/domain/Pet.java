@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet.domain;
 
 import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 import javax.persistence.Table;
@@ -9,7 +10,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "pet")
 public class Pet {
-
     //Propiedades
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +22,15 @@ public class Pet {
     @Nationalized
     private String name;
 
-    private long ownerId;
-
     private LocalDate birthDate;
 
     @Nationalized
     private String notes;
 
-
+    //private long ownerId;
+    @ManyToOne //Muchas mascotas tiene un solo dueño
+    @JoinColumn(name = "ownerId")
+    private Customer customer;
 
     //Metodos de acceso
     public long getId() {
@@ -54,14 +55,6 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public LocalDate getBirthDate() {

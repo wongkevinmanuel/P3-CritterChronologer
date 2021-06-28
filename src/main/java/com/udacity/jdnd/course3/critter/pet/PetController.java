@@ -29,7 +29,7 @@ public class PetController {
         mascota.setNotes(petDTO.getNotes());
         mascota.setType(petDTO.getType());
         mascota.setBirthDate(petDTO.getBirthDate());
-        mascota.setOwnerId(petDTO.getOwnerId());
+        //mascota.setOwnerId(petDTO.getOwnerId());
         return mascota;
     }
 
@@ -40,7 +40,7 @@ public class PetController {
         mascotaDTO.setNotes(pet.getNotes());
         mascotaDTO.setType(pet.getType());
         mascotaDTO.setBirthDate(pet.getBirthDate());
-        mascotaDTO.setOwnerId(pet.getOwnerId());
+        //mascotaDTO.setOwnerId(pet.getOwnerId());
         return mascotaDTO;
     }
 
