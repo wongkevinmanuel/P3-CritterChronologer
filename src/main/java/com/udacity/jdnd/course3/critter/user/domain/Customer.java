@@ -10,21 +10,20 @@ import java.util.List;
 @Entity
 public class Customer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = true)
     private long id;
 
     @Nationalized
     private String name;
 
-    private LocalDateTime phoneNumber;
+    @Nationalized
+    private String  phoneNumber;
 
     @Nationalized
     private String notes;
 
-    //private List<Long> petIds
     //Un dueño tiene muchas mascotas
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Pet> pets;
-
-
 }

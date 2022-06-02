@@ -52,6 +52,7 @@ public class CritterFunctionalTest {
     @Autowired
     private ScheduleController scheduleController;
 
+    //Escrita x Kevin
     @Test
     public void testCreatePet(){
         PetDTO petDTO = new PetDTO();//createPetDTO();
@@ -65,6 +66,7 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(newPet.getId(),1);
     }
 
+    //Entendido
     @Test
     public void testCreateCustomer(){
         CustomerDTO customerDTO = createCustomerDTO();
@@ -75,6 +77,7 @@ public class CritterFunctionalTest {
         Assertions.assertTrue(retrievedCustomer.getId() > 0);
     }
 
+    //Entendido usa misma logica del test de arriba
     @Test
     public void testCreateEmployee(){
         EmployeeDTO employeeDTO = createEmployeeDTO();
@@ -85,6 +88,7 @@ public class CritterFunctionalTest {
         Assertions.assertTrue(retrievedEmployee.getId() > 0);
     }
 
+    //Entendido el pet(mascota) guarda los ids de los customer (clientes)
     @Test
     public void testAddPetsToCustomer() {
         CustomerDTO customerDTO = createCustomerDTO();
@@ -94,22 +98,26 @@ public class CritterFunctionalTest {
         petDTO.setOwnerId(newCustomer.getId());
         PetDTO newPet = petController.savePet(petDTO);
 
+        //asegúrese de que la mascota contenga la identificación del cliente
         //make sure pet contains customer id
         PetDTO retrievedPet = petController.getPet(newPet.getId());
         Assertions.assertEquals(retrievedPet.getId(), newPet.getId());
         Assertions.assertEquals(retrievedPet.getOwnerId(), newCustomer.getId());
 
+        //asegúrese de que puede recuperar mascotas por propietario
         //make sure you can retrieve pets by owner
         List<PetDTO> pets = petController.getPetsByOwner(newCustomer.getId());
         Assertions.assertEquals(newPet.getId(), pets.get(0).getId());
         Assertions.assertEquals(newPet.getName(), pets.get(0).getName());
 
+        //Verifique para asegurarse de que el cliente ahora también contenga mascota
         //check to make sure customer now also contains pet
         CustomerDTO retrievedCustomer = userController.getAllCustomers().get(0);
         Assertions.assertTrue(retrievedCustomer.getPetIds() != null && retrievedCustomer.getPetIds().size() > 0);
         Assertions.assertEquals(retrievedCustomer.getPetIds().get(0), retrievedPet.getId());
     }
 
+    //Entendido
     @Test
     public void testFindPetsByOwner() {
         CustomerDTO customerDTO = createCustomerDTO();
@@ -123,11 +131,14 @@ public class CritterFunctionalTest {
         PetDTO newPet2 = petController.savePet(petDTO);
 
         List<PetDTO> pets = petController.getPetsByOwner(newCustomer.getId());
+        //Verifica la existencia de los dos perros guardados para el cliente nuevo.
         Assertions.assertEquals(pets.size(), 2);
+        //Verifica el id del primer perro guardado
         Assertions.assertEquals(pets.get(0).getOwnerId(), newCustomer.getId());
         Assertions.assertEquals(pets.get(0).getId(), newPet.getId());
     }
 
+    //Entendido busca un cliente por su respectiva mascota
     @Test
     public void testFindOwnerByPet() {
         CustomerDTO customerDTO = createCustomerDTO();
@@ -142,10 +153,17 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(owner.getPetIds().get(0), newPet.getId());
     }
 
+    //Test para comprobar la disponibilidad del empleado
+    //Aun no lo entiendo por completo la estructura
+    //de la tabla que utiliza.
     @Test
     public void testChangeEmployeeAvailability() {
+        //Pienso que almacena en la tabla de la siguiente manera
+        //Tabla EmployeeAvailabitity
+        //Columnas id,
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
+        //Verifica que la lista de dias dispponibles este null
         Assertions.assertNull(emp1.getDaysAvailable());
 
         Set<DayOfWeek> availability = Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY);
@@ -155,6 +173,8 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(availability, emp2.getDaysAvailable());
     }
 
+    //Test para buscar empleados por servicio y hora
+    //Aun no lo entiendo pero lo estoy comprendiendo poco a poco
     @Test
     public void testFindEmployeesByServiceAndTime() {
         EmployeeDTO emp1 = createEmployeeDTO();
@@ -267,7 +287,9 @@ public class CritterFunctionalTest {
     private static EmployeeDTO createEmployeeDTO() {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setName("TestEmployee");
-        employeeDTO.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING));
+        employeeDTO.setSkills(
+                Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING)
+        );
         return employeeDTO;
     }
     private static CustomerDTO createCustomerDTO() {
