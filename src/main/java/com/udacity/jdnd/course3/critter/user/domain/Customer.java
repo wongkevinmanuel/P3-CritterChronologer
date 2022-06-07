@@ -12,7 +12,7 @@ import java.util.List;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = true)
+    @Column(unique = true, nullable = false)
     private long id;
 
     @Nationalized
@@ -25,8 +25,8 @@ public class Customer {
     private String notes;
 
     //Un dueño tiene muchas mascotas
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-    private List<Pet> pets;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "clientePropietario")
+    private List<Pet> mascotas;
 
     public long getId() {
         return id;
@@ -60,11 +60,11 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Pet> getPets() {
-        return pets;
-    }
+    //public List<Pet> getPets() {
+    //    return pets;
+    //}
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
-    }
+    //public void setPets(List<Pet> pets) {
+    //    this.pets = pets;
+    //}
 }

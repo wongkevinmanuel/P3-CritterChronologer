@@ -11,7 +11,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique=true, nullable = true)
+    @Column(unique=true, nullable = false)
     private Long id;
 
     @Nationalized

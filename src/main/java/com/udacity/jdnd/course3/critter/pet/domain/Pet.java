@@ -13,9 +13,10 @@ public class Pet {
     //Propiedades
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true,nullable = false)
     private long id;
 
-    @Column(name="type_code")
+    @Column(name="type_pet_code")
     private @Enumerated(EnumType.STRING) PetType type;
 
     @Nationalized
@@ -27,9 +28,9 @@ public class Pet {
     private String notes;
 
     //private long ownerId;
-    @ManyToOne //Muchas mascotas tiene un solo dueño
-    @JoinColumn(name = "ownerId")
-    private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY)  //Muchas mascotas tiene un solo dueño
+    @JoinColumn(name = "clientePropietario_id", referencedColumnName = "id")
+    private Customer clientePropietario;//owner
 
     //Metodos de acceso
     public long getId() {
