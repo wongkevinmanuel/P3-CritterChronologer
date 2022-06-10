@@ -1,8 +1,10 @@
 package com.udacity.jdnd.course3.critter.user.domain;
 
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="Employee")
@@ -15,7 +17,9 @@ public class Employee {
     @Nationalized
     private String name;
 
-
+    @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
+    @Enumerated(EnumType.ORDINAL)
+    private Set<EmployeeSkill> skills;
 
     public Long getId() {
         return id;
