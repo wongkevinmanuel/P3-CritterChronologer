@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.util.Set;
 
 @Entity
@@ -17,9 +18,17 @@ public class Employee {
     @Nationalized
     private String name;
 
-    @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
+    //Habilidades de los empleados
+    @ElementCollection(targetClass = EmployeeSkill.class
+                        , fetch = FetchType.LAZY)
     @Enumerated(EnumType.ORDINAL)
     private Set<EmployeeSkill> skills;
+
+    //Dias disponibles
+    @ElementCollection(targetClass = DayOfWeek.class
+                        , fetch=FetchType.LAZY)
+    @Enumerated(EnumType.ORDINAL)
+    private Set<DayOfWeek> dayAvailable;
 
     public Long getId() {
         return id;

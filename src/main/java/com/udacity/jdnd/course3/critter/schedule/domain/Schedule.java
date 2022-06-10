@@ -1,9 +1,12 @@
 package com.udacity.jdnd.course3.critter.schedule.domain;
 
+import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="Schedule")
@@ -16,6 +19,13 @@ public class Schedule {
 
     @Nationalized
     private LocalDate date;
+
+    @ManyToMany(fetch=FetchType.LAZY
+                ,cascade = CascadeType.ALL)
+    @JoinTable(name="schedule_employee"
+                ,joinColumns = @JoinColumn(name="id")
+                ,inverseJoinColumns = @JoinColumn(name="employee_id"))
+    private List<Employee> employees = new ArrayList<>();
 
     public Long getId() {
         return id;
