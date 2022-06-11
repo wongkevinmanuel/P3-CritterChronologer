@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.schedule.domain;
 
+import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
@@ -26,6 +28,12 @@ public class Schedule {
                 ,joinColumns = @JoinColumn(name="id")
                 ,inverseJoinColumns = @JoinColumn(name="employee_id"))
     private List<Employee> employees = new ArrayList<>();
+
+    @ManyToMany(fetch=FetchType.LAZY
+                , cascade = CascadeType.ALL)
+    @JoinTable(name="schedule_pet", joinColumns = @JoinColumn(name="id")
+            ,inverseJoinColumns = @JoinColumn(name="pet_id"))
+    private List<Pet> pets = new ArrayList<>();
 
     public Long getId() {
         return id;
