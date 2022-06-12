@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,15 +21,7 @@ public class PetService {
     }
 
     public Long guardar(Pet pet){
-        Long id = Long.valueOf(0);
-        //try {
-            //mascotaRepository.save(pet).getId();
-            return mascotaRepository.save(pet).getId();
-        //}catch (Exception ex){
-        //    return id;
-        //}
-
-        //return mascotaRepository.save(pet).getId();
+        return mascotaRepository.save(pet).getId();
     }
 
     public List<Pet> mascotas(){

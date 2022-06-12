@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -54,16 +55,16 @@ public class CritterFunctionalTest {
 
     //Escrita x Kevin
     @Test
-    public void testCreatePet(){
+    public void testCreatePet() throws URISyntaxException {
         PetDTO petDTO = new PetDTO();//createPetDTO();
-        petDTO.setOwnerId(1);
-        petDTO.setId(1000);
-        petDTO.setName("Kerin");
-        //petDTO.setType(PetType.CAT);
+        //petDTO.setOwnerId(1);
+        petDTO.setName("Kerim");
         petDTO.setType(PetType.CAT);
         petDTO.setNotes("Era el perro de Taty.");
+        petDTO.setBirthDate(LocalDate.of(1995, 6, 3));
+
         PetDTO newPet = petController.savePet(petDTO);
-        Assertions.assertEquals(newPet.getId(),1);
+        Assertions.assertEquals(newPet.getId(),2);
     }
 
     //Entendido

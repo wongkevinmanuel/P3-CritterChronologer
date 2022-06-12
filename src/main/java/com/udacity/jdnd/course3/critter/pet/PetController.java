@@ -2,9 +2,14 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +19,7 @@ import java.util.stream.Collectors;
  * Maneja solicitudes web relacionadas con mascotas.
  */
 @RestController
+//@ApiResponses( value={@ApiResponse(code=400, message="***")})
 @RequestMapping("/pet")
 public class PetController {
     @Autowired
@@ -45,15 +51,26 @@ public class PetController {
     }
 
     @PostMapping
-    public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        Pet pet = DTOaPet(petDTO);
-        Long id = mascotaService.guardar(pet);
-        if (id==0)
+    public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
+        //throws URISyntaxException
+        //ResponseEntity<?>
+        boolean errorDatos;
+        errorDatos = petDTO == null ? true: false;
+        if(errorDatos)
             throw new UnsupportedOperationException();
 
-        //Good
-        petDTO.setId(id);
-        return petDTO;
+        if (petDTO.getName().isEmpty()  || petDTO.getNotes().isEmpty())
+            throw new UnsupportedOperationException();
+
+        Pet pet = DTOaPet(petDTO);
+        Long id = mascotaService.guardar(pet);
+
+        if (id.equals(0)){
+            return petDTO;
+        }else {
+            petDTO.setId(id);
+            return petDTO;
+        }
     }
 
     @GetMapping("/{petId}")
