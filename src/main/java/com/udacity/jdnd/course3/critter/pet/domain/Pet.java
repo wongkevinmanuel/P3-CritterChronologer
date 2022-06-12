@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet.domain;
 
 import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
@@ -32,7 +33,11 @@ public class Pet {
     @JoinColumn(name = "clientePropietario_id", referencedColumnName = "id")
     private Customer clientePropietario;//owner
 
-    //Metodos de acceso
+    //Muchos mascotas tiene un calendario para ser atendidos
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="schedule_id", referencedColumnName = "id")
+    private Schedule schedule;
+
     public long getId() {
         return id;
     }
