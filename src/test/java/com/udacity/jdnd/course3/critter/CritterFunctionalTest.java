@@ -67,6 +67,12 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(newPet.getId(),2);
     }
 
+    @Test
+    public void testAllPet(){
+        int itemCount= petController.getPets().size();
+        Assertions.assertEquals(itemCount,3);
+    }
+
     //Entendido
     @Test
     public void testCreateCustomer(){

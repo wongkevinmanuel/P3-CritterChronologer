@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,18 @@ public class PetController {
         }
     }
 
+    @GetMapping("/all")
+    public List<PetDTO> getPets(){
+        List<Pet> pets = new ArrayList<>();
+
+        pets = mascotaService.mascotas();
+
+        if(pets.isEmpty())
+            return Collections.EMPTY_LIST;
+
+        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
+    }
+
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         Pet pet = null;
@@ -83,18 +96,7 @@ public class PetController {
         return petaDTO(pet);
     }
 
-    // para despues implementar
-    @GetMapping("/all")
-    public List<PetDTO> getPets(){
-        List<Pet> pets = new ArrayList<>();
 
-        pets = mascotaService.mascotas();
-
-        if(pets.isEmpty())
-            return null;// BUSCAR MEJOR OPCION Q NULL
-
-        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
-    }
 
     //Obtener mascota por propietario
     @GetMapping("/owner/{ownerId}")
