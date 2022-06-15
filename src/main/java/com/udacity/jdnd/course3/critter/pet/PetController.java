@@ -66,20 +66,18 @@ public class PetController {
         Pet pet = DTOaPet(petDTO);
         Long id = mascotaService.guardar(pet);
 
-        if (id.equals(0)){
+        if (id<=0)
             return petDTO;
-        }else {
-            petDTO.setId(id);
-            return petDTO;
-        }
+
+        //Entity save
+        petDTO.setId(id);
+        return petDTO;
     }
 
     @GetMapping("/all")
     public List<PetDTO> getPets(){
-        List<Pet> pets = new ArrayList<>();
 
-        pets = mascotaService.mascotas();
-
+        List<Pet> pets = mascotaService.mascotas();
         if(pets.isEmpty())
             return Collections.EMPTY_LIST;
 
