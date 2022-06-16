@@ -77,4 +77,12 @@ public class Pet {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public Customer getClientePropietario() {
+        return clientePropietario;
+    }
+
+    public void setClientePropietario(Customer clientePropietario) {
+        this.clientePropietario = clientePropietario;
+    }
 }

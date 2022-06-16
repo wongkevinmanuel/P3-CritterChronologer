@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 @Transactional
 public interface PetRepository extends JpaRepository<Pet,Long> {
-    Pet mascotaXNombre(String name);
+    //Pet mascotaXNombre(String name);
     //Pet mascotaxId(Long id);
     @Query("select id,birthDate,name,notes,type from Pet ")
     List<Pet> mascotas();
-    @Query("select id,birthDate,name,notes,type from Pet p where p.clientePropietario = :idPropietario")
-    List<Pet> mascotasXCliente(@Param("idPropietario") Long idPropietario);
-    @Query("from Pet p where p.id in (:ids)")
-    List<Pet> mascotasXIds(@Param("ids") List<Long> idsMascotas);
+    @Query("from Pet where clientePropietario.id = :idPropietario")
+    List<Pet> buscarMascotaXCliente(@Param("idPropietario") Long idPropietario);
 
+    //@Query("from Pet p where p.id in (:ids)")
+    //List<Pet> mascotasXIds(@Param("ids") List<Long> idsMascotas);
     //List<Pet> findByIdIn(List<Long> petIds);
 }

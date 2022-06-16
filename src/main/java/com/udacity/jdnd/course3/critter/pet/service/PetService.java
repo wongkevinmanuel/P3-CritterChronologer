@@ -30,6 +30,14 @@ public class PetService {
             throw new PetNotFoundException(exception.getMessage() + "c.PetService.m.mascotas");
         }
     }
+    public List<Pet> mascotasXCliente(Long id){
+        try {
+            return mascotaRepository.buscarMascotaXCliente(id);
+        }catch (IllegalArgumentException exception){
+            throw new PetNotFoundException(exception.getMessage() + "c.PetService.m.mascotas");
+        }
+    }
+
     public Pet mascotaxId(Long id){
         //mascotaRepository.getOne(id);
         return mascotaRepository.getOne(id); // null;//mascotaRepository.mascotaxId(id);

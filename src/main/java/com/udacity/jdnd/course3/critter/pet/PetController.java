@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,14 +48,12 @@ public class PetController {
         mascotaDTO.setNotes(pet.getNotes());
         mascotaDTO.setType(pet.getType());
         mascotaDTO.setBirthDate(pet.getBirthDate());
-        //mascotaDTO.setOwnerId(pet.getOwnerId());
+        mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
         return mascotaDTO;
     }
 
     @PostMapping
     public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
-        //throws URISyntaxException
-        //ResponseEntity<?>
         boolean errorDatos;
         errorDatos = petDTO == null ? true: false;
         if(errorDatos)
@@ -69,7 +68,7 @@ public class PetController {
         if (id<=0)
             return petDTO;
 
-        //Entity save
+        //Entity save send response
         petDTO.setId(id);
         return petDTO;
     }
@@ -97,6 +96,10 @@ public class PetController {
     //Obtener mascota por propietario
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        throw new UnsupportedOperationException();
+        List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
+        if(pets.isEmpty())
+            return Collections.EMPTY_LIST;
+
+        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
     }
 }
