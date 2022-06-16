@@ -94,8 +94,6 @@ public class PetController {
         return petaDTO(pet);
     }
 
-
-
     //Obtener mascota por propietario
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
