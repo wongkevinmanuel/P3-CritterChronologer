@@ -27,7 +27,7 @@ public class PetController {
     @Autowired
     private final PetService mascotaService;
 
-    PetController(PetService petS){
+    public PetController(PetService petS){
         this.mascotaService = petS;
     }
 

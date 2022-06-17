@@ -24,6 +24,11 @@ public class Customer {
     @Nationalized
     private String notes;
 
+    private int age;
+
+    @Column(name="cedula",length = 10)
+    private String cedula;
+
     //Un dueño tiene muchas mascotas
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "clientePropietario")
     private List<Pet> mascotas;
