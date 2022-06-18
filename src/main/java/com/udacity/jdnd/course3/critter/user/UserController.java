@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 /**
  * Handles web requests related to Users.
  *
@@ -21,6 +24,7 @@ import java.util.Set;
  * de usuario y cliente separados, aunque eso no es parte del alcance requerido para esta clase.
  */
 @RestController
+@ApiResponses( value={@ApiResponse(code=500, message="Internal Server Error server error response, The server encountered an unexpected condition that prevented it from fulfilling the request.")})
 @RequestMapping("/user")
 public class UserController {
 
@@ -44,7 +48,8 @@ public class UserController {
         clienteDTO.setName(customer.getName());
         clienteDTO.setNotes(customer.getNotes());
         clienteDTO.setPhoneNumber(customer.getPhoneNumber());
-        return new CustomerDTO();
+        //clienteDTO.setPetIds();
+        return clienteDTO;
     }
 
     @PostMapping("/customer")
@@ -68,18 +73,35 @@ public class UserController {
         customerDTO.setId(id);
         return customerDTO;
     }
+    private boolean isErrorPathVariable(long petId){
+        try{
+            if(Objects.isNull(petId))
+                return true;
+
+            Long.valueOf(petId);
+            return false;
+        }catch (Exception exception){
+            return true;
+        }
+    }
+    @GetMapping("/customer/pet/{petId}")
+    public CustomerDTO getOwnerByPet(@PathVariable long petId){
+        if(isErrorPathVariable(petId))
+            throw new UnsupportedOperationException();
+
+        Customer customer = clienteService.buscarClienteXMascota(petId);
+
+        if(Objects.isNull(customer))
+            throw new UnsupportedOperationException();
+
+        CustomerDTO customerDTO = customeraDTO(customer);
+        return customerDTO;
+    }
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
         throw new UnsupportedOperationException();
     }
-
-    @GetMapping("/customer/pet/{petId}")
-    public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        throw new UnsupportedOperationException();
-    }
-
-
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {

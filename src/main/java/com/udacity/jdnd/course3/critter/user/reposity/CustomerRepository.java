@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 @Transactional
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Query("select c from Customer c join fetch c.mascotas")
+    //@Query("select c from Customer c join fetch c.mascotas")
+    @Query("select c from Customer c join Pet p on c.id = p.clientePropietario.id where p.id= :idMascota")
     Customer findOwnerByPet(@Param("idMascota") Long idMascota);
 }

@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +52,7 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
         boolean errorDatos;
-        errorDatos = petDTO == null ? true: false;
+        errorDatos = Objects.isNull(petDTO) ? true: false;
         if(errorDatos)
             throw new UnsupportedOperationException();
 
