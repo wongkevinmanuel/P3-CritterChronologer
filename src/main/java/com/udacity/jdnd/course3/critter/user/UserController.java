@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
@@ -100,7 +102,11 @@ public class UserController {
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-        throw new UnsupportedOperationException();
+        List<Customer> customers = clienteService.clientes();
+        if (customers.isEmpty())
+            return Collections.EMPTY_LIST;
+
+        return customers.stream().map(c -> customeraDTO(c)).collect(Collectors.toList());
     }
 
     @PostMapping("/employee")
