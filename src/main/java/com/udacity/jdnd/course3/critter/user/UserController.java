@@ -121,6 +121,7 @@ public class UserController {
     private Employee DTOaEmployee(EmployeeDTO employeeDTO){
         Employee employee = new Employee();
         employee.setName(employeeDTO.getName());
+        employee.setSkills(employeeDTO.getSkills());
         return employee;
     }
     //Employee a DTO

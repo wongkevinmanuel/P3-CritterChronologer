@@ -18,6 +18,8 @@ public class Employee {
     @Nationalized
     private String name;
 
+
+
     //Habilidades de los empleados
     @ElementCollection(targetClass = EmployeeSkill.class
                         , fetch = FetchType.LAZY)
@@ -44,5 +46,13 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<EmployeeSkill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<EmployeeSkill> skills) {
+        this.skills = skills;
     }
 }
