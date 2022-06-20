@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
+import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,9 @@ import java.util.stream.Collectors;
 
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
+
+import javax.validation.Valid;
+
 /**
  * Handles web requests related to Users.
  *
@@ -33,8 +37,12 @@ public class UserController {
     @Autowired
     private final CustomerService clienteService;
 
-    public UserController(CustomerService clienteService) {
+    @Autowired
+    private final EmployeeService empleadoService;
+
+    public UserController(CustomerService clienteService, EmployeeService empleadoService) {
         this.clienteService = clienteService;
+        this.empleadoService = empleadoService;
     }
 
     private Customer DTOaCustomer(CustomerDTO clienteDTO){
@@ -109,9 +117,32 @@ public class UserController {
         return customers.stream().map(c -> customeraDTO(c)).collect(Collectors.toList());
     }
 
+    //DTO a  employee
+    private Employee DTOaEmployee(EmployeeDTO employeeDTO){
+        Employee employee = new Employee();
+        employee.setName(employeeDTO.getName());
+        return employee;
+    }
+    //Employee a DTO
+
+
     @PostMapping("/employee")
-    public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public EmployeeDTO saveEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+        boolean errorDatos;
+        errorDatos = Objects.isNull(employeeDTO) ? true: false;
+        if(errorDatos)
+            throw new UnsupportedOperationException();
+
+        if(employeeDTO.getName().isEmpty())
+            throw new UnsupportedOperationException();
+
+        Employee empleado = DTOaEmployee(employeeDTO);
+        Long id = empleadoService.guardar(empleado);
+        if(id<= 0)
+            return employeeDTO;
+
+        employeeDTO.setId(id);
+        return employeeDTO;
     }
 
     @PostMapping("/employee/{employeeId}")
