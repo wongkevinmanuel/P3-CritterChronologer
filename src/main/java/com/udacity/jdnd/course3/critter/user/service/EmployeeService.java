@@ -18,7 +18,15 @@ public class EmployeeService {
         try{
             return empleadoRepository.save(empleado).getId();
         }catch (IllegalArgumentException exception){
-            return null;
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    public Employee empleado(Long id){
+        try {
+            return empleadoRepository.getOne(id);
+        }catch (IllegalArgumentException exception){
+            throw new UnsupportedOperationException();
         }
     }
 }

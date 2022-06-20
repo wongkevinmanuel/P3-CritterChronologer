@@ -83,12 +83,12 @@ public class UserController {
         customerDTO.setId(id);
         return customerDTO;
     }
-    private boolean isErrorPathVariable(long petId){
+    private boolean isErrorPathVariable(long Id){
         try{
-            if(Objects.isNull(petId))
+            if(Objects.isNull(Id))
                 return true;
 
-            Long.valueOf(petId);
+            Long.valueOf(Id);
             return false;
         }catch (Exception exception){
             return true;
@@ -125,7 +125,12 @@ public class UserController {
         return employee;
     }
     //Employee a DTO
-
+    private EmployeeDTO EmployeeaDTO(Employee employee){
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setName(employee.getName());
+        employeeDTO.setSkills(employee.getSkills());
+        return employeeDTO;
+    }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
@@ -146,9 +151,17 @@ public class UserController {
         return employeeDTO;
     }
 
-    @PostMapping("/employee/{employeeId}")
+    //@PostMapping("/employee/{employeeId}")
+    @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        if(isErrorPathVariable(employeeId))
+            throw new UnsupportedOperationException();
+
+        Employee employee = empleadoService.empleado(employeeId);
+        if (Objects.isNull(employee))
+            throw new UnsupportedOperationException();
+
+        return EmployeeaDTO(employee);
     }
 
     @PutMapping("/employee/{employeeId}")
