@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.schedule.domain;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Nationalized;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="Schedule")
@@ -34,6 +36,11 @@ public class Schedule {
     @JoinTable(name="schedule_pet", joinColumns = @JoinColumn(name="id")
             ,inverseJoinColumns = @JoinColumn(name="pet_id"))
     private List<Pet> pets = new ArrayList<>();
+
+
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @Enumerated(EnumType.STRING)
+    private Set<EmployeeSkill> activities;
 
     public Long getId() {
         return id;
