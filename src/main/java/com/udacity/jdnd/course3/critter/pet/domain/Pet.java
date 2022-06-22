@@ -33,10 +33,11 @@ public class Pet {
     @JoinColumn(name = "clientePropietario_id", referencedColumnName = "id")
     private Customer clientePropietario;//owner
 
+    //Tener la relacion en esta lado no esta bien.
     //Muchos mascotas tiene un calendario para ser atendidos
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="schedule_id", referencedColumnName = "id")
-    private Schedule schedule;
+    //@ManyToOne(fetch=FetchType.LAZY)
+    //@JoinColumn(name="schedule_id", referencedColumnName = "id")
+    //private Schedule schedule;
 
     public long getId() {
         return id;
