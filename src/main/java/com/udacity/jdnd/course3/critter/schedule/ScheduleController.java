@@ -1,14 +1,12 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+
 import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,17 +35,21 @@ public class ScheduleController {
             return true;
         }
     }
+    private List<Long> listIdPet= new ArrayList<>();
+    private void addLongIdList(Long id){
+        listIdPet.add(id);
+    }
     private ScheduleDTO scheduleAScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         scheduleDTO.setDate(schedule.getDate());
         if (!schedule.getPets().isEmpty()) {
-            scheduleDTO.setPetIds( (List<Long>) schedule.getPets().stream()
-                    .map(s -> scheduleDTO.getPetIds().add(s.getId())));
-                    //.collect(Collectors.toList());
-
+            schedule.getPets().forEach(p -> addLongIdList(p.getId()));
+            scheduleDTO.setPetIds(listIdPet);
         }
         if (!schedule.getEmployees().isEmpty()) {
-
+            List<Long> listIdEmployees = new ArrayList<>();
+            schedule.getEmployees().stream().forEach( e -> listIdEmployees.add(e.getId()));
+            scheduleDTO.setEmployeeIds(listIdEmployees);
         }
         if (!schedule.getActivities().isEmpty())
         {
