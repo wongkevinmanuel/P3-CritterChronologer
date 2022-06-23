@@ -1,8 +1,10 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
 
+import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
+import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,22 +53,67 @@ public class ScheduleController {
             schedule.getEmployees().stream().forEach( e -> listIdEmployees.add(e.getId()));
             scheduleDTO.setEmployeeIds(listIdEmployees);
         }
-        if (!schedule.getActivities().isEmpty())
-        {
-
+        if (!schedule.getActivities().isEmpty()){
+            scheduleDTO.setActivities(schedule.getActivities());
         }
         return scheduleDTO;
     }
-    private Schedule scheduleDTOASchedule(ScheduleDTO scheduleDTO){
-        Schedule schedule = new Schedule();
-        schedule.setDate(scheduleDTO.getDate());
-        return schedule;
+
+
+    private Schedule schedule;
+    private Pet createPet(Long id){
+        Pet pet = new Pet();
+        pet.setId(id);
+        return pet;
     }
-    @PostMapping
-    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    private Employee createEmployee(Long id){
 
         return null;
     }
+
+    private <T> T createObject(T type,Long id){
+        //if(Objects.isNull(type))
+        //    return ;
+
+        if(type instanceof Pet){
+            Pet pet = (Pet) type;
+            pet.setId(id);
+        }
+        if(type instanceof Employee){
+            Employee employee = (Employee) type;
+            employee.setId(id);
+        }
+
+        return type;
+    }
+    private void scheduleDTOASchedule(ScheduleDTO scheduleDTO){
+        schedule = new Schedule();
+        schedule.setDate(scheduleDTO.getDate());
+        schedule.setActivities(scheduleDTO.getActivities());
+        //Long Ids Convert to PetIds
+        scheduleDTO.getPetIds().forEach(pId -> schedule.getPets().add(createPet(pId)));
+        //Convert to employee
+        //scheduleDTO.getEmployeeIds().forEach(eId -> schedule.getEmployees().add(createEmployee(eId)));
+        scheduleDTO.getEmployeeIds().forEach(eId -> schedule.getEmployees().add( createObject(new Employee(),eId) ));
+    }
+    @PostMapping
+    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+        if(Objects.isNull(scheduleDTO))
+            throw new UnsupportedOperationException();
+        if(Objects.isNull(scheduleDTO.getDate()))
+            throw new UnsupportedOperationException();
+
+        scheduleDTOASchedule(scheduleDTO);
+        Long id = scheduleService.save(schedule);
+
+        if(id<=0)
+            return scheduleDTO;
+
+        //Entity save send response with the ids save in Data base
+        scheduleDTO.setId(id);
+        return scheduleDTO;
+    }
+
 
     @GetMapping
     public List<ScheduleDTO> getAllSchedules() {

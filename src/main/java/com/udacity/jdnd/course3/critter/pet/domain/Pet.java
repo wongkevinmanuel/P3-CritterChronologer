@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "pet")
 public class Pet {
+
     //Propiedades
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

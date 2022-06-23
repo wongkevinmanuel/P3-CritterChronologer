@@ -15,6 +15,7 @@ import java.util.Set;
  */
 public class ScheduleDTO {
     private long id;
+
     private List<Long> employeeIds;
     private List<Long> petIds;
     private LocalDate date;
@@ -50,5 +51,14 @@ public class ScheduleDTO {
 
     public void setActivities(Set<EmployeeSkill> activities) {
         this.activities = activities;
+    }
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
