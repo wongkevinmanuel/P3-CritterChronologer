@@ -61,20 +61,7 @@ public class ScheduleController {
 
 
     private Schedule schedule;
-    private Pet createPet(Long id){
-        Pet pet = new Pet();
-        pet.setId(id);
-        return pet;
-    }
-    private Employee createEmployee(Long id){
-
-        return null;
-    }
-
     private <T> T createObject(T type,Long id){
-        //if(Objects.isNull(type))
-        //    return ;
-
         if(type instanceof Pet){
             Pet pet = (Pet) type;
             pet.setId(id);
@@ -83,7 +70,6 @@ public class ScheduleController {
             Employee employee = (Employee) type;
             employee.setId(id);
         }
-
         return type;
     }
     private void scheduleDTOASchedule(ScheduleDTO scheduleDTO){
@@ -91,10 +77,11 @@ public class ScheduleController {
         schedule.setDate(scheduleDTO.getDate());
         schedule.setActivities(scheduleDTO.getActivities());
         //Long Ids Convert to PetIds
-        scheduleDTO.getPetIds().forEach(pId -> schedule.getPets().add(createPet(pId)));
+        scheduleDTO.getPetIds().forEach(
+                                pId -> schedule.getPets().add(createObject( new Pet(),pId)));
         //Convert to employee
-        //scheduleDTO.getEmployeeIds().forEach(eId -> schedule.getEmployees().add(createEmployee(eId)));
-        scheduleDTO.getEmployeeIds().forEach(eId -> schedule.getEmployees().add( createObject(new Employee(),eId) ));
+        scheduleDTO.getEmployeeIds().forEach(
+                                eId -> schedule.getEmployees().add( createObject(new Employee(),eId) ));
     }
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
