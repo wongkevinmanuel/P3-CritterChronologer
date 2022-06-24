@@ -18,6 +18,7 @@ public class ScheduleService {
     //createSchedule
     public Long save(Schedule schedule){
         try{
+            schedule.setId(null);
             return repository.save(schedule).getId();
         }catch (IllegalArgumentException exception){
             throw new UnsupportedOperationException();

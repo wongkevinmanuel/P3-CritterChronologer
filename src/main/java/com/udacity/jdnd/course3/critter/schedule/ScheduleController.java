@@ -43,6 +43,7 @@ public class ScheduleController {
     }
     private ScheduleDTO scheduleAScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
+        scheduleDTO.setId(schedule.getId());
         scheduleDTO.setDate(schedule.getDate());
         if (!schedule.getPets().isEmpty()) {
             schedule.getPets().forEach(p -> addLongIdList(p.getId()));
@@ -77,9 +78,12 @@ public class ScheduleController {
         schedule.setDate(scheduleDTO.getDate());
         schedule.setActivities(scheduleDTO.getActivities());
         //Long Ids Convert to PetIds
+        schedule.setPets(new ArrayList<>());
         scheduleDTO.getPetIds().forEach(
                                 pId -> schedule.getPets().add(createObject( new Pet(),pId)));
+
         //Convert to employee
+        schedule.setEmployees(new ArrayList<>());
         scheduleDTO.getEmployeeIds().forEach(
                                 eId -> schedule.getEmployees().add( createObject(new Employee(),eId) ));
     }

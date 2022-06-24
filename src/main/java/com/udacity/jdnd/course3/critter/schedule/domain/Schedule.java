@@ -25,14 +25,14 @@ public class Schedule {
     private LocalDate date;
 
     @ManyToMany(fetch=FetchType.LAZY
-                ,cascade = CascadeType.ALL)
+                ,cascade = CascadeType.MERGE)
     @JoinTable(name="schedule_employee"
                 ,joinColumns = @JoinColumn(name="id")
                 ,inverseJoinColumns = @JoinColumn(name="employee_id"))
     private List<Employee> employees = new ArrayList<>();
 
     @ManyToMany(fetch=FetchType.LAZY
-                , cascade = CascadeType.ALL)
+                , cascade = CascadeType.MERGE)
     @JoinTable(name="schedule_pet", joinColumns = @JoinColumn(name="id")
             ,inverseJoinColumns = @JoinColumn(name="pet_id"))
     private List<Pet> pets = new ArrayList<>();
