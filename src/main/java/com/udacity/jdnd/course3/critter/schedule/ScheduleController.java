@@ -60,9 +60,8 @@ public class ScheduleController {
         return scheduleDTO;
     }
 
-
     private Schedule schedule;
-    private <T> T createObject(T type,Long id){
+    private <T> T createObjectForType(T type,Long id){
         if(type instanceof Pet){
             Pet pet = (Pet) type;
             pet.setId(id);
@@ -80,12 +79,12 @@ public class ScheduleController {
         //Long Ids Convert to PetIds
         schedule.setPets(new ArrayList<>());
         scheduleDTO.getPetIds().forEach(
-                                pId -> schedule.getPets().add(createObject( new Pet(),pId)));
+                                pId -> schedule.getPets().add(createObjectForType( new Pet(),pId)));
 
         //Convert to employee
         schedule.setEmployees(new ArrayList<>());
         scheduleDTO.getEmployeeIds().forEach(
-                                eId -> schedule.getEmployees().add( createObject(new Employee(),eId) ));
+                                eId -> schedule.getEmployees().add(createObjectForType(new Employee(),eId) ));
     }
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
