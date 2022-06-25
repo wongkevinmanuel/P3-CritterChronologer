@@ -45,7 +45,11 @@ public class ScheduleService {
     //Obtener el calendario de un empleador por su id
     //getScheduleForEmployee employeeId
     public List<Schedule> schedulesXEmployee(Long employeeId){
-        return null;
+        try {
+            return repository.schedulesXEmployee(employeeId);
+        }catch (IllegalArgumentException exception){
+            throw  new UnsupportedOperationException();
+        }
     }
     //Obetener el calendarion de una mascota por el cliente
     //getScheduleForCustomer customerId

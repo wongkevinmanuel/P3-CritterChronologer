@@ -5,10 +5,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code= HttpStatus.NOT_FOUND, reason = "Pet not found")
 public class PetNotFoundException extends RuntimeException{
-
+    private Throwable causa;
     public PetNotFoundException(){}
 
-    public PetNotFoundException(String message){
-        super(message);
+    public PetNotFoundException(Throwable causa){
+        super(causa.getClass().getName() + "-->"
+                + causa.getMessage());
+        this.causa = causa;
+    }
+
+    public Throwable getCausa(){
+        return this.causa;
     }
 }

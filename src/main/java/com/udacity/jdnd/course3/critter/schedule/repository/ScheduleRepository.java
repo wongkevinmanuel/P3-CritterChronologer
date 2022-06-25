@@ -16,6 +16,9 @@ public interface ScheduleRepository extends JpaRepository <Schedule,Long> {
     //@Query("from Schedule s left join fetch s.pets p where p.id=:petId")
     @Query("from Schedule s inner join s.pets p where p.id = :petId")
     List<Schedule> schedulesXPet(@Param("petId") Long petId);
-    //Query("buscar ***")
-    //List<>
+
+    //getScheduleForEmployee employeeId
+    @Query("from Schedule  s inner join s.employees e where e.id = :employeeId")
+    List<Schedule> schedulesXEmployee(@Param("employeeId") Long employeeId);
+
 }

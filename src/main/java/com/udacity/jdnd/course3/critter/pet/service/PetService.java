@@ -20,21 +20,21 @@ public class PetService {
         try{
             return mascotaRepository.save(pet).getId();
         }catch (IllegalArgumentException exception) {
-            throw new PetNotFoundException(exception.getMessage() + "c.PetService.m.guardar");
+            throw new PetNotFoundException(exception);
         }
     }
     public List<Pet> mascotas(){
         try{
             return mascotaRepository.findAll();
         }catch (IllegalArgumentException exception){
-            throw new PetNotFoundException(exception.getMessage() + "c.PetService.m.mascotas");
+            throw new PetNotFoundException(exception);
         }
     }
     public List<Pet> mascotasXCliente(Long id){
         try {
             return mascotaRepository.buscarMascotaXCliente(id);
         }catch (IllegalArgumentException exception){
-            throw new PetNotFoundException(exception.getMessage() + "c.PetService.m.mascotas");
+            throw new PetNotFoundException(exception);
         }
     }
 
