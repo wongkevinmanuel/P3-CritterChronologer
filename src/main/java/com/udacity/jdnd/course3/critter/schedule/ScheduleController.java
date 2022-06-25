@@ -104,7 +104,6 @@ public class ScheduleController {
         return scheduleDTO;
     }
 
-
     @GetMapping("/allschedules")
     public List<ScheduleDTO> getAllSchedules() {
         List<Schedule> schedules = scheduleService.allSchedules();
@@ -140,6 +139,13 @@ public class ScheduleController {
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
+        if(isErrorPathVariable(customerId))
+            throw new UnsupportedOperationException();
+
+        List<Schedule> schedules = scheduleService.scheduleXCostumer(customerId);
+        if(schedules.isEmpty())
+            return Collections.EMPTY_LIST;
+
+        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 }

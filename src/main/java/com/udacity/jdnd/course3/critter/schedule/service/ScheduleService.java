@@ -15,7 +15,6 @@ public class ScheduleService {
     private ScheduleRepository repository;
 
     //Create Calendarion para atender mascota
-    //createSchedule
     public Long save(Schedule schedule){
         try{
             schedule.setId(null);
@@ -25,7 +24,6 @@ public class ScheduleService {
         }
     }
     //Obetner todos los calendarios creados
-    //getAllSchedules()
     public List<Schedule> allSchedules(){
         try {
             return repository.findAll();
@@ -34,7 +32,6 @@ public class ScheduleService {
         }
     }
     //Obtener calendario por el id de una mascota
-    //getScheduleForPet petId getScheduleForEmployee employeeId getScheduleForCustomer customerId
     public List<Schedule> scheduleXPet(Long petId){
         try {
             return repository.schedulesXPet(petId);
@@ -43,7 +40,6 @@ public class ScheduleService {
         }
     }
     //Obtener el calendario de un empleador por su id
-    //getScheduleForEmployee employeeId
     public List<Schedule> schedulesXEmployee(Long employeeId){
         try {
             return repository.schedulesXEmployee(employeeId);
@@ -52,8 +48,11 @@ public class ScheduleService {
         }
     }
     //Obetener el calendarion de una mascota por el cliente
-    //getScheduleForCustomer customerId
     public List<Schedule> scheduleXCostumer(Long customerId){
-        return null;
+        try {
+            return repository.getScheduleXCustomer(customerId);
+        }catch (IllegalArgumentException exception){
+            throw  new UnsupportedOperationException();
+        }
     }
 }
