@@ -105,9 +105,13 @@ public class ScheduleController {
     }
 
 
-    @GetMapping
+    @GetMapping("/allschedules")
     public List<ScheduleDTO> getAllSchedules() {
-        throw new UnsupportedOperationException();
+        List<Schedule> schedules =scheduleService.allSchedules();
+        if (Objects.isNull(schedules))
+            return new ArrayList<ScheduleDTO>(Collections.EMPTY_LIST);
+
+        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")

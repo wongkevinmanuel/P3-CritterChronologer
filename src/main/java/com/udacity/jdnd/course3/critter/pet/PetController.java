@@ -75,7 +75,7 @@ public class PetController {
 
         List<Pet> pets = mascotaService.mascotas();
         if(pets.isEmpty())
-            return Collections.EMPTY_LIST;
+            return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
 
         return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
     }
