@@ -32,11 +32,11 @@ public class EmployeeService {
         }
     }
 
-    public Employee guardarDiasDisponibles(Long id, Set<DayOfWeek> diasSemana){
+    public Employee guardarDiasDisponibles(Employee employee){
         try{
-            Employee employee = empleadoRepository.getOne(id);
-            employee.setDayAvailable(diasSemana);
-            return empleadoRepository.save(employee);
+            Employee employeeToUpdate = empleadoRepository.getOne(employee.getId());
+            employeeToUpdate.setDayAvailable(employee.getDayAvailable());
+            return empleadoRepository.save(employeeToUpdate);
         }catch (IllegalArgumentException exception){
             throw new UnsupportedOperationException(exception);
         }

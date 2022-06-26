@@ -129,8 +129,10 @@ public class UserController {
     //Employee a DTO
     private EmployeeDTO EmployeeaDTO(Employee employee){
         EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(employee.getId());
         employeeDTO.setName(employee.getName());
         employeeDTO.setSkills(employee.getSkills());
+        employeeDTO.setDaysAvailable(employee.getDayAvailable());
         return employeeDTO;
     }
 
@@ -170,13 +172,17 @@ public class UserController {
     public EmployeeDTO setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
         if (Objects.isNull(daysAvailable) || Objects.isNull(employeeId))
             throw new UnsupportedOperationException();
-        Employee employee = empleadoService.guardarDiasDisponibles(employeeId,daysAvailable);
 
-        return null;
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+        employee.setDayAvailable(daysAvailable);
+        Employee updateEmployee = empleadoService.guardarDiasDisponibles(employee);
+        return EmployeeaDTO(updateEmployee);
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
+
         throw new UnsupportedOperationException();
     }
 
