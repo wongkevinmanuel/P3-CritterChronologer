@@ -18,8 +18,6 @@ public class Employee {
     @Nationalized
     private String name;
 
-
-
     //Habilidades de los empleados
     @ElementCollection(targetClass = EmployeeSkill.class
                         , fetch = FetchType.LAZY)
@@ -54,5 +52,13 @@ public class Employee {
 
     public void setSkills(Set<EmployeeSkill> skills) {
         this.skills = skills;
+    }
+
+    public Set<DayOfWeek> getDayAvailable() {
+        return dayAvailable;
+    }
+
+    public void setDayAvailable(Set<DayOfWeek> dayAvailable) {
+        this.dayAvailable = dayAvailable;
     }
 }

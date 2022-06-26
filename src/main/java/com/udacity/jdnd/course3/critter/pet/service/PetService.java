@@ -39,8 +39,11 @@ public class PetService {
     }
 
     public Pet mascotaxId(Long id){
-        //mascotaRepository.getOne(id);
-        return mascotaRepository.getOne(id); // null;//mascotaRepository.mascotaxId(id);
+        try {
+            return mascotaRepository.getOne(id);
+        }catch (IllegalArgumentException exception){
+            throw new PetNotFoundException(exception);
+        }
     }
 
 }
