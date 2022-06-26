@@ -168,6 +168,9 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public EmployeeDTO setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
+        if (Objects.isNull(daysAvailable) || Objects.isNull(employeeId))
+            throw new UnsupportedOperationException();
+        Employee employee = empleadoService.guardarDiasDisponibles(employeeId,daysAvailable);
 
         return null;
     }
