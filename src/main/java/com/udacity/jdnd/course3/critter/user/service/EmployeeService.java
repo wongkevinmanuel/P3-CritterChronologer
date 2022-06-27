@@ -1,12 +1,15 @@
 package com.udacity.jdnd.course3.critter.user.service;
 
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.reposity.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -41,5 +44,26 @@ public class EmployeeService {
             throw new UnsupportedOperationException(exception);
         }
     }
+
+    List<Employee> availableEmployees = new ArrayList<>();
+    private void employeeSkillsContainsRequiredSkills(List<Employee> employees,Set<EmployeeSkill> skills){
+        for (Employee e: employees) {
+            if(e.getSkills().containsAll(skills)){
+                availableEmployees.add(e);
+            }
+        }
+    }
+    public List<Employee> findAllByDaysAvailableContainingEmployee(LocalDate date, Set<EmployeeSkill> skills){//DayOfWeek day, Set<EmployeeSkill> skills){
+        List<Employee> employees;
+        try{
+            //employees = empleadoRepository.findAllByDaysAvailableContaining(date.getDayOfWeek());
+            employees = empleadoRepository.findAll();
+        }catch (IllegalArgumentException exception){
+            throw new UnsupportedOperationException(exception);
+        }
+        employeeSkillsContainsRequiredSkills(employees,skills);
+        return availableEmployees;
+    }
+
 
 }

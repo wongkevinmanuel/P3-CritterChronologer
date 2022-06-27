@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import io.swagger.annotations.ApiResponses;
@@ -180,10 +177,21 @@ public class UserController {
         return EmployeeaDTO(updateEmployee);
     }
 
+    //kevin, significa devolver todos los Empleados que tengan
+    // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/employee/availability")
-    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
+    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeRequestDTO) {
+        if(Objects.isNull(employeeRequestDTO))
+            throw new UnsupportedOperationException();
 
-        throw new UnsupportedOperationException();
+        if (employeeRequestDTO.getSkills().isEmpty() || Objects.isNull(employeeRequestDTO.getDate()))
+            return Collections.EMPTY_LIST;
+
+        List<Employee> employees = empleadoService
+                                        .findAllByDaysAvailableContainingEmployee(employeeRequestDTO.getDate()
+                                                                                    ,employeeRequestDTO.getSkills());
+
+        return employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
     }
 
 }
