@@ -53,27 +53,7 @@ public class CritterFunctionalTest {
     @Autowired
     private ScheduleController scheduleController;
 
-    //Escrita x Kevin
-    @Test
-    public void testCreatePet() throws URISyntaxException {
-        PetDTO petDTO = new PetDTO();//createPetDTO();
-        //petDTO.setOwnerId(1);
-        petDTO.setName("Kerim");
-        petDTO.setType(PetType.CAT);
-        petDTO.setNotes("Era el perro de Taty.");
-        petDTO.setBirthDate(LocalDate.of(1995, 6, 3));
 
-        PetDTO newPet = petController.savePet(petDTO);
-        Assertions.assertEquals(newPet.getId(),2);
-    }
-
-    @Test
-    public void testAllPet(){
-        int itemCount= petController.getPets().size();
-        Assertions.assertEquals(itemCount,3);
-    }
-
-    //Entendido
     @Test
     public void testCreateCustomer(){
         CustomerDTO customerDTO = createCustomerDTO();
