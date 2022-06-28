@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Handles web requests related to Schedules.
  * Maneja solicitudes web relacionadas con Horarios.
  */
 @RestController
@@ -76,6 +75,7 @@ public class ScheduleController {
         schedule = new Schedule();
         schedule.setDate(scheduleDTO.getDate());
         schedule.setActivities(scheduleDTO.getActivities());
+
         //Long Ids Convert to PetIds
         schedule.setPets(new ArrayList<>());
         scheduleDTO.getPetIds().forEach(

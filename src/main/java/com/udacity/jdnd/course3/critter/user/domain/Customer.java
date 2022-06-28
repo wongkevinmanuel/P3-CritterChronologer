@@ -4,7 +4,6 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -65,14 +64,6 @@ public class Customer {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-    //public List<Pet> getPets() {
-    //    return pets;
-    //}
-
-    //public void setPets(List<Pet> pets) {
-    //    this.pets = pets;
-    //}
 
     public int getAge() {
         return age;

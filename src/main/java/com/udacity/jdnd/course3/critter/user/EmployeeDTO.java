@@ -4,8 +4,6 @@ import java.time.DayOfWeek;
 import java.util.Set;
 
 /**
- * Represents the form that employee request and response data takes. Does not map
- * to the database directly.
  * Representa la forma que adoptan los datos de solicitud y respuesta de los empleados.
  * No se asigna directamente a la base de datos.
  */

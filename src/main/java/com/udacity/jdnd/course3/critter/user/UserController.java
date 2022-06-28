@@ -19,12 +19,6 @@ import io.swagger.annotations.ApiResponse;
 import javax.validation.Valid;
 
 /**
- * Handles web requests related to Users.
- *
- * Includes requests for both customers and employees. Splitting this into separate user and customer controllers
- * would be fine too, though that is not part of the required scope for this class.
- * Maneja las solicitudes web relacionadas con los Usuarios.
- *
  * Incluye solicitudes tanto para clientes como para empleados. También estaría bien dividir esto en controladores
  * de usuario y cliente separados, aunque eso no es parte del alcance requerido para esta clase.
  */
@@ -121,7 +115,6 @@ public class UserController {
 
         if(Objects.isNull(customer))
             throw new NullPointerException();
-            //throw new UnsupportedOperationException();
 
         CustomerDTO customerDTO = customeraDTO(customer);
         return customerDTO;

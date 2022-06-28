@@ -56,8 +56,7 @@ public class EmployeeService {
     public List<Employee> findAllByDaysAvailableContainingEmployee(LocalDate date, Set<EmployeeSkill> skills){//DayOfWeek day, Set<EmployeeSkill> skills){
         List<Employee> employees;
         try{
-            //employees = empleadoRepository.findAllByDaysAvailableContaining(date.getDayOfWeek());
-            employees = empleadoRepository.findAll();
+           employees = empleadoRepository.findAll();
         }catch (IllegalArgumentException exception){
             throw new UnsupportedOperationException(exception);
         }

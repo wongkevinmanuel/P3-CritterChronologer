@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * Represents a request to find available employees by skills. Does not map
- * to the database directly.
  * Representa una solicitud para encontrar empleados disponibles por habilidades.
  * No se asigna directamente a la base de datos.
  */

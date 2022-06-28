@@ -2,12 +2,6 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import java.time.LocalDate;
 
-/**
- * Represents the form that pet request and response data takes. Does not map
- * to the database directly.
- * Representa la forma que adoptan los datos de solicitud y respuesta de mascotas.
- * No se asigna directamente a la base de datos.
- */
 public class PetDTO {
     private long id;
     private PetType type;

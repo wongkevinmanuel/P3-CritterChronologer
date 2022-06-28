@@ -3,23 +3,15 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Handles web requests related to Pets.
- * Maneja solicitudes web relacionadas con mascotas.
- */
 @RestController
-//@ApiResponses( value={@ApiResponse(code=400, message="***")})
 @RequestMapping("/pet")
 public class PetController {
     @Autowired
@@ -77,7 +69,6 @@ public class PetController {
 
     @GetMapping("/all")
     public List<PetDTO> getPets(){
-
         List<Pet> pets = mascotaService.mascotas();
         if(pets.isEmpty())
             return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
@@ -95,7 +86,6 @@ public class PetController {
         return petaDTO(pet);
     }
 
-    //Obtener mascota por propietario
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         List<Pet> pets = mascotaService.mascotasXCliente(ownerId);

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents the form that schedule request and response data takes. Does not map
- * to the database directly.
  * Representa la forma que toman los datos de solicitud y respuesta de programación.
  * No se asigna directamente a la base de datos.
  * Calendario / Scheduled

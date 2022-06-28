@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Table(name = "pet")
 public class Pet {
 
-    //Propiedades
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)

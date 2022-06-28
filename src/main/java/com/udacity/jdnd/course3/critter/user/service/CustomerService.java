@@ -13,6 +13,7 @@ import java.util.List;
 public class CustomerService {
     @Autowired
     CustomerRepository clienteRepository;
+
     //save Customer
     public Long guardar(Customer customer){
         try{
@@ -22,7 +23,6 @@ public class CustomerService {
         }
     }
 
-    //findCustomertoPet
     public Customer buscarClienteXMascota(Long id){
         try{
             return clienteRepository.findOwnerByPet(id);
