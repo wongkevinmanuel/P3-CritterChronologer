@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
@@ -49,6 +50,7 @@ public class UserController {
         cliente.setName(clienteDTO.getName());
         cliente.setNotes(clienteDTO.getNotes());
         cliente.setPhoneNumber(clienteDTO.getPhoneNumber());
+        cliente.setAge(clienteDTO.getAge());
         return cliente;
     }
 
@@ -57,7 +59,16 @@ public class UserController {
         clienteDTO.setName(customer.getName());
         clienteDTO.setNotes(customer.getNotes());
         clienteDTO.setPhoneNumber(customer.getPhoneNumber());
-        //clienteDTO.setPetIds();
+        clienteDTO.setId(customer.getId());
+        clienteDTO.setAge(customer.getAge());
+
+        if (customer.getMascotas() != null){
+            if(!customer.getMascotas().isEmpty()) {
+                for (Pet p:customer.getMascotas() ) {
+                    clienteDTO.getPetIds().add(p.getId());
+                }
+            }
+        }
         return clienteDTO;
     }
 
@@ -101,7 +112,8 @@ public class UserController {
         Customer customer = clienteService.buscarClienteXMascota(petId);
 
         if(Objects.isNull(customer))
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
+            //throw new UnsupportedOperationException();
 
         CustomerDTO customerDTO = customeraDTO(customer);
         return customerDTO;

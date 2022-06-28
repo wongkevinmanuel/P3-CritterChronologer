@@ -26,6 +26,7 @@ public class Customer {
 
     private int age;
 
+
     @Column(name="cedula",length = 10)
     private String cedula;
 
@@ -72,4 +73,20 @@ public class Customer {
     //public void setPets(List<Pet> pets) {
     //    this.pets = pets;
     //}
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public List<Pet> getMascotas() {
+        return mascotas;
+    }
+
+    public void setMascotas(List<Pet> mascotas) {
+        this.mascotas = mascotas;
+    }
 }

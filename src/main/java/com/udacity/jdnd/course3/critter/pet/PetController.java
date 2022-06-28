@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,12 @@ public class PetController {
         mascota.setNotes(petDTO.getNotes());
         mascota.setType(petDTO.getType());
         mascota.setBirthDate(petDTO.getBirthDate());
-        //mascota.setOwnerId(petDTO.getOwnerId());
-        return mascota;
+        if(petDTO.getOwnerId() != 0) {
+            Customer customer = new Customer();
+            customer.setId(petDTO.getOwnerId());
+            mascota.setClientePropietario(customer);
+        }
+            return mascota;
     }
 
     private PetDTO petaDTO(Pet pet){

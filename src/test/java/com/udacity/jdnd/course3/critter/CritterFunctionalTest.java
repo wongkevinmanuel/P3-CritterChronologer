@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URISyntaxException;
@@ -41,6 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   Todas estas pruebas deben aprobarse una vez que se complete el proyectos
  */
 @Transactional
+//@ActiveProfiles("test")
 @SpringBootTest(classes = CritterApplication.class)
 public class CritterFunctionalTest {
 
@@ -52,7 +54,6 @@ public class CritterFunctionalTest {
 
     @Autowired
     private ScheduleController scheduleController;
-
 
     @Test
     public void testCreateCustomer(){
@@ -133,6 +134,8 @@ public class CritterFunctionalTest {
 
         PetDTO petDTO = createPetDTO();
         petDTO.setOwnerId(newCustomer.getId());
+        petDTO.setName("Fido");
+        petDTO.setNotes("Good pet");
         PetDTO newPet = petController.savePet(petDTO);
 
         CustomerDTO owner = userController.getOwnerByPet(newPet.getId());
@@ -283,6 +286,7 @@ public class CritterFunctionalTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setName("TestEmployee");
         customerDTO.setPhoneNumber("123-456-789");
+        customerDTO.setAge(18);
         return customerDTO;
     }
 
