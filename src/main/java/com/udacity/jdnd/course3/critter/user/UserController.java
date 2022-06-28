@@ -1,7 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
-import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
+import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,9 +39,15 @@ public class UserController {
     @Autowired
     private final EmployeeService empleadoService;
 
-    public UserController(CustomerService clienteService, EmployeeService empleadoService) {
+    //k
+    @Autowired
+    private final PetService mascotaservicio;
+
+    //k
+    public UserController(CustomerService clienteService, EmployeeService empleadoService, PetService mascotaservicio) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
+        this.mascotaservicio = mascotaservicio;
     }
 
     private Customer DTOaCustomer(CustomerDTO clienteDTO){
@@ -64,6 +69,7 @@ public class UserController {
 
         if (customer.getMascotas() != null){
             if(!customer.getMascotas().isEmpty()) {
+                clienteDTO.setPetIds(new ArrayList<>());
                 for (Pet p:customer.getMascotas() ) {
                     clienteDTO.getPetIds().add(p.getId());
                 }
@@ -110,6 +116,8 @@ public class UserController {
             throw new UnsupportedOperationException();
 
         Customer customer = clienteService.buscarClienteXMascota(petId);
+        //buscar los ids de las mascotas por cliente
+        customer.setMascotas(mascotaservicio.mascotasXCliente(customer.getId()));
 
         if(Objects.isNull(customer))
             throw new NullPointerException();

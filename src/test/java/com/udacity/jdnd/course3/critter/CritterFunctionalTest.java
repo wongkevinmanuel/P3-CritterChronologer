@@ -113,6 +113,9 @@ public class CritterFunctionalTest {
 
         PetDTO petDTO = createPetDTO();
         petDTO.setOwnerId(newCustomer.getId());
+        //k
+        petDTO.setName("FIDO");
+        petDTO.setNotes("Balck Color");
         PetDTO newPet = petController.savePet(petDTO);
         petDTO.setType(PetType.DOG);
         petDTO.setName("DogName");
