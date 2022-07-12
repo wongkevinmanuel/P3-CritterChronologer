@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,16 @@ public class PetController {
             return mascota;
     }
 
+    private Pet DTOaPet(PetDTO petDTO,String nombrePropiedadAIgnorar){
+        Pet pet = new Pet();
+        BeanUtils.copyProperties(petDTO,pet,nombrePropiedadAIgnorar );
+        if (petDTO.getOwnerId() != 0){
+            Customer customer = new Customer();
+            customer.setId(petDTO.getId());
+            pet.setClientePropietario(customer);
+        }
+        return pet;
+    }
     private PetDTO petaDTO(Pet pet){
         PetDTO mascotaDTO = new PetDTO();
         mascotaDTO.setId(pet.getId());
@@ -56,7 +67,7 @@ public class PetController {
         if (petDTO.getName().isEmpty()  || petDTO.getNotes().isEmpty())
             throw new UnsupportedOperationException();
 
-        Pet pet = DTOaPet(petDTO);
+        Pet pet = DTOaPet(petDTO,"ownerId");
         Long id = mascotaService.guardar(pet);
 
         if (id<=0)
