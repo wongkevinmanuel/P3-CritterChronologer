@@ -8,6 +8,7 @@ import com.udacity.jdnd.course3.critter.pet.PetType;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.user.*;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,38 @@ public class CritterFunctionalTest {
         Assertions.assertTrue(retrievedEmployee.getId() > 0);
     }
 
+    @Test
+    public void testCreatePet(){
+        PetDTO petDTO = new PetDTO();
+        petDTO.setNotes("Perro loco");
+        petDTO.setName("Ozzy");
+        petDTO.setType(PetType.DOG);
+        petDTO.setBirthDate(LocalDate.of(2022,06,12));
+
+        PetDTO petRetrieved = petController.savePet(petDTO);
+
+        Assertions.assertEquals(petDTO.getName(), petRetrieved.getName());
+
+    }
+
+    @Test
+    public void testGetAllPet(){
+        PetDTO petDTO = new PetDTO();
+        petDTO.setNotes("Perro loco");
+        petDTO.setName("Ozzy");
+        petDTO.setType(PetType.DOG);
+        petDTO.setBirthDate(LocalDate.of(2022,06,12));
+        petController.savePet(petDTO);
+
+        PetDTO petDTO2 = new PetDTO();
+        petDTO2.setNotes("Perro loco");
+        petDTO2.setName("Ozzy");
+        petDTO2.setType(PetType.DOG);
+        petDTO2.setBirthDate(LocalDate.of(2022,06,12));
+        petController.savePet(petDTO2);
+        Assertions.assertEquals(2,petController.getPets().size());
+
+    }
     //Entendido el pet(mascota) guarda los ids de los customer (clientes)
     @Test
     public void testAddPetsToCustomer() {

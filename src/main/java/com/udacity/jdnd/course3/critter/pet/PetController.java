@@ -57,6 +57,17 @@ public class PetController {
         return mascotaDTO;
     }
 
+    private PetDTO petaDTO(Pet pet, String nombrePropiedadAIgnorar){
+        PetDTO petDTO = new PetDTO();
+        BeanUtils.copyProperties(pet, petDTO, nombrePropiedadAIgnorar);
+
+
+        petDTO.setOwnerId(
+                !Objects.isNull(pet.getClientePropietario())
+                        ? pet.getClientePropietario().getId(): 0);
+        return petDTO;
+    }
+
     @PostMapping
     public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
         boolean errorDatos;
@@ -84,7 +95,7 @@ public class PetController {
         if(pets.isEmpty())
             return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
 
-        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
+        return pets.stream().map(p -> petaDTO(p,"ownerId")).collect(Collectors.toList());
     }
 
     @GetMapping("/{petId}")
