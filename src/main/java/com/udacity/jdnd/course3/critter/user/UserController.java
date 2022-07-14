@@ -6,7 +6,9 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
@@ -53,6 +55,26 @@ public class UserController {
         return cliente;
     }
 
+    private Customer DTOaCustomer(CustomerDTO customerDTO, String nombrePropiedadAIgnorar){
+        Customer customer = new Customer();
+        BeanUtils.copyProperties(customerDTO,customer, nombrePropiedadAIgnorar);
+        return customer;
+    }
+
+    private CustomerDTO customeraDTO(Customer customer,String nombrePropiedadAIgnorar){
+        CustomerDTO customerDTO = new CustomerDTO();
+        BeanUtils.copyProperties(customer,customerDTO,nombrePropiedadAIgnorar);
+        if (Objects.isNull(customer.getMascotas()))
+            return customerDTO;
+
+        if(!customer.getMascotas().isEmpty()) {
+            customerDTO.setPetIds(new ArrayList<>());
+            for (Pet p:customer.getMascotas() ) {
+                customerDTO.getPetIds().add(p.getId());
+            }
+        }
+        return customerDTO;
+    }
     private CustomerDTO customeraDTO(Customer customer){
         CustomerDTO clienteDTO = new CustomerDTO();
         clienteDTO.setName(customer.getName());
@@ -83,7 +105,7 @@ public class UserController {
         if(customerDTO.getName().isEmpty() || customerDTO.getPhoneNumber().isEmpty())
             throw new UnsupportedOperationException();
 
-        Customer customer = DTOaCustomer(customerDTO);
+        Customer customer = DTOaCustomer(customerDTO,"petIds");
         Long id = clienteService.guardar(customer);
 
         if(id < 0)
