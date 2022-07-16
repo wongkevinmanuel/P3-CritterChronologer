@@ -9,6 +9,8 @@ import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
@@ -95,7 +97,7 @@ public class UserController {
     }
 
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
+    public CustomerDTO saveCustomer(@RequestBody @Valid CustomerDTO customerDTO){
         boolean errorDatos;
 
         errorDatos = customerDTO == null ? true : false;
@@ -104,6 +106,9 @@ public class UserController {
 
         if(customerDTO.getName().isEmpty() || customerDTO.getPhoneNumber().isEmpty())
             throw new UnsupportedOperationException();
+
+        //if(customerDTO.getName().length() <= 3)
+        //    throw new MethodArgumentNotValidException(new MethodParameter("df"),);
 
         Customer customer = DTOaCustomer(customerDTO,"petIds");
         Long id = clienteService.guardar(customer);

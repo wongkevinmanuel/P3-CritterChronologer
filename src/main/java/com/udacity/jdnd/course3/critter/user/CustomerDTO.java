@@ -1,5 +1,8 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import org.checkerframework.checker.units.qual.Length;
+
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -8,6 +11,7 @@ import java.util.List;
  */
 public class CustomerDTO {
     private long id;
+    @Size(min=3)
     private String name;
     private String phoneNumber;
     private String notes;
@@ -22,8 +26,6 @@ public class CustomerDTO {
     public void setAge(int age) {
         this.age = age;
     }
-
-
 
     public long getId() {
         return id;
