@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -39,7 +40,11 @@ public class PetService {
 
     public Pet mascotaxId(Long id){
         try {
-            return mascotaRepository.getOne(id);
+            Pet pet = mascotaRepository.getOne(id);
+            if (Objects.isNull(pet))
+                throw new PetNoDataFoundException();
+
+            return pet;
         }catch (IllegalArgumentException exception){
             throw new PetNotFoundException(exception);
         }
