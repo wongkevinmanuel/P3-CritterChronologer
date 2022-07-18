@@ -48,6 +48,7 @@ public class UserController {
         this.mascotaservicio = mascotaservicio;
     }
 
+    /*
     private Customer DTOaCustomer(CustomerDTO clienteDTO){
         Customer cliente = new Customer();
         cliente.setName(clienteDTO.getName());
@@ -55,7 +56,7 @@ public class UserController {
         cliente.setPhoneNumber(clienteDTO.getPhoneNumber());
         cliente.setAge(clienteDTO.getAge());
         return cliente;
-    }
+    }*/
 
     private Customer DTOaCustomer(CustomerDTO customerDTO, String nombrePropiedadAIgnorar){
         Customer customer = new Customer();
@@ -136,14 +137,14 @@ public class UserController {
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
-        Customer customer = clienteService.buscarClienteXMascota(petId);
+            Customer customer = clienteService.buscarClienteXMascota(petId);
         //buscar los ids de las mascotas por cliente
         customer.setMascotas(mascotaservicio.mascotasXCliente(customer.getId()));
 
         if(Objects.isNull(customer))
             throw new NullPointerException();
 
-        CustomerDTO customerDTO = customeraDTO(customer);
+        CustomerDTO customerDTO = customeraDTO(customer,"petIds");
         return customerDTO;
     }
 

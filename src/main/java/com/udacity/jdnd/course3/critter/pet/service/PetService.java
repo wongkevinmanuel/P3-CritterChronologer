@@ -43,6 +43,8 @@ public class PetService {
             Pet pet = mascotaRepository.getOne(id);
             if (Objects.isNull(pet))
                 throw new PetNoDataFoundException();
+            if(pet.getId() == 0)
+                throw new PetNoDataFoundException();
 
             return pet;
         }catch (IllegalArgumentException exception){

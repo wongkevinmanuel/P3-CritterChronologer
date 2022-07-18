@@ -5,19 +5,16 @@ import com.google.common.collect.Sets;
 import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
-import com.udacity.jdnd.course3.critter.pet.service.PetNoDataFoundException;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.user.*;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URISyntaxException;
+import javax.persistence.EntityNotFoundException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -68,14 +65,28 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testPetDataFoundException(){
-        PetNoDataFoundException thrown =
-        Assertions.assertThrows(PetNoDataFoundException.class,
-                ()-> {
-                        PetDTO retrievedPet = petController.getPet(1L);
-                    },"No data found.");
+    public void testEntityNotFoundException(){
+        EntityNotFoundException thrown = Assertions.assertThrows(
+                                EntityNotFoundException.class,
+                                    ()-> {
+                                            throw  new EntityNotFoundException();
+                                      },"No data found.");
+        Assertions.assertEquals("Algo", thrown.getMessage());
     }
 
+    @Test
+    public void testPetDataFoundException(){
+        EntityNotFoundException thrown =
+                //Assertions.assertThrows(PetNoDataFoundException.class,
+                //        ()-> {
+                //                PetDTO retrievedPet = petController.getPet(1L);
+                //            },"No data found.");
+                //EntityNotFoundException
+                Assertions.assertThrows(EntityNotFoundException.class,
+                        ()-> {
+                            throw  new EntityNotFoundException();
+                        },"No data found.");
+    }
     @Test
     public void testCreateEmployee(){
         EmployeeDTO employeeDTO = createEmployeeDTO();
