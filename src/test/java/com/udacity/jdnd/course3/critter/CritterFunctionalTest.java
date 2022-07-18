@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.pet.service.PetNoDataFoundException;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.user.*;
@@ -66,7 +67,15 @@ public class CritterFunctionalTest {
         Assertions.assertTrue(retrievedCustomer.getId() > 0);
     }
 
-    //Entendido usa misma logica del test de arriba
+    @Test
+    public void testPetDataFoundException(){
+        PetNoDataFoundException thrown =
+        Assertions.assertThrows(PetNoDataFoundException.class,
+                ()-> {
+                        PetDTO retrievedPet = petController.getPet(1L);
+                    },"No data found.");
+    }
+
     @Test
     public void testCreateEmployee(){
         EmployeeDTO employeeDTO = createEmployeeDTO();

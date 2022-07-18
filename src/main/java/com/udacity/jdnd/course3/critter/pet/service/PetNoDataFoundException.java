@@ -6,6 +6,7 @@ public class PetNoDataFoundException extends RuntimeException {
     }
 
     public PetNoDataFoundException(String error){
-        super("No data found. "+error);
+        //super("No data found. "+error);
+        super("No data found.");
     }
 }
