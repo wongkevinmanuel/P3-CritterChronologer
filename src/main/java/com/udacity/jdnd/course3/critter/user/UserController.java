@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
@@ -161,10 +162,16 @@ public class UserController {
     }
 
     //DTO a  employee
-    private Employee DTOaEmployee(EmployeeDTO employeeDTO){
+    //private Employee DTOaEmployee(EmployeeDTO employeeDTO){
+    //    Employee employee = new Employee();
+    //    employee.setName(employeeDTO.getName());
+    //    employee.setSkills(employeeDTO.getSkills());
+    //   return employee;
+    //}
+
+    private Employee DTOaEmployee(EmployeeDTO employeeDTO, String nombrePropiedadAIgnorar){
         Employee employee = new Employee();
-        employee.setName(employeeDTO.getName());
-        employee.setSkills(employeeDTO.getSkills());
+        BeanUtils.copyProperties(employeeDTO,employee, nombrePropiedadAIgnorar);
         return employee;
     }
     //Employee a DTO
@@ -177,6 +184,11 @@ public class UserController {
         return employeeDTO;
     }
 
+    private EmployeeDTO employeeaDTO(Employee employee){
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        BeanUtils.copyProperties(employee,employeeDTO);
+        return employeeDTO;
+    }
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         boolean errorDatos;
@@ -187,12 +199,13 @@ public class UserController {
         if(employeeDTO.getName().isEmpty())
             throw new UnsupportedOperationException();
 
-        Employee empleado = DTOaEmployee(employeeDTO);
+        Employee empleado = DTOaEmployee(employeeDTO,"id"); //DTOaEmployee(employeeDTO);
         Long id = empleadoService.guardar(empleado);
         if(id<= 0)
             return employeeDTO;
 
         employeeDTO.setId(id);
+        log.info("Employee id:{} saved!", empleado.getId());
         return employeeDTO;
     }
 
@@ -206,7 +219,7 @@ public class UserController {
         if (Objects.isNull(employee))
             throw new UnsupportedOperationException();
 
-        return EmployeeaDTO(employee);
+        return employeeaDTO(employee);
     }
 
     @PutMapping("/employee/{employeeId}")
@@ -218,7 +231,7 @@ public class UserController {
         employee.setId(employeeId);
         employee.setDayAvailable(daysAvailable);
         Employee updateEmployee = empleadoService.guardarDiasDisponibles(employee);
-        return EmployeeaDTO(updateEmployee);
+        return employeeaDTO(updateEmployee);
     }
 
     //kevin, significa devolver todos los Empleados que tengan

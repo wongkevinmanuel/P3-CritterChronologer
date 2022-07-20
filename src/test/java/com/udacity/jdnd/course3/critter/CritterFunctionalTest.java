@@ -99,6 +99,15 @@ public class CritterFunctionalTest {
     }
 
     @Test
+    public void testFindEmployee(){
+        EmployeeDTO employeeDTO = createEmployeeDTO();
+        EmployeeDTO newEmployee = userController.saveEmployee(employeeDTO);
+        EmployeeDTO retrievedEmployee = userController.getEmployee(newEmployee.getId());
+        Assertions.assertEquals(employeeDTO.getSkills(), newEmployee.getSkills());
+        Assertions.assertEquals(newEmployee.getId(), retrievedEmployee.getId());
+        Assertions.assertTrue(retrievedEmployee.getId() > 0);
+    }
+    @Test
     public void testCreatePet(){
         PetDTO petDTO = new PetDTO();
         petDTO.setNotes("Perro loco");
