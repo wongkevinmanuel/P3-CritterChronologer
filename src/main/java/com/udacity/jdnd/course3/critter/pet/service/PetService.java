@@ -13,6 +13,7 @@ import java.util.Objects;
 @Service
 @Transactional
 public class PetService {
+
     @Autowired
     PetRepository mascotaRepository;
 
@@ -42,7 +43,9 @@ public class PetService {
         try {
             Pet pet = mascotaRepository.getOne(id);
             if (Objects.isNull(pet))
-                throw new PetNoDataFoundException();
+                //throw new PetNoDataFoundException();
+                throw new NullPointerException();
+
             if(pet.getId() == 0)
                 throw new PetNoDataFoundException();
 
@@ -51,5 +54,4 @@ public class PetService {
             throw new PetNotFoundException(exception);
         }
     }
-
 }

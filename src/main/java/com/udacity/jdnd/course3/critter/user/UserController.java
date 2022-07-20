@@ -6,11 +6,11 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.MethodParameter;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
@@ -23,20 +23,21 @@ import io.swagger.annotations.ApiResponse;
 import javax.validation.Valid;
 
 /**
- * Incluye solicitudes tanto para clientes como para empleados. También estaría bien dividir esto en controladores
- * de usuario y cliente separados, aunque eso no es parte del alcance requerido para esta clase.
+ * Incluye solicitudes tanto para clientes como para empleados.
+ * También estaría bien dividir esto en controladores
+ * de usuario y cliente separados, aunque eso no es parte del
+ * alcance requerido para esta clase.
  */
 @RestController
 @ApiResponses( value={@ApiResponse(code=500, message="Internal Server Error server error response, The server encountered an unexpected condition that prevented it from fulfilling the request.")})
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private final CustomerService clienteService;
-
     @Autowired
     private final EmployeeService empleadoService;
-
     //k
     @Autowired
     private final PetService mascotaservicio;
@@ -119,6 +120,7 @@ public class UserController {
 
         //Entity save send response
         customerDTO.setId(id);
+        log.info("Customer id:{} save",customerDTO.getId());
         return customerDTO;
     }
     private boolean isErrorPathVariable(long Id){
@@ -144,6 +146,7 @@ public class UserController {
         if(Objects.isNull(customer))
             throw new NullPointerException();
 
+        log.info("Owner id is {} By Pet id:{}",customer.getId(),petId);
         CustomerDTO customerDTO = customeraDTO(customer,"petIds");
         return customerDTO;
     }

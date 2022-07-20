@@ -63,7 +63,7 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(newCustomer.getId(), retrievedCustomer.getId());
         Assertions.assertTrue(retrievedCustomer.getId() > 0);
     }
-
+    //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     @Test
     public void testEntityNotFoundException(){
         EntityNotFoundException thrown = Assertions.assertThrows(
@@ -74,6 +74,7 @@ public class CritterFunctionalTest {
         Assertions.assertEquals("Algo", thrown.getMessage());
     }
 
+    //kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     @Test
     public void testPetDataFoundException(){
         EntityNotFoundException thrown =
