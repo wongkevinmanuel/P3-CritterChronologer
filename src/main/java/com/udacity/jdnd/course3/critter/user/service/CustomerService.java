@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user.service;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.reposity.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,15 +28,18 @@ public class CustomerService {
         try{
             return clienteRepository.findOwnerByPet(id);
         }catch (IllegalArgumentException exception){
-            throw exception;
+            //EntityNotFoundException
+            //throw exception;
+            throw new EmptyResultDataAccessException(1);
         }
     }
 
     public List<Customer> clientes(){
         try{
-         return clienteRepository.findAll();
+            return clienteRepository.findAll();
         }catch (IllegalArgumentException exception){
-            throw new UnsupportedOperationException();
+            //throw new UnsupportedOperationException();
+            throw new EmptyResultDataAccessException(1);
         }
     }
 }

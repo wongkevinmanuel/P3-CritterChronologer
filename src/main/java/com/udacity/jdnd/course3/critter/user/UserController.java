@@ -100,7 +100,7 @@ public class UserController {
     }
 
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody @Valid CustomerDTO customerDTO){
+    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
         boolean errorDatos;
 
         errorDatos = customerDTO == null ? true : false;
@@ -140,7 +140,7 @@ public class UserController {
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
-            Customer customer = clienteService.buscarClienteXMascota(petId);
+        Customer customer = clienteService.buscarClienteXMascota(petId);
         //buscar los ids de las mascotas por cliente
         customer.setMascotas(mascotaservicio.mascotasXCliente(customer.getId()));
 
