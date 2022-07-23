@@ -1,7 +1,9 @@
 package com.udacity.jdnd.course3.critter.exception;
 
+import javassist.NotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -73,4 +75,19 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         body.put("message-user","Empty result data (Record not found).");
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
+
+    //Thrown to indicate that a method has been passed an illegal or inappropriate argument.
+    //Example try the method
+    @ExceptionHandler({IllegalArgumentException.class, NotFoundException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+        String titularContextoLocal = "parameters.invalid "+LocaleContextHolder.getLocale().toString();
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        String error = titularContextoLocal + " || " + ex.getCause() != null ? ex.getCause().getMessage() : ex.toString();
+        body.put("error", error);
+        body.put("message-user","Passed an illegal or inappropriate argument.");
+        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+    }
+
 }
