@@ -5,6 +5,7 @@ import javassist.NotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,7 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         String error = ex.getCause() !=null ? ex.getCause().getMessage(): ex.toString();
         body.put("error",error);
         body.put("message-user","Malformed JSON request");
-        log.error(ex.getCause());
+        log.error(ex);
 
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
@@ -73,7 +74,10 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         body.put("timestamp", LocalDate.now());
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", ex.getCause() != null ? ex.getCause().getMessage() : ex.toString());
-        body.put("message-user","Empty result data (Record not found).");
+        String massage_user = "Empty result data (Record not found).";
+        body.put("message-user", massage_user);
+        log.error( ex + " message-user: "+ massage_user);
+
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
@@ -89,7 +93,10 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         String error = titularContextoLocal + " || " + ex.getCause() != null ?
                         ex.getCause().getMessage() : ex.toString();
         body.put("error", error);
-        body.put("message-user","Passed an illegal or inappropriate argument.");
+        String message_user= "Passed an illegal or inappropriate argument.";
+        body.put("message-user",message_user);
+        log.error(ex + " massage-user: " + message_user );
+
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
@@ -102,7 +109,28 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         body.put("timestamp", LocalDate.now());
         body.put("status", HttpStatus.BAD_REQUEST);
         body.put("error", error);
-        body.put("message-user","Error al acceder a la BD por el service pet.");
+        String message_user = "Error accessing the DB by the pet service.";
+        body.put("message-user", message_user);
+        log.error(ex + " message-user:" +message_user);
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    //Maneja problemas en la persistencia de datos
+    //Tiene diferente causas
+    //
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,WebRequest request){
+        Map<String, Object> body = new LinkedHashMap<>();
+        //String titularContextoLocal = ".k "+ LocaleContextHolder.getLocale().toString();
+        String error = ex.getCause() == null ? ex.toString() : ex.getCause().getMessage();
+        body.put("timestamp", LocalDate.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", error);
+        String message_user = "Possible errors: 1) Violation of the DB structure (verify relations between tables). 2) Some property contains an error (Does not allow null values or the expected value is not correct)";
+        body.put("message-user", message_user);
+        log.error(ex + " message-user:" +message_user);
+
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 }
