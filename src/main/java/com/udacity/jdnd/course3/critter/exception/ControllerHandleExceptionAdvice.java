@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.exception;
 
+import com.udacity.jdnd.course3.critter.pet.service.PetNotFoundException;
 import javassist.NotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,6 +77,7 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
+    //NT
     //Thrown to indicate that a method has been passed an illegal or inappropriate argument.
     //Example try the method
     @ExceptionHandler({IllegalArgumentException.class, NotFoundException.class})
@@ -84,10 +86,23 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDate.now());
         body.put("status", HttpStatus.BAD_REQUEST);
-        String error = titularContextoLocal + " || " + ex.getCause() != null ? ex.getCause().getMessage() : ex.toString();
+        String error = titularContextoLocal + " || " + ex.getCause() != null ?
+                        ex.getCause().getMessage() : ex.toString();
         body.put("error", error);
         body.put("message-user","Passed an illegal or inappropriate argument.");
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({PetNotFoundException.class})
+    public ResponseEntity<Object> handlePetNotFoundException(PetNotFoundException ex
+                                                            , WebRequest request){
+        Map<String, Object> body = new LinkedHashMap<>();
+        //String titularContextoLocal = ".k "+ LocaleContextHolder.getLocale().toString();
+        String error = ex.getCause() == null ? ex.toString() : ex.getCause().getMessage();
+        body.put("timestamp", LocalDate.now());
+        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("error", error);
+        body.put("message-user","Error al acceder a la BD por el service pet.");
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

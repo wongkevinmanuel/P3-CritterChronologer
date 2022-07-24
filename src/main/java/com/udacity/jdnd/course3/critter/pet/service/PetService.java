@@ -26,7 +26,11 @@ public class PetService {
     }
     public List<Pet> mascotas(){
         try{
-            return mascotaRepository.findAll();
+            List<Pet> pets = mascotaRepository.findAll();
+            if (pets.isEmpty())
+                throw new PetNotFoundException();
+
+            return pets;
         }catch (IllegalArgumentException exception){
             throw new PetNotFoundException(exception);
         }

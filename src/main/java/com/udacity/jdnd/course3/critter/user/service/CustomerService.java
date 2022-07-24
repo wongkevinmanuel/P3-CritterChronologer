@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -26,7 +27,11 @@ public class CustomerService {
 
     public Customer buscarClienteXMascota(Long id){
         try{
-            return clienteRepository.findOwnerByPet(id);
+            Customer customer = clienteRepository.findOwnerByPet(id);
+            if(Objects.isNull(customer))
+                throw new EmptyResultDataAccessException(1);
+
+            return customer;
         }catch (IllegalArgumentException exception){
             //EntityNotFoundException
             //throw exception;
