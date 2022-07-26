@@ -102,7 +102,7 @@ public class PetController {
     public PetDTO getPet(@PathVariable long petId) {
         Pet pet = null;
         pet = mascotaService.mascotaxId(petId);
-        if (pet == null )
+        if (Objects.isNull(pet))
             return null;
 
         return petaDTO(pet);

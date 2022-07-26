@@ -138,14 +138,73 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleAllUncaughtException(RuntimeException ex, WebRequest request){
-        Map<String, Object > body = new LinkedHashMap<>();
-        String error = ex.getCause() == null ? ex.toString() : ex.getCause().getMessage();
-        body.put("timestamp", LocalDate.now());
-        body.put("status",HttpStatus.BAD_REQUEST);
-        body.put("error", error);
-        body.put("messageuser","Error internal Server.");
-        log.error(ex + "message-user:"+"Error internal Server.");
+        //Map<String, Object > body = new LinkedHashMap<>();
+        String error = "";
+        if(ex.getCause() != null ) {
+            error = ex.toString() + " ==>> Cause: " + ex.getCause().getMessage();
+        }
+        //body.put("timestamp", LocalDate.now());
+        //body.put("status",HttpStatus.BAD_REQUEST);
+        //body.put("error", error);
+        //body.put("messageuser","Error internal Server.");
+        log.error(ex + " message-user:"+" Error internal Server.");
+        DetalleError detalleError = new DetalleError();
+        detalleError.setTimestamp(LocalDate.now().toString());
+        detalleError.setStatus(HttpStatus.BAD_REQUEST.toString());
+        detalleError.setError(error);
+        detalleError.setMessageUser("Error internal Server.");
 
-        return new ResponseEntity<>(body,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(detalleError ,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private class DetalleError{
+
+        private String timestamp;
+        private String status;
+        private String error;
+        private String messageUser;
+
+        public DetalleError(){
+
+        }
+
+        public DetalleError(String timestamp, String status, String error, String messageUser) {
+            this.timestamp = timestamp;
+            this.status = status;
+            this.error = error;
+            this.messageUser = messageUser;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public void setError(String error) {
+            this.error = error;
+        }
+
+        public String getMessageUser() {
+            return messageUser;
+        }
+
+        public void setMessageUser(String messageUser) {
+            this.messageUser = messageUser;
+        }
     }
 }
