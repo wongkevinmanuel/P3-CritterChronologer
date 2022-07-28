@@ -16,13 +16,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
 /*
 * Se utiliza el enfoque donde no iniciar el servidor
 * en absoluto, sino probar solo la capa debajo de eso
@@ -68,12 +74,27 @@ public class PetControllerTestMock {
     }
 
     @BeforeEach
-    @Test
     public void setup(){
         Pet pet = getPet();
         pet.setId(1L);
         given(petService.guardar(any())).willReturn(1L);
         given(petService.mascotaxId(any())).willReturn(pet);
         given(petService.mascotas()).willReturn(Collections.singletonList(pet));
+    }
+
+
+    @Test
+    public void createPet() throws Exception{
+        Pet pet = getPet();
+        mvc.perform(
+                post(new URI("/pet"))
+                        .content(jsonPet.write(pet).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200));
+        //Deberia devolver una respuesta http de 201 cuando se a guardado el pet
+        //https://stackoverflow.com/questions/1860645/create-request-with-post-which-response-codes-200-or-201-and-content
+        //status().isCreated()
+
     }
 }
