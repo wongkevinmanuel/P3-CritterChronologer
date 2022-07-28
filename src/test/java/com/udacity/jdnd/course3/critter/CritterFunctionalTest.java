@@ -25,12 +25,6 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * This is a set of functional tests to validate the basic capabilities desired for this application.
- * Students will need to configure the application to run these tests by adding application.properties file
- * to the test/resources directory that specifies the datasource. It can run using an in-memory H2 instance
- * and should not try to re-use the same datasource used by the rest of the app.
- *
- * These tests should all pass once the project is complete.
  *
  * Se trata de un conjunto de pruebas funcionales para validar las capacidades básicas deseadas para esta aplicación.
  * Los estudiantes deberán configurar la aplicación para ejecutar estas pruebas agregando el archivo
