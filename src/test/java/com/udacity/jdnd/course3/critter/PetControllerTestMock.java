@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -16,12 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -95,6 +99,33 @@ public class PetControllerTestMock {
         //Deberia devolver una respuesta http de 201 cuando se a guardado el pet
         //https://stackoverflow.com/questions/1860645/create-request-with-post-which-response-codes-200-or-201-and-content
         //status().isCreated()
-
     }
+
+
+    @Test
+    public void getAllPet() {
+        String URL = new StringBuilder("http://localhost:"+ port + "/pet/all").toString();
+
+        Pet pet = this.getPet();
+
+        List<Pet> pets = new ArrayList<>();
+        pets.add(pet);
+
+        for(Pet item: pets){
+
+            RestTemplate rest = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+            HttpEntity<?> requestEntity = new HttpEntity<Object>(item, headers);
+            //Lanza la solicitud http
+            ResponseEntity<Pet> entity = rest.exchange(URL
+                    , HttpMethod.POST, requestEntity
+                    ,Pet.class);
+
+            pets.set(pets.indexOf(item), entity.getBody());
+            Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
+        }
+    }
+
 }
