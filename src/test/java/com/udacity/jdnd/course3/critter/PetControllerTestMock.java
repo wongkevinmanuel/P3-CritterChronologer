@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter;
 
 
 import com.udacity.jdnd.course3.critter.pet.PetController;
+import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -68,6 +70,15 @@ public class PetControllerTestMock {
     @MockBean
     private PetService petService;
 
+    private PetDTO getPetDTO(){
+        PetDTO petDTO = new PetDTO();
+        petDTO.setName("Ozzy");
+        petDTO.setBirthDate(LocalDate.of(2022,03,06));
+        petDTO.setNotes("Color cafe.");
+        petDTO.setType(PetType.DOG);
+        return petDTO;
+    }
+
     private Pet getPet(){
         Pet pet = new Pet();
         pet.setName("Ozzy");
@@ -104,28 +115,35 @@ public class PetControllerTestMock {
 
     @Test
     public void getAllPet() {
-        String URL = new StringBuilder("http://localhost:"+ port + "/pet/all").toString();
+        String URL = new StringBuilder("http://localhost:"+ port + "/pet").toString();
 
-        Pet pet = this.getPet();
+        PetDTO petDTO = this.getPetDTO();
 
-        List<Pet> pets = new ArrayList<>();
-        pets.add(pet);
+        List<PetDTO> pets = new ArrayList<>();
+        pets.add(petDTO);
 
-        for(Pet item: pets){
+        RestTemplate rest = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-            RestTemplate rest = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(petDTO, headers);
+        //Lanza la solicitud http para save pet
+        ResponseEntity<PetDTO> entity = rest.exchange(URL
+                   , HttpMethod.POST, requestEntity
+                   , PetDTO.class);
 
-            HttpEntity<?> requestEntity = new HttpEntity<Object>(item, headers);
-            //Lanza la solicitud http
-            ResponseEntity<Pet> entity = rest.exchange(URL
-                    , HttpMethod.POST, requestEntity
-                    ,Pet.class);
+        pets.set(pets.indexOf(petDTO), entity.getBody());
+        Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
 
-            pets.set(pets.indexOf(item), entity.getBody());
-            Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
-        }
+        //Get all pet
+        ResponseEntity<?> entity2 = rest.exchange(URL + "/all"
+                , HttpMethod.GET
+                , null
+                , List.class);
+
+        Assert.assertEquals(HttpStatus.OK, entity2.getStatusCode());
+        List<PetDTO> pets2 = (List) entity2.getBody();
+        Assert.assertEquals(pets.size(), pets2.size());
     }
 
 }
