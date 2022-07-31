@@ -6,6 +6,8 @@ import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import com.udacity.jdnd.course3.critter.user.CustomerDTO;
+import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -146,4 +148,23 @@ public class PetControllerTestMock {
         Assert.assertEquals(pets.size(), pets2.size());
     }
 
+    private CustomerDTO getCustomerDTO(){
+        CustomerDTO  customerDTO = new CustomerDTO();
+        customerDTO.setAge(27);
+        customerDTO.setName("Kevin");
+        customerDTO.setNotes("Cliente serio");
+        customerDTO.setPhoneNumber("0941629388");
+        return customerDTO;
+    }
+    @Test
+    public void getPetsByOwner(){
+        //Save Customer Owner
+        CustomerDTO customerDTO= new CustomerDTO();
+        customerDTO =getCustomerDTO();
+
+        //Save Pet with id customer owner
+
+        //Equals Id pet vs Id pet get the request Controller
+
+    }
 }
