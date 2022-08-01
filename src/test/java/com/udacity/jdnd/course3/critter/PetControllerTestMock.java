@@ -98,8 +98,6 @@ public class PetControllerTestMock {
         given(petService.mascotaxId(any())).willReturn(pet);
         given(petService.mascotas()).willReturn(Collections.singletonList(pet));
     }
-
-
     @Test
     public void createPet() throws Exception{
         Pet pet = getPet();
@@ -113,7 +111,6 @@ public class PetControllerTestMock {
         //https://stackoverflow.com/questions/1860645/create-request-with-post-which-response-codes-200-or-201-and-content
         //status().isCreated()
     }
-
 
     @Test
     public void getAllPet() {
@@ -175,10 +172,21 @@ public class PetControllerTestMock {
         Assert.assertNotNull(response);
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-
         //Save Pet with id customer owner
+        URL = new String("http://localhost:"+port+"/pet").toString();
+        Pet pet = getPet();
+        Customer customer = new Customer();
+        customer.setId(response.getBody().getId());
+        pet.setClientePropietario(customer);
+        request = new HttpEntity<Object>(pet, headers);
+        ResponseEntity<PetDTO> responsePet = rest.exchange(URL
+                ,HttpMethod.POST
+                ,request
+                ,PetDTO.class);
 
+        Assert.assertNotNull(responsePet);
+        Assert.assertEquals(HttpStatus.OK, responsePet.getStatusCode());
         //Equals Id pet vs Id pet get the request Controller
-
+        Assert.assertEquals(responsePet.getBody().getOwnerId(), response.getBody().getId());
     }
 }
