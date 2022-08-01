@@ -161,6 +161,20 @@ public class PetControllerTestMock {
         //Save Customer Owner
         CustomerDTO customerDTO= new CustomerDTO();
         customerDTO =getCustomerDTO();
+        String URL = new StringBuilder("http://localhost:"+port+"user/customer").toString();
+        RestTemplate rest = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> request = new HttpEntity<Object>(customerDTO, headers);
+        ResponseEntity<CustomerDTO> response = rest.exchange(URL
+                ,HttpMethod.POST
+                ,request
+                ,CustomerDTO.class);
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
 
         //Save Pet with id customer owner
 
