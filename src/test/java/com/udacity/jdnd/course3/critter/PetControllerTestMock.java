@@ -153,6 +153,7 @@ public class PetControllerTestMock {
         customerDTO.setPhoneNumber("0941629388");
         return customerDTO;
     }
+
     @Test
     public void getPetsByOwner(){
         //Save Customer Owner
@@ -173,20 +174,30 @@ public class PetControllerTestMock {
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
 
         //Save Pet with id customer owner
-        URL = new String("http://localhost:"+port+"/pet").toString();
-        Pet pet = getPet();
-        Customer customer = new Customer();
-        customer.setId(response.getBody().getId());
-        pet.setClientePropietario(customer);
-        request = new HttpEntity<Object>(pet, headers);
+        URL = new StringBuilder("http://localhost:"+port+"/pet").toString();
+
+        PetDTO petDTO = getPetDTO();
+        petDTO.setOwnerId(response.getBody().getId());
+
+        HttpEntity<?> request2 = new HttpEntity<Object>(petDTO, headers);
         ResponseEntity<PetDTO> responsePet = rest.exchange(URL
                 ,HttpMethod.POST
-                ,request
+                ,request2
                 ,PetDTO.class);
 
         Assert.assertNotNull(responsePet);
         Assert.assertEquals(HttpStatus.OK, responsePet.getStatusCode());
+
         //Equals Id pet vs Id pet get the request Controller
-        Assert.assertEquals(responsePet.getBody().getOwnerId(), response.getBody().getId());
+        URL = new StringBuilder("http://localhost:" + port + "/user/customer/pet/"+responsePet.getBody().getId()).toString();
+        RestTemplate rest2 = new RestTemplate();
+        ResponseEntity<CustomerDTO> responseCustomerDTO = rest2.exchange(URL
+                ,HttpMethod.GET
+                ,null
+                ,CustomerDTO.class);
+
+        Assert.assertNotNull(responseCustomerDTO);
+        Assert.assertEquals(HttpStatus.OK, responseCustomerDTO.getStatusCode());
+        Assert.assertEquals(responsePet.getBody().getOwnerId() , responseCustomerDTO.getBody().getId());
     }
 }
