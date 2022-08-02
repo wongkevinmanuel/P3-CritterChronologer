@@ -22,6 +22,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -34,6 +36,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -106,10 +109,19 @@ public class PetControllerTestMock {
                         .content(jsonPet.write(pet).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200));
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.pet").exists());
         //Deberia devolver una respuesta http de 201 cuando se a guardado el pet
         //https://stackoverflow.com/questions/1860645/create-request-with-post-which-response-codes-200-or-201-and-content
         //status().isCreated()
+    }
+
+    @Test
+    public void getAllPetMvcMock() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("http://localhost:"+ port + "/pet/all")
+                                            .accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isOk());
+
     }
 
     @Test
@@ -154,6 +166,7 @@ public class PetControllerTestMock {
         return customerDTO;
     }
 
+    //Chek this, not return customer ***************************************
     @Test
     public void getPetsByOwner(){
         //Save Customer Owner
