@@ -9,6 +9,7 @@ import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -93,6 +94,7 @@ public class PetControllerTestMock {
         return pet;
     }
 
+    @Ignore
     @BeforeEach
     public void setup(){
         Pet pet = getPet();

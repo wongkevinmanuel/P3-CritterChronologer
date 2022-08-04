@@ -6,6 +6,13 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+//USO DE LIBRERIA DE HATEOAS
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 
 import javax.validation.Valid;
@@ -87,6 +94,15 @@ public class PetController {
         //Entity save send response
         petDTO.setId(id);
         return petDTO;
+    }
+
+    @GetMapping
+    CollectionModel <EntityModel<PetDTO> > list(){
+        //List<EntityModel<PetDTO> > resources = new ArrayList<>();
+        Collection<PetDTO> resources = Collections.singleton(new PetDTO());
+        return null;
+        //return EntityModel.of(null,
+        //        linkTo(methodOn(PetController.class).list()).withSelfRel());
     }
 
     @GetMapping("/all")
