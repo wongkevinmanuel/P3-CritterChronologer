@@ -3,13 +3,16 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
+import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //USO DE LIBRERIA DE HATEOAS
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.http.ResponseEntity;
+import org.springframework.hateoas.*;
+//import org.springframework.hateoas.CollectionModel;
+//import org.springframework.hateoas.EntityModel;
+//import org.springframework.http.ResponseEntity;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -18,6 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/pet")
@@ -97,12 +101,17 @@ public class PetController {
     }
 
     @GetMapping
-    CollectionModel <EntityModel<PetDTO> > list(){
-        //List<EntityModel<PetDTO> > resources = new ArrayList<>();
-        Collection<PetDTO> resources = Collections.singleton(new PetDTO());
-        return null;
-        //return EntityModel.of(null,
-        //        linkTo(methodOn(PetController.class).list()).withSelfRel());
+    ResponseEntity <CollectionModel<EntityModel<PetDTO>>> list(){
+        List<EntityModel<PetDTO> > resourcesPet =
+                (List<EntityModel<PetDTO>>) StreamSupport.stream(mascotaService.mascotas().spliterator(),false)
+                .map(pet -> new EntityModel<>(pet,
+                        linkTo(PetController.class).slash(pet.getId()).withSelfRel()
+                        ));//, linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
+        Link link = new Link("");
+        //map(pet -> new EntityModel<>(pet,
+         //       linkTo(methodOn(PetController.class).getPet(pet.getId()))
+          //      , linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
+        return ResponseEntity.ok(new CollectionModel<>( resourcesPet,link));
     }
 
     @GetMapping("/all")
