@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter;
 
 
+import com.fasterxml.jackson.databind.jsontype.impl.AsExistingPropertyTypeSerializer;
 import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
@@ -21,10 +22,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -124,6 +128,33 @@ public class PetControllerTestMock {
                                             .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isOk());
 
+    }
+
+    @Test
+    public void listPets(){
+        String URL = new StringBuilder("http://localhost:" + port + "/pet").toString();
+        PetDTO petDTO = this.getPetDTO();
+        RestTemplate rest = new RestTemplate();
+        MultiValueMap<String,String> valuesHeaders = new LinkedMultiValueMap<String,String>();
+        valuesHeaders.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        HttpHeaders headers = new HttpHeaders(valuesHeaders);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(petDTO, headers);
+        ResponseEntity<PetDTO> responseEntity = rest.exchange(URL,HttpMethod.POST, requestEntity, PetDTO.class);
+        Assert.assertNotNull(responseEntity);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        //Get all pet list
+        String URL2 = new StringBuilder("http://localhost:" + port + "/pet/listPets").toString();
+        RestTemplate rest2 = new RestTemplate();
+        HttpEntity<?> requestEntity2 = new HttpEntity<Object>(null, headers);
+        ResponseEntity<?> responseEntity2 = rest.exchange(
+                URL2
+                ,HttpMethod.GET
+                , requestEntity2
+                , List.class);
+
+        Assert.assertNotNull(responseEntity2);
+        Assert.assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
     }
 
     @Test

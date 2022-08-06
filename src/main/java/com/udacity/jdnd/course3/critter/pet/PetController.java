@@ -100,14 +100,15 @@ public class PetController {
         return petDTO;
     }
 
-    @GetMapping
-    ResponseEntity <CollectionModel<EntityModel<PetDTO>>> list(){
+
+    @GetMapping("/listPets")
+    ResponseEntity < CollectionModel<EntityModel<PetDTO>> > list(){
         List<EntityModel<PetDTO> > resourcesPet =
                 (List<EntityModel<PetDTO>>) StreamSupport.stream(mascotaService.mascotas().spliterator(),false)
                 .map(pet -> new EntityModel<>(pet,
                         linkTo(PetController.class).slash(pet.getId()).withSelfRel()
                         ));//, linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
-        Link link = new Link("");
+        Link link = new Link("algo");
         //map(pet -> new EntityModel<>(pet,
          //       linkTo(methodOn(PetController.class).getPet(pet.getId()))
           //      , linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
