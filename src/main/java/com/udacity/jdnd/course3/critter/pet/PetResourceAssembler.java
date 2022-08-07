@@ -18,5 +18,6 @@ public class PetResourceAssembler implements RepresentationModelAssembler <Pet, 
     @Override
     public EntityModel<Pet> toModel(Pet entity) {
         return null;
+        //return EntityModel.of(entity);
     }
 }

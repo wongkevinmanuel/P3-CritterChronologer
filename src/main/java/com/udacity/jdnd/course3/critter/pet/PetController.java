@@ -100,14 +100,20 @@ public class PetController {
         return petDTO;
     }
 
+    @Autowired
+    private PetResourceAssembler assembler;
 
     @GetMapping("/listPets")
     ResponseEntity < CollectionModel<EntityModel<PetDTO>> > list(){
-        List<EntityModel<PetDTO> > resourcesPet =
-                (List<EntityModel<PetDTO>>) StreamSupport.stream(mascotaService.mascotas().spliterator(),false)
-                .map(pet -> new EntityModel<>(pet,
-                        linkTo(PetController.class).slash(pet.getId()).withSelfRel()
-                        ));//, linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
+        List<EntityModel<PetDTO> > resourcesPet = null;
+        try {
+            resourcesPet = mascotaService.mascotas().stream()
+                    .map(assembler::toModel).collect(Collectors.toList());
+        }
+        catch (Exception ex){
+            String error =ex.getMessage().toString();
+        }
+
         Link link = new Link("algo");
         //map(pet -> new EntityModel<>(pet,
          //       linkTo(methodOn(PetController.class).getPet(pet.getId()))
