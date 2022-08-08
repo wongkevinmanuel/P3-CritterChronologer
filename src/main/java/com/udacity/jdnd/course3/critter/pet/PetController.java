@@ -104,8 +104,8 @@ public class PetController {
     private PetResourceAssembler assembler;
 
     @GetMapping("/listPets")
-    ResponseEntity < CollectionModel<EntityModel<PetDTO>> > list(){
-        List<EntityModel<PetDTO> > resourcesPet = null;
+    ResponseEntity < CollectionModel<EntityModel<Pet>> > list(){
+        List<EntityModel<Pet> > resourcesPet = null;
         try {
             resourcesPet = mascotaService.mascotas().stream()
                     .map(assembler::toModel).collect(Collectors.toList());
@@ -119,6 +119,16 @@ public class PetController {
          //       linkTo(methodOn(PetController.class).getPet(pet.getId()))
           //      , linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
         return ResponseEntity.ok(new CollectionModel<>( resourcesPet,link));
+    }
+
+    @GetMapping("/petEntity/{petId}")
+    EntityModel<Pet> getPetEntity(@PathVariable long petId) {
+        Pet pet = null;
+        pet = mascotaService.mascotaxId(petId);
+        if (Objects.isNull(pet))
+            return null;
+
+        return assembler.toModel(pet);
     }
 
     @GetMapping("/all")

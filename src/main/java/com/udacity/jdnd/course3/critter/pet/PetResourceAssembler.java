@@ -4,7 +4,9 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 
 
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -16,8 +18,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PetResourceAssembler implements RepresentationModelAssembler <Pet, EntityModel<Pet> > {
 
     @Override
-    public EntityModel<Pet> toModel(Pet entity) {
-        return null;
-        //return EntityModel.of(entity);
+    public EntityModel<Pet> toModel(Pet pet) {
+        EntityModel<Pet> resourcePet = new EntityModel<Pet>(pet);
+        Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPet(pet.getId() )).withSelfRel();
+        Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPets()).withRel("pet/all");
+        resourcePet.add(linkToPetId);
+        return  resourcePet;//EntityModel.of();
+        // Se crea un link que apunta recurso que daria como resultado la
+        //invocacion del metodo correspondiente en el controlador, uso
+        //de metodos estaticos
+        //return EntityModel.of(pet,
+        // linkTo( methodOn(PetController.class).get(pet.getId()) ).withSelfRel() ,
+        // linkTo(methodOn(PetController.class).list()).withRel("pets");
+        // );
     }
 }

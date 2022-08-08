@@ -91,13 +91,18 @@
 			<version>1.7.30</version>
 		</dependency>
 
-		<!-- Hateoas -->
+		<!-- Hateoas y webflux  clases para su funcionamiento correcto-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 			<version>2.7.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+
+		</dependency>
 		<!-- Solucion problema // Error creating bean with name 'linkDiscoverers' -->
 		<dependency>
 			<groupId>org.springframework.plugin</groupId>
