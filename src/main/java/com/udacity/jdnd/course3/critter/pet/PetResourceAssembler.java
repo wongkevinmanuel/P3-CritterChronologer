@@ -23,7 +23,8 @@ public class PetResourceAssembler implements RepresentationModelAssembler <Pet, 
         Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPet(pet.getId() )).withSelfRel();
         Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPets()).withRel("pet/all");
         resourcePet.add(linkToPetId);
-        return  resourcePet;//EntityModel.of();
+        resourcePet.add(linkToPets);
+        return  resourcePet;
         // Se crea un link que apunta recurso que daria como resultado la
         //invocacion del metodo correspondiente en el controlador, uso
         //de metodos estaticos

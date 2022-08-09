@@ -106,19 +106,10 @@ public class PetController {
     @GetMapping("/listPets")
     ResponseEntity < CollectionModel<EntityModel<Pet>> > list(){
         List<EntityModel<Pet> > resourcesPet = null;
-        try {
-            resourcesPet = mascotaService.mascotas().stream()
+        resourcesPet = mascotaService.mascotas().stream()
                     .map(assembler::toModel).collect(Collectors.toList());
-        }
-        catch (Exception ex){
-            String error =ex.getMessage().toString();
-        }
 
-        Link link = new Link("algo");
-        //map(pet -> new EntityModel<>(pet,
-         //       linkTo(methodOn(PetController.class).getPet(pet.getId()))
-          //      , linkTo(methodOn(PetController.class).getPets()).withRel("pets"))).collect(Collectors.toList());
-        return ResponseEntity.ok(new CollectionModel<>( resourcesPet,link));
+        return ResponseEntity.ok(new CollectionModel<>( resourcesPet));
     }
 
     @GetMapping("/petEntity/{petId}")
