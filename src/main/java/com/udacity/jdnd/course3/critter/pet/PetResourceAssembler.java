@@ -28,7 +28,7 @@ public class PetResourceAssembler implements RepresentationModelAssembler <Pet, 
         // Se crea un link que apunta recurso que daria como resultado la
         //invocacion del metodo correspondiente en el controlador, uso
         //de metodos estaticos
-        //return EntityModel.of(pet,
+        //return EntityModel.of();
         // linkTo( methodOn(PetController.class).get(pet.getId()) ).withSelfRel() ,
         // linkTo(methodOn(PetController.class).list()).withRel("pets");
         // );

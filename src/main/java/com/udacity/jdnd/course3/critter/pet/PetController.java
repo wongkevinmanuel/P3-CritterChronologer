@@ -64,7 +64,14 @@ public class PetController {
         mascotaDTO.setNotes(pet.getNotes());
         mascotaDTO.setType(pet.getType());
         mascotaDTO.setBirthDate(pet.getBirthDate());
-        mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
+
+        if(!Objects.isNull(pet.getClientePropietario())){
+            if (pet.getClientePropietario().getId() != 0L)
+                mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
+            else
+                mascotaDTO.setOwnerId(0);
+        }
+        //mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
         return mascotaDTO;
     }
 
