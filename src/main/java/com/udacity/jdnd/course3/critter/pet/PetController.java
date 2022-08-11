@@ -3,10 +3,16 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.coyote.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 //USO DE LIBRERIA DE HATEOAS
 import org.springframework.hateoas.*;
@@ -127,6 +133,49 @@ public class PetController {
             return null;
 
         return assembler.toModel(pet);
+    }
+
+    private JasperPrint generarRecord(List<Pet> pets){
+        try{
+            //Parámetros dinámicos necesarios para el informe
+            Map<String, Object> petParams = new HashMap<String, Object>();
+            petParams.put("CompanyName", "Tech-Wong");
+            petParams.put("employeeData", new JRBeanCollectionDataSource(pets));
+
+            JasperPrint petReport =
+                    JasperFillManager.fillReport(
+                            JasperCompileManager.compileReport(
+                                    ResourceUtils.getFile("classpath:employees-details.jrxml")
+                                            .getAbsolutePath())
+                            , petParams //parametros dinamicos
+                            , new JREmptyDataSource());
+
+            return petReport;
+        }catch (Exception ex){
+            return null;
+        }
+    }
+
+    @GetMapping("/records/report")
+    public ResponseEntity<byte[]> getPetRecordReport(){
+        List<Pet> pets = mascotaService.mascotas();
+        if(pets.isEmpty())
+            return null;
+
+        JasperPrint jasperPrint = generarRecord(pets);
+
+        HttpHeaders headers = new HttpHeaders();
+        //Establecer configuracion del formato a PDF
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename","pets-details.pdf");
+
+        try {
+            return new ResponseEntity<byte[]>(JasperExportManager.exportReportToPdf(jasperPrint),headers, HttpStatus.OK);
+        }catch (Exception ex){
+
+            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/all")

@@ -110,7 +110,31 @@
 			<version>2.0.0.RELEASE</version>
 		</dependency>
 
+		<!-- JASPER REPORTS ++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.19.1</version>
+		</dependency>
 	</dependencies>
+
+	<!-- JASPER REPORTS ++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<repositories>
+		<!-- JasperSoft, they modified a standard library for their own special needs -->
+		<repository>
+			<id>jaspersoft-third-party</id>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+		</repository>
+	</repositories>
+	<!-- JASPER REPORTS ++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<pluginRepositories>
+		<!-- JasperSoft, they modified a standard library for their own special needs -->
+		<pluginRepository>
+			<id>jaspersoft-third-party</id>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
 
 	<build>
 		<plugins>
