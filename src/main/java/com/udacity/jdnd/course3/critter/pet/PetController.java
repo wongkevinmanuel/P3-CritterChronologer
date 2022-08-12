@@ -159,10 +159,13 @@ public class PetController {
     @GetMapping("/records/report")
     public ResponseEntity<byte[]> getPetRecordReport(){
         List<Pet> pets = mascotaService.mascotas();
-        if(pets.isEmpty())
-            return null;
+        if(pets.isEmpty()) //Return data empty
+            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         JasperPrint jasperPrint = generarRecord(pets);
+
+        if(Objects.isNull(jasperPrint))
+            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         HttpHeaders headers = new HttpHeaders();
         //Establecer configuracion del formato a PDF
@@ -175,7 +178,6 @@ public class PetController {
 
             return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @GetMapping("/all")

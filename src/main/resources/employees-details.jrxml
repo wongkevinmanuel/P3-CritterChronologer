@@ -34,8 +34,10 @@
 		</queryString>
 		<field name="id" class="java.lang.Integer"/>
 		<field name="name" class="java.lang.String"/>
-		<field name="role" class="java.lang.String"/>
-		<field name="address" class="java.lang.String"/>
+		<!-- <field name="role" class="java.lang.String"/>
+		<field name="address" class="java.lang.String"/> -->
+		<field name="notes" class="java.lang.String"/>
+		<field name="birthDate" class="java.lang.String" />
 		<sortField name="id"/>
 		<variable name="totalEmployees" class="java.lang.Integer" calculation="DistinctCount">
 			<variableExpression><![CDATA[$F{id}]]></variableExpression>
@@ -48,8 +50,12 @@
 	</queryString>
 	<field name="name" class="java.lang.String"/>
 	<field name="id" class="java.lang.Integer"/>
-	<field name="role" class="java.lang.String"/>
-	<field name="address" class="java.lang.String"/>
+	<!-- <field name="role" class="java.lang.String"/> -->
+	<!-- <field name="address" class="java.lang.String"/> -->
+
+	<field name="notes" class="java.lang.String"/>
+	<field name="birthDate" class="java.lang.String" />
+
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -172,7 +178,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="40" height="30" uuid="a789a863-4232-4279-8a66-be83206747fe"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{role}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -192,7 +198,7 @@
 							<textField>
 								<reportElement x="0" y="0" width="40" height="30" uuid="958c39bd-fd6f-4414-9700-579e0c8ee7d9"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{birthDate}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
