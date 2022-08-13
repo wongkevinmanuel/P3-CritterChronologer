@@ -159,23 +159,23 @@ public class PetController {
     @GetMapping("/records/report")
     public ResponseEntity<byte[]> getPetRecordReport(){
         List<Pet> pets = mascotaService.mascotas();
-        if(pets.isEmpty()) //Return data empty
-            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        if(pets.isEmpty()) //Return status 200 and data empty
+            return new ResponseEntity<byte[]>(HttpStatus.OK);
 
         JasperPrint jasperPrint = generarRecord(pets);
 
         if(Objects.isNull(jasperPrint))
             return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        HttpHeaders headers = new HttpHeaders();
         //Establecer configuracion del formato a PDF
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData("filename","pets-details.pdf");
 
         try {
             return new ResponseEntity<byte[]>(JasperExportManager.exportReportToPdf(jasperPrint),headers, HttpStatus.OK);
         }catch (Exception ex){
-
             return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
