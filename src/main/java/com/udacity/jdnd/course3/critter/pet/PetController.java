@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+import com.udacity.jdnd.course3.critter.pet.utils.CustomJasperReport;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -177,6 +178,17 @@ public class PetController {
             return new ResponseEntity<byte[]>(JasperExportManager.exportReportToPdf(jasperPrint),headers, HttpStatus.OK);
         }catch (Exception ex){
             return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<byte[]> getPetsRecordReport(@RequestParam(required = false) int numberPet){
+        try{
+            CustomJasperReport report = mascotaService.generatePetReport(numberPet);
+            respondReportPDFWithOutHeader(report,false);
+            return null;
+        }catch (Exception e){
+            throw new RuntimeException();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

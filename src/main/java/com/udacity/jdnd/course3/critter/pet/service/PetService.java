@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.pet.service;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.repository.PetRepository;
+import com.udacity.jdnd.course3.critter.pet.utils.CustomJasperReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +57,11 @@ public class PetService {
         }catch (IllegalArgumentException exception){
             throw new PetNotFoundException(exception);
         }
+    }
+
+    public CustomJasperReport generatePetReport(int numberPet){
+        List<Pet> pets = mascotas();
+        CustomJasperReport report = new CustomJasperReport();
+
     }
 }

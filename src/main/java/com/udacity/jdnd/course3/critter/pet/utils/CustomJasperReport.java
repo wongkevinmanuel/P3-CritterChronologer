@@ -40,5 +40,10 @@ public class CustomJasperReport implements Serializable {
     //output filename
     //String outPutFilename;
 
+    public static long getSerialVersionUID(){
+        return serialVersionUID;
+    }
+
+
 }
 
