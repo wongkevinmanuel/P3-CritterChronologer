@@ -62,6 +62,17 @@ public class PetService {
     public CustomJasperReport generatePetReport(int numberPet){
         List<Pet> pets = mascotas();
         CustomJasperReport report = new CustomJasperReport();
+        //OutputFile Name
+        //Report Name
+        //Report Dirrectorio
+        //Formato de archivo PDF
+        //Paramerts
+        report.setOutPutFilename("Pet_info_Report.pdf");
+        report.setReportName("pet_report");
+        report.setReportDir("/report/pet");
+        report.setResourceLocation("classpath:employees-details.jrxml");
+        report.setReportData(pets);
 
+        return report;
     }
 }

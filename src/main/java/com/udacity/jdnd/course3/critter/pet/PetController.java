@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/pet")
-public class PetController {
+public class PetController  extends JasperReportController{
     @Autowired
     private final PetService mascotaService;
 
@@ -184,10 +184,15 @@ public class PetController {
     public ResponseEntity<byte[]> getPetsRecordReport(@RequestParam(required = false) int numberPet){
         try{
             CustomJasperReport report = mascotaService.generatePetReport(numberPet);
-            respondReportPDFWithOutHeader(report,false);
-            return null;
+
+            //Establecer configuracion del formato a PDF
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("filename",report.getOutPutFilename());
+
+
+            return new ResponseEntity<byte[]>(responseReportPDF(report),headers,HttpStatus.OK );
         }catch (Exception e){
-            throw new RuntimeException();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

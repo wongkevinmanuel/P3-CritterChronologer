@@ -38,12 +38,80 @@ public class CustomJasperReport implements Serializable {
     //byte[] content;
 
     //output filename
-    //String outPutFilename;
+    String outPutFilename;
+
+    //resourceLocation
+    String resourceLocation;
 
     public static long getSerialVersionUID(){
         return serialVersionUID;
     }
 
+    public CustomJasperReport() {
+    }
 
+    public String getResourceLocation() {
+        return resourceLocation;
+    }
+
+    public void setResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
+    }
+
+    public String getOutPutFilename() {
+        return outPutFilename;
+    }
+
+    public void setOutPutFilename(String outPutFilename) {
+        this.outPutFilename = outPutFilename;
+    }
+
+    public String getReportName() {
+        return reportName;
+    }
+
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
+
+    public String getReportDir() {
+        return reportDir;
+    }
+
+    public void setReportDir(String reportDir) {
+        this.reportDir = reportDir;
+    }
+
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Collection<?> getReportData() {
+        return reportData;
+    }
+
+    public void setReportData(Collection<?> reportData) {
+        this.reportData = reportData;
+    }
+
+    public Boolean getUseDefaultConfiguration() {
+        return useDefaultConfiguration;
+    }
+
+    public void setUseDefaultConfiguration(Boolean useDefaultConfiguration) {
+        this.useDefaultConfiguration = useDefaultConfiguration;
+    }
+
+    public Map<String, Object> getReportConfiguration() {
+        return reportConfiguration;
+    }
+
+    public void setReportConfiguration(Map<String, Object> reportConfiguration) {
+        this.reportConfiguration = reportConfiguration;
+    }
 }
 
