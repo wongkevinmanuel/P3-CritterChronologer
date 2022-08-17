@@ -3,9 +3,11 @@ package com.udacity.jdnd.course3.critter.pet;
 import com.udacity.jdnd.course3.critter.pet.utils.CustomJasperReport;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.tomcat.jni.File;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +29,19 @@ public class JasperReportController {
         params.put("CompanyName", "Tech-Wong");
         params.put("employeeData", new JRBeanCollectionDataSource(jasperReport.getReportData() ));
 
-        JasperPrint jasperPrint =
+        try
+        {
+            JasperPrint jasperPrint =
                 JasperFillManager.fillReport(
                         JasperCompileManager.compileReport(
                                 ResourceUtils.getFile(jasperReport.getResourceLocation()).getAbsolutePath())
                                 ,params
                                 ,new JREmptyDataSource()
                         );
+        }catch (FileNotFoundException | JRException exception){
+            return null;
+        }
+
         try {
             return JasperExportManager.exportReportToPdf(null);
         }catch (JRException ex){
