@@ -47,7 +47,6 @@ public class PetService {
         try {
             Pet pet = mascotaRepository.getOne(id);
             if (Objects.isNull(pet))
-                //throw new PetNoDataFoundException();
                 throw new NullPointerException();
 
             if(pet.getId() == 0)
@@ -62,11 +61,7 @@ public class PetService {
     public CustomJasperReport generatePetReport(int numberPet){
         List<Pet> pets = mascotas();
         CustomJasperReport report = new CustomJasperReport();
-        //OutputFile Name
-        //Report Name
-        //Report Dirrectorio
-        //Formato de archivo PDF
-        //Paramerts
+
         report.setOutPutFilename("Pet_info_Report.pdf");
         report.setReportName("pet_report");
         report.setReportDir("/report/pet");

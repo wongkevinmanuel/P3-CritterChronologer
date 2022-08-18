@@ -14,39 +14,53 @@ import java.util.Map;
 @Controller
 public class JasperReportController {
 
-    public byte[] responseReportPDF(CustomJasperReport jasperReport){
-        if(jasperReport == null)
-            throw new RuntimeException();
+    private CustomJasperReport jasperReport;
 
+    public JasperReportController(){
 
-        //CustomJasperReport
-        //SOLO RECIBE TODOS LOS DATOS PARA REALIZAR EL REPORTE
-        //ENCARGADO DE CONFIGURAR LOS DATOS FINALES COMO EL NOMBRE, LA RUTA, Y DE MAS DEL REPORT JASPER
-        //POR OTRO LADO TAMBIEN SE ENCARGA DE PROCEDER A LA IMPRIMIR EN PDF
+    }
+    public JasperReportController(CustomJasperReport jasperReport) {
+        this.jasperReport = jasperReport;
+    }
 
-        //Parámetros dinámicos necesarios para el informe
+    private Map<String, Object> templateParameters(){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("CompanyName", "Tech-Wong");
         params.put("employeeData", new JRBeanCollectionDataSource(jasperReport.getReportData() ));
+        return params;
+    }
+    private JasperPrint generateJasperPrint(){
 
-        try
-        {
-            JasperPrint jasperPrint =
-                JasperFillManager.fillReport(
-                        JasperCompileManager.compileReport(
-                                ResourceUtils.getFile(jasperReport.getResourceLocation()).getAbsolutePath())
-                                ,params
-                                ,new JREmptyDataSource()
-                        );
+        try{
+            return JasperFillManager.fillReport(
+                            JasperCompileManager.compileReport(
+                                    ResourceUtils.getFile(jasperReport.getResourceLocation()).getAbsolutePath())
+                            ,templateParameters()
+                            ,new JREmptyDataSource()
+                    );
         }catch (FileNotFoundException | JRException exception){
             return null;
         }
+    }
+    public byte[] responseReportPDF(){//CustomJasperReport jasperReport){
+        if(jasperReport == null)
+            throw new RuntimeException();
+
+        JasperPrint jasperPrint = generateJasperPrint();
 
         try {
-            return JasperExportManager.exportReportToPdf(null);
+            return JasperExportManager.exportReportToPdf(jasperPrint);
         }catch (JRException ex){
             return null;
         }
+    }
 
+
+    public CustomJasperReport getJasperReport() {
+        return jasperReport;
+    }
+
+    public void setJasperReport(CustomJasperReport jasperReport) {
+        this.jasperReport = jasperReport;
     }
 }

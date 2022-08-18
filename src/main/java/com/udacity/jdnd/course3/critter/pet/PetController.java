@@ -24,7 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
-
+import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -181,9 +181,11 @@ public class PetController  extends JasperReportController{
         }
     }
 
+    @GetMapping("/records/reportJasper")
     public ResponseEntity<byte[]> getPetsRecordReport(@RequestParam(required = false) int numberPet){
         try{
             CustomJasperReport report = mascotaService.generatePetReport(numberPet);
+            setJasperReport(report);
 
             //Establecer configuracion del formato a PDF
             HttpHeaders headers = new HttpHeaders();
@@ -191,7 +193,7 @@ public class PetController  extends JasperReportController{
             headers.setContentDispositionFormData("filename",report.getOutPutFilename());
 
 
-            return new ResponseEntity<byte[]>(responseReportPDF(report),headers,HttpStatus.OK );
+            return new ResponseEntity<byte[]>(responseReportPDF(),headers,HttpStatus.OK );
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
