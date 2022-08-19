@@ -136,63 +136,18 @@ public class PetController  extends JasperReportController{
         return assembler.toModel(pet);
     }
 
-    private JasperPrint generarRecord(List<Pet> pets){
-        try{
-            //Parámetros dinámicos necesarios para el informe
-            Map<String, Object> petParams = new HashMap<String, Object>();
-            petParams.put("CompanyName", "Tech-Wong");
-            petParams.put("employeeData", new JRBeanCollectionDataSource(pets));
+    @GetMapping("/records/reportJasper/{numberPet}")
+    public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false) int numberPet){
 
-            JasperPrint petReport =
-                    JasperFillManager.fillReport(
-                            JasperCompileManager.compileReport(
-                                    ResourceUtils.getFile("classpath:employees-details.jrxml")
-                                            .getAbsolutePath())
-                            , petParams //parametros dinamicos
-                            , new JREmptyDataSource());
-
-            return petReport;
-        }catch (Exception ex){
-            return null;
-        }
-    }
-
-    @GetMapping("/records/report")
-    public ResponseEntity<byte[]> getPetRecordReport(){
-        List<Pet> pets = mascotaService.mascotas();
-
-        if(pets.isEmpty()) //Return status 200 and data empty
-            return new ResponseEntity<byte[]>(HttpStatus.OK);
-
-        JasperPrint jasperPrint = generarRecord(pets);
-
-        if(Objects.isNull(jasperPrint))
-            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+        CustomJasperReport report = mascotaService.generatePetReport(numberPet);
+        setJasperReport(report);
 
         //Establecer configuracion del formato a PDF
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("filename","pets-details.pdf");
+        headers.setContentDispositionFormData("filename",report.getOutPutFilename());
 
-        try {
-            return new ResponseEntity<byte[]>(JasperExportManager.exportReportToPdf(jasperPrint),headers, HttpStatus.OK);
-        }catch (Exception ex){
-            return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/records/reportJasper")
-    public ResponseEntity<byte[]> getPetsRecordReport(@RequestParam(required = false) int numberPet){
         try{
-            CustomJasperReport report = mascotaService.generatePetReport(numberPet);
-            setJasperReport(report);
-
-            //Establecer configuracion del formato a PDF
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("filename",report.getOutPutFilename());
-
-
             return new ResponseEntity<byte[]>(responseReportPDF(),headers,HttpStatus.OK );
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

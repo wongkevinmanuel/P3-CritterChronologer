@@ -42,7 +42,7 @@ public class JasperReportController {
             return null;
         }
     }
-    public byte[] responseReportPDF(){//CustomJasperReport jasperReport){
+    public byte[] responseReportPDF(){
         if(jasperReport == null)
             throw new RuntimeException();
 
@@ -54,7 +54,6 @@ public class JasperReportController {
             return null;
         }
     }
-
 
     public CustomJasperReport getJasperReport() {
         return jasperReport;
