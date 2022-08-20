@@ -131,6 +131,24 @@ public class PetControllerTestMock {
     }
 
     @Test
+    public void getPetsRecordReport(){
+        String URL = new StringBuilder("http://localhost:"+ port+"/pet/records/reportJasper/5").toString();
+
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String,String> valueMapHeader = new LinkedMultiValueMap<>();
+        valueMapHeader.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(null,valueMapHeader);
+
+        ResponseEntity<?> responseEntity = restTemplate.exchange(
+                URL,HttpMethod.GET,requestEntity,byte.class);
+
+        Assert.assertNotNull(responseEntity);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+    }
+
+    @Test
     public void listPets(){
         String URL = new StringBuilder("http://localhost:" + port + "/pet").toString();
         PetDTO petDTO = this.getPetDTO();
