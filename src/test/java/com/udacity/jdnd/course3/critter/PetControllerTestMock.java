@@ -131,6 +131,12 @@ public class PetControllerTestMock {
     }
 
     @Test
+    public void getPetsRecordReportMvcMock() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("http://localhost:"+ port+"/pet/records/reportJasper/5")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isOk());
+    }
+    @Test
     public void getPetsRecordReport(){
         String URL = new StringBuilder("http://localhost:"+ port+"/pet/records/reportJasper/5").toString();
 
