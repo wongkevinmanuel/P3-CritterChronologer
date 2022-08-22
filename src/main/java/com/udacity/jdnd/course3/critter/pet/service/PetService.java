@@ -58,7 +58,15 @@ public class PetService {
         }
     }
 
-    public CustomJasperReport generatePetReport(int numberPet){
+    public CustomJasperReport generatePetReport(Long id){
+        Pet pet = mascotaxId(id);
+        if (Objects.isNull(null))
+            return null;
+
+
+        return null;
+    }
+    public CustomJasperReport generatePetsReport(int numberPet){
         List<Pet> pets = mascotas();
         CustomJasperReport report = new CustomJasperReport();
 

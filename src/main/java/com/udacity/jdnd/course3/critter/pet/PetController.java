@@ -24,6 +24,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
+import javax.persistence.EntityTransaction;
 import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import java.util.*;
@@ -136,10 +137,18 @@ public class PetController  extends JasperReportController{
         return assembler.toModel(pet);
     }
 
+    @GetMapping("/records/{petId}")
+    EntityModel<Pet> getPetRecordReport(@PathVariable(required = false) long petId){
+        CustomJasperReport report = mascotaService.generatePetReport(petId);
+        setJasperReport(report);
+        //Configuracion a formato pdf
+
+        return null;
+    }
     @GetMapping("/records/reportJasper/{numberPet}")
     public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false) int numberPet){
 
-        CustomJasperReport report = mascotaService.generatePetReport(numberPet);
+        CustomJasperReport report = mascotaService.generatePetsReport(numberPet);
         setJasperReport(report);
 
         //Establecer configuracion del formato a PDF
