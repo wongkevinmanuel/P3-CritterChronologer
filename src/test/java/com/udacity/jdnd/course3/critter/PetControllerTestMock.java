@@ -147,7 +147,7 @@ public class PetControllerTestMock {
         HttpEntity<?> requestEntity = new HttpEntity<Object>(null,valueMapHeader);
 
         ResponseEntity<?> responseEntity = restTemplate.exchange(
-                URL,HttpMethod.GET,requestEntity,byte.class);
+                URL,HttpMethod.GET,requestEntity,byte[].class);
 
         Assert.assertNotNull(responseEntity);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

@@ -60,18 +60,29 @@ public class PetService {
 
     public CustomJasperReport generatePetReport(Long id){
         Pet pet = mascotaxId(id);
-        if (Objects.isNull(null))
-            return null;
+        if (Objects.isNull(pet))
+            throw new NullPointerException();
 
+        CustomJasperReport report = new CustomJasperReport();
+
+        report.setOutPutFilename("Pet_info_Report.pdf");
+        report.setReportName("pet_report");
+        report.setReportDir("/report/pet");
+        //Establecer el formato del jrxml para una sola mascota
+        //report.setResourceLocation("classpath:employees-details.jrxml");
+        //report.setReportData();
 
         return null;
     }
     public CustomJasperReport generatePetsReport(int numberPet){
         List<Pet> pets = mascotas();
+        if(Objects.isNull(pets))
+            throw new NullPointerException();
+
         CustomJasperReport report = new CustomJasperReport();
 
-        report.setOutPutFilename("Pet_info_Report.pdf");
-        report.setReportName("pet_report");
+        report.setOutPutFilename("Pets_info_Report.pdf");
+        report.setReportName("pets_report");
         report.setReportDir("/report/pet");
         report.setResourceLocation("classpath:employees-details.jrxml");
         report.setReportData(pets);

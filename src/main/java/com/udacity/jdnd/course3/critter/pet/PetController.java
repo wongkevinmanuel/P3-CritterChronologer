@@ -138,12 +138,19 @@ public class PetController  extends JasperReportController{
     }
 
     @GetMapping("/records/{petId}")
-    EntityModel<Pet> getPetRecordReport(@PathVariable(required = false) long petId){
+    ResponseEntity<byte[]> getPetRecordReport(@PathVariable(required = false) long petId){
         CustomJasperReport report = mascotaService.generatePetReport(petId);
         setJasperReport(report);
         //Configuracion a formato pdf
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", report.getOutPutFilename());
 
-        return null;
+        try {
+            return new ResponseEntity<>(responseReportPDF(), headers,HttpStatus.OK);
+        }catch (Exception exception){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/records/reportJasper/{numberPet}")
     public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false) int numberPet){
