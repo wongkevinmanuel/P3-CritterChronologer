@@ -69,7 +69,7 @@ public class PetService {
         report.setReportName("pet_report");
         report.setReportDir("/report/pet");
         //Establecer el formato del jrxml para una sola mascota
-        //report.setResourceLocation("classpath:employees-details.jrxml");
+        //report.setResourceLocation("classpath:pet-details.jrxml");
         //report.setReportData();
 
         return null;

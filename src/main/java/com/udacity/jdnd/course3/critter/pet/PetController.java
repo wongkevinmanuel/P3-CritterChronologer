@@ -17,6 +17,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 //USO DE LIBRERIA DE HATEOAS
 import org.springframework.hateoas.*;
+import reactor.netty.http.HttpOperations;
 //import org.springframework.hateoas.CollectionModel;
 //import org.springframework.hateoas.EntityModel;
 //import org.springframework.http.ResponseEntity;
@@ -137,14 +138,18 @@ public class PetController  extends JasperReportController{
         return assembler.toModel(pet);
     }
 
+    private HttpHeaders generateHeader(String fileName){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("filename", fileName);
+        return headers;
+    }
     @GetMapping("/records/{petId}")
     ResponseEntity<byte[]> getPetRecordReport(@PathVariable(required = false) long petId){
         CustomJasperReport report = mascotaService.generatePetReport(petId);
         setJasperReport(report);
         //Configuracion a formato pdf
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("filename", report.getOutPutFilename());
+        HttpHeaders headers = generateHeader(report.getOutPutFilename());
 
         try {
             return new ResponseEntity<>(responseReportPDF(), headers,HttpStatus.OK);
@@ -159,9 +164,7 @@ public class PetController  extends JasperReportController{
         setJasperReport(report);
 
         //Establecer configuracion del formato a PDF
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("filename",report.getOutPutFilename());
+        HttpHeaders headers = generateHeader(report.getOutPutFilename());
 
         try{
             return new ResponseEntity<byte[]>(responseReportPDF(),headers,HttpStatus.OK );

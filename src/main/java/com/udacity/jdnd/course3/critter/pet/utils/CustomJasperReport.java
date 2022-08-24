@@ -27,6 +27,7 @@ public class CustomJasperReport implements Serializable {
 
     //Data Source
     Collection<?> reportData;
+
     //
     //JRDataSource dataSource;
 
