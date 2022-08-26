@@ -13,22 +13,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 //USO DE LIBRERIA DE HATEOAS
 import org.springframework.hateoas.*;
-import reactor.netty.http.HttpOperations;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
-import javax.persistence.EntityTransaction;
-import javax.persistence.GeneratedValue;
 import javax.validation.Valid;
 import java.util.*;
-import java.util.logging.LogManager;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +28,8 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/pet")
 public class PetController  extends JasperReportController{
 
-    public static final Logger log = LoggerFactory.getLogger(PetController.class);
+    public static final Logger log = LoggerFactory
+                                        .getLogger(PetController.class);
     @Autowired
     private final PetService mascotaService;
 

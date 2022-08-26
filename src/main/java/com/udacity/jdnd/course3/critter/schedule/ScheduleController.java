@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Maneja solicitudes web relacionadas con Horarios.
  */
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
+    public static final Logger log = LoggerFactory
+            .getLogger(ScheduleController.class);
     @Autowired
     private final ScheduleService scheduleService;
 
@@ -101,6 +106,8 @@ public class ScheduleController {
 
         //Entity save send response with the ids save in Data base
         scheduleDTO.setId(id);
+        log.info("Save Schedule ID:{}", scheduleDTO.getId());
+
         return scheduleDTO;
     }
 
@@ -110,6 +117,7 @@ public class ScheduleController {
         if (Objects.isNull(schedules))
             return Collections.EMPTY_LIST;
 
+        log.info("All Schedules size list:{}", schedules.size());
         return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
@@ -121,6 +129,7 @@ public class ScheduleController {
         List<Schedule> schedules = scheduleService.scheduleXPet(petId);
         if(schedules.isEmpty())
             return Collections.EMPTY_LIST;
+
 
         return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
