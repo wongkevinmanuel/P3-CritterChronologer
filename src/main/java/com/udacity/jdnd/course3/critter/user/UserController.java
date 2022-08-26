@@ -141,7 +141,6 @@ public class UserController {
             throw new UnsupportedOperationException();
 
         Customer customer = clienteService.buscarClienteXMascota(petId);
-        //buscar los ids de las mascotas por cliente
         customer.setMascotas(mascotaservicio.mascotasXCliente(customer.getId()));
 
         if(Objects.isNull(customer))
@@ -158,6 +157,7 @@ public class UserController {
         if (customers.isEmpty())
             return Collections.EMPTY_LIST;
 
+        log.info("All customers, size list: {}",customers.size());
         return customers.stream().map(c -> customeraDTO(c)).collect(Collectors.toList());
     }
 
@@ -209,7 +209,6 @@ public class UserController {
         return employeeDTO;
     }
 
-    //@PostMapping("/employee/{employeeId}")
     @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         if(isErrorPathVariable(employeeId))
@@ -219,6 +218,7 @@ public class UserController {
         if (Objects.isNull(employee))
             throw new UnsupportedOperationException();
 
+        log.info("Get employee ID:{} NAME:",employee.getId(),employee.getName());
         return employeeaDTO(employee);
     }
 
@@ -231,6 +231,7 @@ public class UserController {
         employee.setId(employeeId);
         employee.setDayAvailable(daysAvailable);
         Employee updateEmployee = empleadoService.guardarDiasDisponibles(employee);
+        log.info("Set Availability Employee ID:{}",updateEmployee.getId());
         return employeeaDTO(updateEmployee);
     }
 
@@ -247,6 +248,7 @@ public class UserController {
         List<Employee> employees = empleadoService
                                         .findAllByDaysAvailableContainingEmployee(employeeRequestDTO.getDate()
                                                                                     ,employeeRequestDTO.getSkills());
+        log.info("Find Employees For Service list size: {}", employees.size());
 
         return employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
     }

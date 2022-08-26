@@ -114,7 +114,7 @@ public class PetController  extends JasperReportController{
             return petDTO;
 
         //Entity save send response
-        log.trace("Created pet id: "+id);
+        log.info("Created pet id: {}"+id);
         petDTO.setId(id);
         return petDTO;
     }
@@ -127,7 +127,7 @@ public class PetController  extends JasperReportController{
         List<EntityModel<Pet> > resourcesPet = null;
         resourcesPet = mascotaService.mascotas().stream()
                     .map(assembler::toModel).collect(Collectors.toList());
-        log.trace("All pets, size list:" + resourcesPet.size());
+        log.info("All pets, size list: {}" + resourcesPet.size());
         return ResponseEntity.ok(new CollectionModel<>( resourcesPet));
     }
 
@@ -138,7 +138,7 @@ public class PetController  extends JasperReportController{
         if (Objects.isNull(pet))
             return null;
 
-        log.trace("Pet Id: "+pet.getId() + " Name: " + pet.getName() );
+        log.info("Pet Id: {} Name: {}" ,pet.getId(),pet.getName() );
         return assembler.toModel(pet);
     }
 
@@ -182,8 +182,10 @@ public class PetController  extends JasperReportController{
         List<Pet> pets = mascotaService.mascotas();
         if(pets.isEmpty())
             return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
-        log.trace("All pets, size list:" + pets.size());
-        return pets.stream().map(p -> petaDTO(p,"ownerId")).collect(Collectors.toList());
+        log.info("All pets, size list: {}", pets.size());
+        return pets.stream()
+                .map(p -> petaDTO(p,"ownerId"))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{petId}")
@@ -192,7 +194,7 @@ public class PetController  extends JasperReportController{
         pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return null;
-        log.trace("Pet id: "+pet.getId() + " Name: "+pet.getName());
+        log.trace("Pet id: {} Name: {}",pet.getId(), pet.getName());
         return petaDTO(pet);
     }
 
@@ -201,7 +203,7 @@ public class PetController  extends JasperReportController{
         List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
         if(pets.isEmpty())
             return Collections.EMPTY_LIST;
-        log.trace("Pets size: " + pets.size());
+        log.info("Pets size: {}" ,pets.size());
         return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
     }
 }
