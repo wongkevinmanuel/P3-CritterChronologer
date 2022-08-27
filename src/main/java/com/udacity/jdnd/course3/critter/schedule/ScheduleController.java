@@ -130,7 +130,7 @@ public class ScheduleController {
         if(schedules.isEmpty())
             return Collections.EMPTY_LIST;
 
-
+        log.info("Get all Schedule for pet, size list schedule {}.", schedules.size());
         return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
@@ -143,6 +143,7 @@ public class ScheduleController {
         if(schedules.isEmpty())
             return Collections.EMPTY_LIST;
 
+        log.info("Get all Schedule For employee, size list schedule {}.",schedules.size());
         return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
@@ -155,6 +156,7 @@ public class ScheduleController {
         if(schedules.isEmpty())
             return Collections.EMPTY_LIST;
 
+        log.info("Get all Schedule for customer, size list schedule {}.", schedules.size());
         return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 }
