@@ -39,7 +39,6 @@ public class UserController {
     private final CustomerService clienteService;
     @Autowired
     private final EmployeeService empleadoService;
-    //k
     @Autowired
     private final PetService mascotaservicio;
 
@@ -49,16 +48,6 @@ public class UserController {
         this.empleadoService = empleadoService;
         this.mascotaservicio = mascotaservicio;
     }
-
-    /*
-    private Customer DTOaCustomer(CustomerDTO clienteDTO){
-        Customer cliente = new Customer();
-        cliente.setName(clienteDTO.getName());
-        cliente.setNotes(clienteDTO.getNotes());
-        cliente.setPhoneNumber(clienteDTO.getPhoneNumber());
-        cliente.setAge(clienteDTO.getAge());
-        return cliente;
-    }*/
 
     private Customer DTOaCustomer(CustomerDTO customerDTO, String nombrePropiedadAIgnorar){
         Customer customer = new Customer();
@@ -110,9 +99,6 @@ public class UserController {
         if(customerDTO.getName().isEmpty() || customerDTO.getPhoneNumber().isEmpty())
             throw new UnsupportedOperationException();
 
-        //if(customerDTO.getName().length() <= 3)
-        //    throw new MethodArgumentNotValidException(new MethodParameter("df"),);
-
         Customer customer = DTOaCustomer(customerDTO,"petIds");
         Long id = clienteService.guardar(customer);
 
@@ -158,23 +144,15 @@ public class UserController {
             return Collections.EMPTY_LIST;
 
         log.info("All customers, size list: {}",customers.size());
-        return customers.stream().map(c -> customeraDTO(c)).collect(Collectors.toList());
+        return customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
     }
-
-    //DTO a  employee
-    //private Employee DTOaEmployee(EmployeeDTO employeeDTO){
-    //    Employee employee = new Employee();
-    //    employee.setName(employeeDTO.getName());
-    //    employee.setSkills(employeeDTO.getSkills());
-    //   return employee;
-    //}
 
     private Employee DTOaEmployee(EmployeeDTO employeeDTO, String nombrePropiedadAIgnorar){
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee, nombrePropiedadAIgnorar);
         return employee;
     }
-    //Employee a DTO
+
     private EmployeeDTO EmployeeaDTO(Employee employee){
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
@@ -199,7 +177,7 @@ public class UserController {
         if(employeeDTO.getName().isEmpty())
             throw new UnsupportedOperationException();
 
-        Employee empleado = DTOaEmployee(employeeDTO,"id"); //DTOaEmployee(employeeDTO);
+        Employee empleado = DTOaEmployee(employeeDTO,"id");
         Long id = empleadoService.guardar(empleado);
         if(id<= 0)
             return employeeDTO;
@@ -235,7 +213,7 @@ public class UserController {
         return employeeaDTO(updateEmployee);
     }
 
-    //kevin, significa devolver todos los Empleados que tengan
+    //Devolver todos los Empleados que tengan
     // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeRequestDTO) {

@@ -21,8 +21,7 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
-    public static final Logger log = LoggerFactory
-            .getLogger(ScheduleController.class);
+    public static final Logger log = LoggerFactory.getLogger(ScheduleController.class);
     @Autowired
     private final ScheduleService scheduleService;
 
