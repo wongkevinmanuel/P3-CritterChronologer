@@ -4,6 +4,8 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.pet.utils.CustomJasperReport;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,12 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/pet")
+@ApiResponses(value={
+        @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
+        ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
+        ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
+        ,@ApiResponse(code=500, message = "The server is down.")
+})
 public class PetController  extends JasperReportController{
 
     public static final Logger log = LoggerFactory
