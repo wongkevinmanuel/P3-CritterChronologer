@@ -5,6 +5,8 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,12 @@ import org.slf4j.LoggerFactory;
  */
 @RestController
 @RequestMapping("/schedule")
+@ApiResponses(value={
+        @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
+        ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
+        ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
+        ,@ApiResponse(code=500, message = "The server is down.")
+})
 public class ScheduleController {
 
     public static final Logger log = LoggerFactory.getLogger(ScheduleController.class);

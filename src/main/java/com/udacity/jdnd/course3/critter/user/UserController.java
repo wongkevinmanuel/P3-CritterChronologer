@@ -30,8 +30,13 @@ import javax.validation.Valid;
  * alcance requerido para esta clase.
  */
 @RestController
-@ApiResponses( value={@ApiResponse(code=500, message="Internal Server Error server error response, The server encountered an unexpected condition that prevented it from fulfilling the request.")})
 @RequestMapping("/user")
+@ApiResponses(value={
+        @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
+        ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
+        ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
+        ,@ApiResponse(code=500, message = "The server is down.")
+})
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
