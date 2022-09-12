@@ -28,8 +28,11 @@ import org.slf4j.LoggerFactory;
 @ApiResponses(value={
         @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
         ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
+        ,@ApiResponse(code = 403, message = "Unauthorized request. The client does not have access rights to the content.")
         ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
+        ,@ApiResponse(code = 405, message = "The request HTTP method is known but has been disabled and cannot be used for that resource")
         ,@ApiResponse(code=500, message = "The server is down.")
+        ,@ApiResponse(code= 501 , message = "The HTTP method is not supported by the server and cannot be handled.")
 })
 public class PetController  extends JasperReportController{
 
@@ -87,8 +90,6 @@ public class PetController  extends JasperReportController{
     private PetDTO petaDTO(Pet pet, String nombrePropiedadAIgnorar){
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO, nombrePropiedadAIgnorar);
-
-
         petDTO.setOwnerId(
                 !Objects.isNull(pet.getClientePropietario())
                         ? pet.getClientePropietario().getId(): 0);
