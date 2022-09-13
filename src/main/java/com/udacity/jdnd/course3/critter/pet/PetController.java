@@ -155,7 +155,8 @@ public class PetController  extends JasperReportController{
         HttpHeaders headers = generateHeader(report.getOutPutFilename());
 
         try {
-            return new ResponseEntity<>(responseReportPDF(), headers,HttpStatus.OK);
+            //return new ResponseEntity<>(responseReportPDF(), headers,HttpStatus.OK);
+            return respondReportOutPutWithoutHeader();
         }catch (Exception exception){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
