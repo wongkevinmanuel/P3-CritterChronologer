@@ -65,9 +65,8 @@ public class JasperReportController {
         String contentDisposition = "attachment;filename=" + outputFileName + ":"+ "filename=" + outputFileName;
         return ResponseEntity.ok()
                 .header("Content-Type","pdf;charset=UTF-8")
-                .header("Content-Disposition", contentDisposition)
-                .body(jasperReport.getContent());
-        return null;
+                .header("Content-Disposition", contentDisposition).body(null);
+                //.body(jasperReport.getContent());
     }
 
     public CustomJasperReport getJasperReport() {
