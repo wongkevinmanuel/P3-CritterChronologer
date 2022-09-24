@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,6 +17,9 @@ public class CustomerService {
     @Autowired
     CustomerRepository clienteRepository;
 
+    public Optional<Customer> getCustomer(long id){
+        return clienteRepository.findById(id);
+    }
     //save Customer
     public Long guardar(Customer customer){
         try{

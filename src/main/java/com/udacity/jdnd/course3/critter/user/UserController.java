@@ -8,10 +8,12 @@ import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
+import net.sf.jasperreports.engine.export.Cut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
@@ -91,6 +93,13 @@ public class UserController {
             }
         }
         return clienteDTO;
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<CustomerDTO> customerInformation(@PathVariable long customerId){
+        Customer customer = clienteService.getCustomer(customerId);
+
+        return ResponseEntity.ok(new CustomerDTO());
     }
 
     @PostMapping("/customer")
