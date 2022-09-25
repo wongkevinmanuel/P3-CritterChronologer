@@ -8,6 +8,7 @@ import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
+import jdk.jfr.internal.Cutoff;
 import net.sf.jasperreports.engine.export.Cut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,8 +98,12 @@ public class UserController {
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<CustomerDTO> customerInformation(@PathVariable long customerId){
-        Customer customer = clienteService.getCustomer(customerId);
+        Optional<Customer> customer = clienteService.getCustomer(customerId);
+        if (!customer.isPresent())
+            return ResponseEntity.ok(new CustomerDTO());
 
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO = customeraDTO( customer);
         return ResponseEntity.ok(new CustomerDTO());
     }
 
