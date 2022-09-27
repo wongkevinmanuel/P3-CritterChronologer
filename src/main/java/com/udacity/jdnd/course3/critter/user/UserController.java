@@ -103,7 +103,7 @@ public class UserController {
             return ResponseEntity.ok(new CustomerDTO());
 
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO = customeraDTO( customer);
+        customerDTO = customeraDTO(customer.get());
         return ResponseEntity.ok(new CustomerDTO());
     }
 
