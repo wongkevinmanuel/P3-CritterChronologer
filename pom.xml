@@ -33,6 +33,7 @@
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
 
+		<!-- Maven dependencia para agregar modulo de seguridad -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
