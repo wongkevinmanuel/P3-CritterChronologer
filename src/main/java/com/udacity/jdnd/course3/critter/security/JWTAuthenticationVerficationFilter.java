@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import com.auth0.jwt.JWT;
 
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+
 public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthenticationVerficationFilter(AuthenticationManager authenticationManager) {
