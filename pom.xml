@@ -82,16 +82,16 @@
 		</dependency>
 
 		<!-- For using ApiResponse-->
+		<!--
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-			<scope>compile</scope>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 		<!-- validation -->
 		<dependency>
@@ -115,14 +115,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
-
 		</dependency>
-		<!-- Solucion problema // Error creating bean with name 'linkDiscoverers' -->
+
+		<!-- Solucion problema Error creating bean with name 'linkDiscoverers'
+		-->
 		<dependency>
 			<groupId>org.springframework.plugin</groupId>
 			<artifactId>spring-plugin-core</artifactId>
 			<version>2.0.0.RELEASE</version>
 		</dependency>
+
 
 		<!-- JASPER REPORTS ++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>

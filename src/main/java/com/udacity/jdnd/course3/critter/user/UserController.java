@@ -38,7 +38,7 @@ import javax.validation.Valid;
         ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
         ,@ApiResponse(code=500, message = "The server is down.")
 })
-public class UserController {
+public class    UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
