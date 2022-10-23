@@ -33,13 +33,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,7 +65,7 @@ public class PetControllerTestMock {
 
     private static final Logger log= LoggerFactory.getLogger(PetController.class);
 
-    //la inyección del puerto con
+    //la inyección del puerto
     @LocalServerPort
     private Integer port;
 
@@ -106,6 +104,14 @@ public class PetControllerTestMock {
         given(petService.guardar(any())).willReturn(1L);
         given(petService.mascotaxId(any())).willReturn(pet);
         given(petService.mascotas()).willReturn(Collections.singletonList(pet));
+    }
+    @Test
+    public void jwt() throws Exception{
+        HashSet<String > data = new HashSet<String >();
+        data.add("data1");
+
+        when(petService.guardar(any())).thenReturn(1L);
+        mvc.perform(new URI("/pet"))
     }
     @Test
     public void createPet() throws Exception{
