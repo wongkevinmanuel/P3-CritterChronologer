@@ -107,11 +107,12 @@ public class PetControllerTestMock {
     }
     @Test
     public void jwt() throws Exception{
-        HashSet<String > data = new HashSet<String >();
+        /*HashSet<String > data = new HashSet<String >();
         data.add("data1");
 
         when(petService.guardar(any())).thenReturn(1L);
         mvc.perform(new URI("/pet"))
+        */
     }
     @Test
     public void createPet() throws Exception{
