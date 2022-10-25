@@ -22,6 +22,8 @@ import java.util.Map;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     //private static final Logger = LogerFactory.getLogger(AuthEntryPointJwt.class);
 
+    //Se activará cada vez que un usuario no autenticado solicite un
+    // recurso HTTP seguro y se produzca una excepción de autenticación.
     @Override
     public void commence(HttpServletRequest Request
             , HttpServletResponse Response
