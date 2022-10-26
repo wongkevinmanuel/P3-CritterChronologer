@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -9,18 +11,16 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 
 /***
  *
  */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
-    //private static final Logger = LogerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     //Se activará cada vez que un usuario no autenticado solicite un
     // recurso HTTP seguro y se produzca una excepción de autenticación.

@@ -8,6 +8,9 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Proporciona métodos para generar, analizar y validar JWT
+ */
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
@@ -26,7 +29,6 @@ public class JwtUtils {
             return cookie.getValue();
         else
             return null;
-
     }
 
 }
