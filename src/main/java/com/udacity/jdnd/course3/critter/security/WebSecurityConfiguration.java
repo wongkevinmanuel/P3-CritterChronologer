@@ -20,6 +20,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
        this.userDetailsService  = u;
        this.bCryptPasswordEncoder = b;
     }
+
     //Define los recursos públicos. A continuación, hemos establecido el
     // punto final SIGN_UP_URL como público. El http.cors() se utiliza para
     // hacer que Spring Security admita CORS (Cross-Origin Resource Sharing)
