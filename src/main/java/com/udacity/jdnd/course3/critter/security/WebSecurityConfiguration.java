@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,9 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebSecurity
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+//@EnableWebSecurity
+@Configuration
+public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -21,6 +24,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
        this.bCryptPasswordEncoder = b;
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.POST, JWTPersonalSecurityConstants.SIGN_UP_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationVerficationFilter(authenticationManager()))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+    /*
     //Define los recursos públicos. A continuación, hemos establecido el
     // punto final SIGN_UP_URL como público. El http.cors() se utiliza para
     // hacer que Spring Security admita CORS (Cross-Origin Resource Sharing)
@@ -34,8 +48,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationVerficationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
+    }*/
+    /*
     @Override
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -50,4 +64,5 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
+    */
 }
