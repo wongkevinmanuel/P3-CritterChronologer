@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //@EnableWebSecurity
 @Configuration
@@ -20,7 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
         prePostEnabled = true
 )
 public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -36,7 +39,6 @@ public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
        this.userDetailsService  = u;
        this.bCryptPasswordEncoder = b;
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -56,6 +58,9 @@ public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
+
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -63,7 +68,6 @@ public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/js/**", "/images/**");
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
