@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * Define filtro que se ejecute una vez por solicitud. (con OncePerRequestFilter)
  * y anula el método doFilterInternal().
  */
+
 public class AuthTokenFilter extends OncePerRequestFilter {
     //@Autowired
     //private JwtUtils jwtUtils;
