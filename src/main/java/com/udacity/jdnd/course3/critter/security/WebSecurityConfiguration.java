@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.List;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 //@EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(
@@ -56,7 +58,7 @@ public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.cors().and().csrf().disable()
+        /*http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
@@ -65,6 +67,12 @@ public class WebSecurityConfiguration { //extends WebSecurityConfigurerAdapter {
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();*/
+        http
+                .authorizeHttpRequests((authz) -> authz
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(withDefaults());
         return http.build();
     }
 
