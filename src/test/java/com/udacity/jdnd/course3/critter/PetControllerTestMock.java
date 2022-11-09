@@ -1,14 +1,13 @@
 package com.udacity.jdnd.course3.critter;
 
 
-import com.fasterxml.jackson.databind.jsontype.impl.AsExistingPropertyTypeSerializer;
 import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.pet.PetType;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
-import com.udacity.jdnd.course3.critter.user.domain.Customer;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,11 +36,10 @@ import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 /*
 * Se utiliza el enfoque donde no iniciar el servidor
@@ -105,14 +103,17 @@ public class PetControllerTestMock {
         given(petService.mascotaxId(any())).willReturn(pet);
         given(petService.mascotas()).willReturn(Collections.singletonList(pet));
     }
-    @Test
-    public void jwt() throws Exception{
-        /*HashSet<String > data = new HashSet<String >();
-        data.add("data1");
 
-        when(petService.guardar(any())).thenReturn(1L);
-        mvc.perform(new URI("/pet"))
-        */
+    @Test
+    public void authenticationAnyEndPoint() throws Exception{
+        mvc.perform(get("/user"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void accessRestrictEndPoint() throws Exception{
+        mvc.perform(get("/pet"))
+                .andExpect(status().isUnauthorized());
     }
     @Test
     public void createPet() throws Exception{
