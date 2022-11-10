@@ -23,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.*;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -115,6 +116,7 @@ public class PetControllerTestMock {
         mvc.perform(get("/pet"))
                 .andExpect(status().isUnauthorized());
     }
+
     @Test
     public void createPet() throws Exception{
         Pet pet = getPet();
