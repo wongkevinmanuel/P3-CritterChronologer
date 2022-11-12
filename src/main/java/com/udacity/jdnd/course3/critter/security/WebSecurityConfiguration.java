@@ -2,27 +2,18 @@ package com.udacity.jdnd.course3.critter.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
-import java.util.List;
-
-//@EnableWebSecurity
-@Configuration
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true, securedEnabled = true,jsr250Enabled = true
-)
+@EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -39,6 +30,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
        this.bCryptPasswordEncoder = b;
     }
 
+    /*
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -47,34 +39,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         authProvider.setPasswordEncoder(bCryptPasswordEncoder);
 
         return authProvider;
-    }
+    }*/
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").permitAll()
-                .anyRequest().authenticated();
-        */
-        //http.authenticationProvider(authenticationProvider());
-        //http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.authenticationProvider(authenticationProvider());
-        return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/js/**", "/images/**");
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager()
-    throws Exception{
-        return new ProviderManager((List<AuthenticationProvider>) authenticationProvider());
-    }
-    /*
     //Define los recursos públicos. A continuación, hemos establecido el
     // punto final SIGN_UP_URL como público. El http.cors() se utiliza para
     // hacer que Spring Security admita CORS (Cross-Origin Resource Sharing)
@@ -88,8 +54,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationVerficationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }*/
-    /*
+    }
+
     @Override
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -104,5 +70,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
-    */
 }
