@@ -26,9 +26,12 @@ public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilte
     //Valida el token leido del encabezado de autorizacion
     private UsernamePasswordAuthenticationToken getAuthenticationToken(
             HttpServletRequest request){
-        String token = request.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
+        String token = request
+                .getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
+
         if(!Objects.isNull(token)){
-            String user = JWT.require(HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes())).build()
+            String user = JWT.require(
+                    HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes())).build()
                     .verify(token.replace(JWTPersonalSecurityConstants.TOKEN_PREFIX, ""))
                     .getSubject();
             if(user!= null){
@@ -45,10 +48,12 @@ public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilte
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response
                                     , FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
+
         if (header == null || !header.startsWith(JWTPersonalSecurityConstants.TOKEN_PREFIX)) {
                 chain.doFilter(request, response);
                 return;
         }
+
         UsernamePasswordAuthenticationToken authentication = getAuthenticationToken(request);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

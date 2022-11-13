@@ -24,7 +24,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-		    <!-- <version>5.3.20</version> -->
     </dependency>
 
     <!-- Dependencias para autenticacion -->
@@ -36,14 +35,12 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<!-- <version>5.7.2</version> -->
 		</dependency>
 
 		<!-- Maven dependencia para agregar modulo de seguridad -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<!-- <version>2.7.5</version>-->
 		</dependency>
 
 		<dependency>
@@ -51,7 +48,6 @@
 			<artifactId>java-jwt</artifactId>
 			<version>3.11.0</version>
 		</dependency>
-		<!-- -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -132,8 +128,6 @@
 			<artifactId>spring-plugin-core</artifactId>
 			<version>2.0.0.RELEASE</version>
 		</dependency>
-
-
 		<!-- JASPER REPORTS ++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
