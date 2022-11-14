@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user.service;
 import com.udacity.jdnd.course3.critter.user.domain.User;
 import com.udacity.jdnd.course3.critter.user.reposity.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,4 +32,15 @@ public class UserService {
     public List<User> usuarios(){
         return userRepository.findAll();
     }
+
+
+    public User findUser(String name){
+        try {
+             return userRepository.findByUserName(name);
+        }catch (IllegalArgumentException exception)
+        {
+            throw new EmptyResultDataAccessException(1);
+        }
+    }
+
 }
