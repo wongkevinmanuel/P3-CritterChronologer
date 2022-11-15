@@ -4,13 +4,17 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import com.udacity.jdnd.course3.critter.user.domain.User;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
+import com.udacity.jdnd.course3.critter.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +26,8 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import javax.validation.Valid;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Incluye solicitudes tanto para clientes como para empleados.
@@ -47,7 +53,9 @@ public class    UserController {
     @Autowired
     private final PetService mascotaservicio;
 
-    //k
+    @Autowired
+    private UserService usuarioServicio;
+
     public UserController(CustomerService clienteService, EmployeeService empleadoService, PetService mascotaservicio) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
@@ -104,6 +112,23 @@ public class    UserController {
         return ResponseEntity.ok(new CustomerDTO());
     }
 
+    @PostMapping("/user")
+    public ResponseEntity saveUser(@RequestBody CustomerDTO customerDTO){
+        if (customerDTO == null? true:false)
+            throw new UnsupportedOperationException();
+
+        if(customerDTO.getName().isEmpty())
+            throw new UnsupportedOperationException();
+
+        User usuario = new User();
+        usuario.setFirstName(customerDTO.getName());
+        Long id = usuarioServicio.guardar(usuario);
+        if(id<0)
+            return ResponseEntity.ok(new String("Usuario Creado."));
+        else
+            return ResponseEntity.badRequest();
+    }
+
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
         boolean errorDatos;
@@ -126,6 +151,7 @@ public class    UserController {
         log.info("Customer id:{} save",customerDTO.getId());
         return customerDTO;
     }
+
     private boolean isErrorPathVariable(long Id){
         try{
             if(Objects.isNull(Id))
