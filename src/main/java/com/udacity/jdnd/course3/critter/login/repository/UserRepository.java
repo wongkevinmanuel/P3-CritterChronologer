@@ -1,6 +1,6 @@
-package com.udacity.jdnd.course3.critter.user.reposity;
+package com.udacity.jdnd.course3.critter.login.repository;
 
-import com.udacity.jdnd.course3.critter.user.domain.User;
+import com.udacity.jdnd.course3.critter.login.requests.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

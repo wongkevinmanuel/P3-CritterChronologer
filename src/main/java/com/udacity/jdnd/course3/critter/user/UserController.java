@@ -4,7 +4,7 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
-import com.udacity.jdnd.course3.critter.user.domain.User;
+import com.udacity.jdnd.course3.critter.login.requests.domain.User;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +24,6 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 import javax.validation.Valid;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Incluye solicitudes tanto para clientes como para empleados.
@@ -112,7 +108,7 @@ public class    UserController {
         return ResponseEntity.ok(new CustomerDTO());
     }
 
-    @PostMapping("/user")
+    @PostMapping("/userSave")
     public ResponseEntity saveUser(@RequestBody CustomerDTO customerDTO){
         if (customerDTO == null? true:false)
             throw new UnsupportedOperationException();
@@ -126,7 +122,7 @@ public class    UserController {
         if(id<0)
             return ResponseEntity.ok(new String("Usuario Creado."));
         else
-            return ResponseEntity.badRequest();
+            return (ResponseEntity) ResponseEntity.badRequest();
     }
 
     @PostMapping("/customer")

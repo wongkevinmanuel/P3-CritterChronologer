@@ -3,7 +3,7 @@ package com.udacity.jdnd.course3.critter.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.udacity.jdnd.course3.critter.user.domain.User;
+import com.udacity.jdnd.course3.critter.login.requests.domain.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

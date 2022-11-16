@@ -30,17 +30,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
        this.bCryptPasswordEncoder = b;
     }
 
-    /*
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
-
-        return authProvider;
-    }*/
-
     //Define los recursos públicos. A continuación, hemos establecido el
     // punto final SIGN_UP_URL como público. El http.cors() se utiliza para
     // hacer que Spring Security admita CORS (Cross-Origin Resource Sharing)

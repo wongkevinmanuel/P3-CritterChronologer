@@ -1,7 +1,7 @@
 package com.udacity.jdnd.course3.critter.security;
 
-import com.udacity.jdnd.course3.critter.user.domain.User;
-import com.udacity.jdnd.course3.critter.user.reposity.UserRepository;
+import com.udacity.jdnd.course3.critter.login.requests.domain.User;
+import com.udacity.jdnd.course3.critter.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
