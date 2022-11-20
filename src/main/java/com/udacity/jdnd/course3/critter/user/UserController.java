@@ -1,10 +1,12 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.login.domain.User;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
+
+import com.udacity.jdnd.course3.critter.login.domain.User;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
-import com.udacity.jdnd.course3.critter.login.requests.domain.User;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
@@ -39,7 +41,7 @@ import javax.validation.Valid;
         ,@ApiResponse(code = 404, message = "Not found, check if the resource is saved.")
         ,@ApiResponse(code=500, message = "The server is down.")
 })
-public class    UserController {
+public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
