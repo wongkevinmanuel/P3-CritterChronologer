@@ -52,7 +52,7 @@ public class LoginControllerTest {
         User usuarioNuevo = response.getBody();
 
         assertNotNull(usuarioNuevo);
-        assertEquals(0,usuarioNuevo.getId());
+        assertEquals(Optional.of(0),usuarioNuevo.getId());
         assertEquals(request.getUserName(), usuarioNuevo.getUserName());
         assertEquals("thisIsHashed", usuarioNuevo.getPassword());
 
