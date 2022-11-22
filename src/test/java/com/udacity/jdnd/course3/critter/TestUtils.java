@@ -24,6 +24,8 @@ public class TestUtils {
             if(privado)
                 field.setAccessible(false);
 
-        } catch (IllegalAccessException e) {        }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
