@@ -56,17 +56,31 @@ public class LoginControllerTest {
 
     @Test
     public void contraseniaDebil(){
-        String PASSWORWEAK = "123";
+        String PASSWORDDEBIL = "123";
         CreateUserRequest request = new CreateUserRequest();
         request.setUserName("tesUser");
-        request.setPassword("testPassword");
-        request.setConfirmPassword("testPassword");
+        request.setPassword(PASSWORDDEBIL);
+        request.setConfirmPassword(PASSWORDDEBIL);
 
         ResponseEntity<User> response = loginController.createUser(request);
 
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
+    }
+
+    @Test
+    public void contraseniaNoConfirmada(){
+        String PASSWORD = "pass";
+        CreateUserRequest request = new CreateUserRequest();
+        request.setUserName("Kevin");
+        request.setPassword(PASSWORD);
+        request.setConfirmPassword("NOIGUAL");
+
+        ResponseEntity<User> response = loginController.createUser(request);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
 }
