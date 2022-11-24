@@ -28,10 +28,7 @@ import io.swagger.annotations.ApiResponse;
 import javax.validation.Valid;
 
 /**
- * Incluye solicitudes tanto para clientes como para empleados.
- * También estaría bien dividir esto en controladores
- * de usuario y cliente separados, aunque eso no es parte del
- * alcance requerido para esta clase.
+ * Incluye solicitudes tanto para clientes
  */
 @RestController
 @RequestMapping("/user")
@@ -207,8 +204,9 @@ public class UserController {
         BeanUtils.copyProperties(employee,employeeDTO);
         return employeeDTO;
     }
-    @PostMapping("/employee")
-    public EmployeeDTO saveEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    /*@PostMapping("/employee")
+    public EmployeeDTO saveEmployee(@Valid
+                                        @RequestBody EmployeeDTO employeeDTO) {
         boolean errorDatos;
         errorDatos = Objects.isNull(employeeDTO) ? true: false;
         if(errorDatos)
@@ -225,7 +223,7 @@ public class UserController {
         employeeDTO.setId(id);
         log.info("Employee id:{} saved!", empleado.getId());
         return employeeDTO;
-    }
+    }*/
 
     @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
