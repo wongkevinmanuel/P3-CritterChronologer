@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -53,5 +50,31 @@ public class EmployerController {
             return ResponseEntity.ok(new EmployeeDTO());
 
         return ResponseEntity.badRequest().build();
+    }
+
+    private boolean isErrorPathVariable(long Id){
+        try{
+            if(Objects.isNull(Id))
+                return true;
+
+            Long.valueOf(Id);
+            return false;
+        }catch (Exception exception){
+            return true;
+        }
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<EmployeeDTO> getEmployee(
+            @PathVariable long employeeId){
+        if (isErrorPathVariable(employeeId))
+            throw new UnsupportedOperationException();
+
+        Employee employee = employeeService.empleado(employeeId);
+        if (Objects.isNull(employee))
+            throw new UnsupportedOperationException();
+
+        log.info("Get employee ID:{} NAME:{}"+ employee.getId(), employee.getName());
+        return ResponseEntity.ok(new EmployeeDTO());
     }
 }
