@@ -64,6 +64,11 @@ public class EmployerController {
         }
     }
 
+    private EmployeeDTO employeeaDTO(Employee employee){
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        BeanUtils.copyProperties(employee,employeeDTO);
+        return employeeDTO;
+    }
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<EmployeeDTO> getEmployee(
             @PathVariable long employeeId){
@@ -75,6 +80,8 @@ public class EmployerController {
             throw new UnsupportedOperationException();
 
         log.info("Get employee ID:{} NAME:{}"+ employee.getId(), employee.getName());
-        return ResponseEntity.ok(new EmployeeDTO());
+
+        return ResponseEntity.ok(
+                employeeaDTO(employee));
     }
 }
