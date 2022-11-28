@@ -224,7 +224,7 @@ public class UserController {
         log.info("Employee id:{} saved!", empleado.getId());
         return employeeDTO;
     }*/
-
+    /*
     @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         if(isErrorPathVariable(employeeId))
@@ -237,9 +237,10 @@ public class UserController {
         log.info("Get employee ID:{} NAME:",employee.getId(),employee.getName());
         return employeeaDTO(employee);
     }
-
+    */
     @PutMapping("/employee/{employeeId}")
-    public EmployeeDTO setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
+    public EmployeeDTO setAvailability(@RequestBody Set<DayOfWeek> daysAvailable
+            , @PathVariable long employeeId) {
         if (Objects.isNull(daysAvailable) || Objects.isNull(employeeId))
             throw new UnsupportedOperationException();
 

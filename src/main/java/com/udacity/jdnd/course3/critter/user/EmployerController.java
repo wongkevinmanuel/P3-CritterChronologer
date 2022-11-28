@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.jfree.data.time.Day;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -12,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.DayOfWeek;
 import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("user/employee")
@@ -83,5 +86,21 @@ public class EmployerController {
 
         return ResponseEntity.ok(
                 employeeaDTO(employee));
+    }
+
+    @PutMapping("employee/{employeeId}")
+    public ResponseEntity<EmployeeDTO> setAvailability(@RequestBody Set<DayOfWeek> dayOfWeekSet
+                ,@PathVariable long employeeId)
+    {
+        if(Objects.isNull(dayOfWeekSet ) || Objects.isNull(employeeId))
+            throw new UnsupportedOperationException();
+
+        Employee employee = new Employee();
+        employee.setId(employeeId);
+        employee.setDayAvailable(dayOfWeekSet);
+        Employee updateEmployee = employeeService.guardarDiasDisponibles(employee);
+        log.info("Set availabity Employee id:{}", updateEmployee)
+        ;
+        return ResponseEntity.ok(employeeaDTO(employee));
     }
 }
