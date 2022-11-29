@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.DayOfWeek;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("user/employee")
@@ -41,10 +41,10 @@ public class EmployerController {
     public ResponseEntity<EmployeeDTO> saveEmployee(
             @Valid @RequestBody EmployeeDTO employeeDTO){
         if(Objects.isNull(employeeDTO))
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
 
         if(employeeDTO.getName().isEmpty())
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
 
         Employee employee = DTOaEmployee(employeeDTO, "id");
         employeeService.guardar(employee);
@@ -76,11 +76,11 @@ public class EmployerController {
     public ResponseEntity<EmployeeDTO> getEmployee(
             @PathVariable long employeeId){
         if (isErrorPathVariable(employeeId))
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
 
         Employee employee = employeeService.empleado(employeeId);
         if (Objects.isNull(employee))
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
 
         log.info("Get employee ID:{} NAME:{}"+ employee.getId(), employee.getName());
 
@@ -88,12 +88,12 @@ public class EmployerController {
                 employeeaDTO(employee));
     }
 
-    @PutMapping("employee/{employeeId}")
+    @PutMapping("/employee/{employeeId}")
     public ResponseEntity<EmployeeDTO> setAvailability(@RequestBody Set<DayOfWeek> dayOfWeekSet
                 ,@PathVariable long employeeId)
     {
         if(Objects.isNull(dayOfWeekSet ) || Objects.isNull(employeeId))
-            throw new UnsupportedOperationException();
+            throw new NullPointerException();
 
         Employee employee = new Employee();
         employee.setId(employeeId);
@@ -102,5 +102,32 @@ public class EmployerController {
         log.info("Set availabity Employee id:{}", updateEmployee)
         ;
         return ResponseEntity.ok(employeeaDTO(employee));
+    }
+
+    private EmployeeDTO EmployeeaDTO(Employee employee){
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setId(employee.getId());
+        employeeDTO.setName(employee.getName());
+        employeeDTO.setSkills(employee.getSkills());
+        employeeDTO.setDaysAvailable(employee.getDayAvailable());
+        return employeeDTO;
+    }
+    @GetMapping("/employee/availability")
+    public ResponseEntity< List<EmployeeDTO> > findEmployeeForService(
+            @RequestBody EmployeeRequestDTO employeeRequestDTO){
+        if(Objects.isNull(employeeRequestDTO))
+            throw new NullPointerException();
+
+        if(employeeRequestDTO.getSkills().isEmpty()
+                || Objects.isNull(employeeRequestDTO.getDate()))
+            return (ResponseEntity<List<EmployeeDTO>>) ResponseEntity.badRequest();
+
+        List<Employee> employees = employeeService
+                .findAllByDaysAvailableContainingEmployee(employeeRequestDTO.getDate()
+                        ,employeeRequestDTO.getSkills());
+
+        log.info("Find Employee for service list size:{}", employees.size());
+        return (ResponseEntity<List<EmployeeDTO>>) employees.stream()
+                .map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
     }
 }
