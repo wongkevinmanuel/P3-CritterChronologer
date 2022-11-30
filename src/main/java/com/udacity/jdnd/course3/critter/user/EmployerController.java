@@ -112,6 +112,9 @@ public class EmployerController {
         employeeDTO.setDaysAvailable(employee.getDayAvailable());
         return employeeDTO;
     }
+
+    //Devolver todos los Empleados que tengan
+    // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/employee/availability")
     public ResponseEntity< List<EmployeeDTO> > findEmployeeForService(
             @RequestBody EmployeeRequestDTO employeeRequestDTO){
@@ -129,5 +132,15 @@ public class EmployerController {
         log.info("Find Employee for service list size:{}", employees.size());
         return (ResponseEntity<List<EmployeeDTO>>) employees.stream()
                 .map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/employees")
+    public ResponseEntity< List<EmployeeDTO> > getAllEmployees(){
+        List<Employee> employees = employeeService.buscarTodosEmpleados();
+        if (employees.isEmpty())
+            return (ResponseEntity<List<EmployeeDTO>>) ResponseEntity.badRequest();
+        log.info("All employees, size list:{}", employees.size());
+        return (ResponseEntity<List<EmployeeDTO>>)
+                employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
     }
 }

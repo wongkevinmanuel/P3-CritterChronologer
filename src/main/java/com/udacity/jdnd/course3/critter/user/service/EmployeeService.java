@@ -19,6 +19,9 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository empleadoRepository;
 
+    public List<Employee> buscarTodosEmpleados(){
+        return empleadoRepository.findAll();
+    }
     public Long guardar(Employee empleado){
         try{
             return empleadoRepository.save(empleado).getId();
