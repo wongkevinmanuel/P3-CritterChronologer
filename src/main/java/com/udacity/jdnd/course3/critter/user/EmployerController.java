@@ -123,24 +123,23 @@ public class EmployerController {
 
         if(employeeRequestDTO.getSkills().isEmpty()
                 || Objects.isNull(employeeRequestDTO.getDate()))
-            return (ResponseEntity<List<EmployeeDTO>>) ResponseEntity.badRequest();
+            return ResponseEntity.badRequest();
 
         List<Employee> employees = employeeService
                 .findAllByDaysAvailableContainingEmployee(employeeRequestDTO.getDate()
                         ,employeeRequestDTO.getSkills());
 
         log.info("Find Employee for service list size:{}", employees.size());
-        return (ResponseEntity<List<EmployeeDTO>>) employees.stream()
+        return  employees.stream()
                 .map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/all")
     public ResponseEntity< List<EmployeeDTO> > getAllEmployees(){
         List<Employee> employees = employeeService.buscarTodosEmpleados();
         if (employees.isEmpty())
-            return (ResponseEntity<List<EmployeeDTO>>) ResponseEntity.badRequest();
+            return ResponseEntity.badRequest();
         log.info("All employees, size list:{}", employees.size());
-        return (ResponseEntity<List<EmployeeDTO>>)
-                employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
+        return employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
     }
 }
