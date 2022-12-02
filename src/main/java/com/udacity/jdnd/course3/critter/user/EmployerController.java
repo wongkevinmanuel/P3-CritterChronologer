@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +50,11 @@ public class EmployerController {
         Employee employee = DTOaEmployee(employeeDTO, "id");
         employeeService.guardar(employee);
 
-        if (employee.getId() <= 0)
-            return ResponseEntity.ok(new EmployeeDTO());
-
-        return ResponseEntity.badRequest().build();
+        if (employee.getId() > 0) {
+            employeeDTO.setId(employee.getId());
+            return ResponseEntity.ok(employeeDTO);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     private boolean isErrorPathVariable(long Id){
@@ -84,8 +86,10 @@ public class EmployerController {
 
         log.info("Get employee ID:{} NAME:{}"+ employee.getId(), employee.getName());
 
-        return ResponseEntity.ok(
-                employeeaDTO(employee));
+        if(!Objects.isNull(employee))
+            return ResponseEntity.ok(employeeaDTO(employee));
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PutMapping("/employee/{employeeId}")
@@ -99,8 +103,7 @@ public class EmployerController {
         employee.setId(employeeId);
         employee.setDayAvailable(dayOfWeekSet);
         Employee updateEmployee = employeeService.guardarDiasDisponibles(employee);
-        log.info("Set availabity Employee id:{}", updateEmployee)
-        ;
+        log.info("Set availabity Employee id:{}", updateEmployee);
         return ResponseEntity.ok(employeeaDTO(employee));
     }
 
@@ -123,23 +126,24 @@ public class EmployerController {
 
         if(employeeRequestDTO.getSkills().isEmpty()
                 || Objects.isNull(employeeRequestDTO.getDate()))
-            return ResponseEntity.badRequest();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         List<Employee> employees = employeeService
                 .findAllByDaysAvailableContainingEmployee(employeeRequestDTO.getDate()
                         ,employeeRequestDTO.getSkills());
 
         log.info("Find Employee for service list size:{}", employees.size());
-        return  employees.stream()
-                .map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
+        List<EmployeeDTO> employeesDTO =  employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
+        return ResponseEntity.ok(employeesDTO);
     }
 
     @GetMapping("/all")
     public ResponseEntity< List<EmployeeDTO> > getAllEmployees(){
         List<Employee> employees = employeeService.buscarTodosEmpleados();
         if (employees.isEmpty())
-            return ResponseEntity.badRequest();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         log.info("All employees, size list:{}", employees.size());
-        return employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
+        List<EmployeeDTO> employeesDTO = employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
+        return ResponseEntity.ok(employeesDTO);
     }
 }

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,12 +100,13 @@ public class UserController {
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<CustomerDTO> customerInformation(@PathVariable long customerId){
         Optional<Customer> customer = clienteService.getCustomer(customerId);
-        if (!customer.isPresent())
-            return ResponseEntity.ok(new CustomerDTO());
-
+        if (!customer.isPresent()) {
+            log.error("Error in get information Customer:"+customerId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO = customeraDTO(customer.get());
-        return ResponseEntity.ok(new CustomerDTO());
+        return ResponseEntity.ok(customerDTO);
     }
 
     @PostMapping("/userSave")
@@ -118,10 +120,10 @@ public class UserController {
         User usuario = new User();
         usuario.setFirstName(customerDTO.getName());
         Long id = usuarioServicio.guardar(usuario);
-        if(id<0)
-            return ResponseEntity.ok(new String("Usuario Creado."));
+        if(id>0)
+            return ResponseEntity.ok(usuario);
         else
-            return (ResponseEntity) ResponseEntity.badRequest();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PostMapping("/customer")
