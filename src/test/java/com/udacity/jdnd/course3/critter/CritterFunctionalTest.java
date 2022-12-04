@@ -81,16 +81,15 @@ public class CritterFunctionalTest {
                             throw  new EntityNotFoundException();
                         },"No data found.");
     }
-    @Test
-    public void testCreateEmployee(){
-        EmployeeDTO employeeDTO = createEmployeeDTO();
-        EmployeeDTO newEmployee = userController.saveEmployee(employeeDTO);
-        EmployeeDTO retrievedEmployee = userController.getEmployee(newEmployee.getId());
-        Assertions.assertEquals(employeeDTO.getSkills(), newEmployee.getSkills());
-        Assertions.assertEquals(newEmployee.getId(), retrievedEmployee.getId());
-        Assertions.assertTrue(retrievedEmployee.getId() > 0);
-    }
 
+    private static EmployeeDTO createEmployeeDTO() {
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setName("TestEmployee");
+        employeeDTO.setSkills(
+                Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING)
+        );
+        return employeeDTO;
+    }
     @Test
     public void testFindEmployee(){
         EmployeeDTO employeeDTO = createEmployeeDTO();
@@ -333,14 +332,7 @@ public class CritterFunctionalTest {
     }
 
 
-    private static EmployeeDTO createEmployeeDTO() {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setName("TestEmployee");
-        employeeDTO.setSkills(
-                Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING)
-        );
-        return employeeDTO;
-    }
+
     private static CustomerDTO createCustomerDTO() {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setName("TestEmployee");
