@@ -39,4 +39,13 @@ public class EmployeedControllerTest {
         Assertions.assertTrue(retrievedEmployee.getBody().getId() > 0);
     }
 
+    @Test
+    public void testFindEmployee(){
+        EmployeeDTO employeeDTO = createEmployeeDTO();
+        ResponseEntity<EmployeeDTO> newEmployee = employerController.saveEmployee(employeeDTO);
+        ResponseEntity<EmployeeDTO> retrievedEmployee = employerController.getEmployee(newEmployee.getBody().getId());
+        Assertions.assertEquals(employeeDTO.getSkills(), newEmployee.getBody().getSkills());
+        Assertions.assertEquals(newEmployee.getBody().getId(), retrievedEmployee.getBody().getId());
+        Assertions.assertTrue(retrievedEmployee.getBody().getId() > 0);
+    }
 }
