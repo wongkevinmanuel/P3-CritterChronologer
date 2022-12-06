@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,10 +33,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Puede ejecutarse usando una instancia H2 en memoria
  * y no debería intentar reutilizar la misma fuente de datos utilizada por el resto de la aplicación.
  *
- *   Todas estas pruebas deben aprobarse una vez que se complete el proyectos
  */
 @Transactional
-//@ActiveProfiles("test")
 @SpringBootTest(classes = CritterApplication.class)
 public class CritterFunctionalTest {
 
@@ -47,6 +46,10 @@ public class CritterFunctionalTest {
 
     @Autowired
     private ScheduleController scheduleController;
+
+    @Autowired
+    private EmployerController employeerController;
+
 
     @Test
     public void testCreateCustomer(){
@@ -123,7 +126,7 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(2,petController.getPets().size());
 
     }
-    //Entendido el pet(mascota) guarda los ids de los customer (clientes)
+
     @Test
     public void testAddPetsToCustomer() {
         CustomerDTO customerDTO = createCustomerDTO();
@@ -176,7 +179,6 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(pets.get(0).getId(), newPet.getId());
     }
 
-    //Entendido busca un cliente por su respectiva mascota
     @Test
     public void testFindOwnerByPet() {
         CustomerDTO customerDTO = createCustomerDTO();
@@ -194,27 +196,20 @@ public class CritterFunctionalTest {
     }
 
     //Test para comprobar la disponibilidad del empleado
-    //Aun no lo entiendo por completo la estructura
-    //de la tabla que utiliza.
     @Test
     public void testChangeEmployeeAvailability() {
-        //Pienso que almacena en la tabla de la siguiente manera
-        //Tabla EmployeeAvailabitity
-        //Columnas id,
         EmployeeDTO employeeDTO = createEmployeeDTO();
-        EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
+        ResponseEntity<EmployeeDTO> emp1 = employeerController.saveEmployee(employeeDTO);
         //Verifica que la lista de dias dispponibles este null
-        Assertions.assertNull(emp1.getDaysAvailable());
+        Assertions.assertNull(emp1.getBody().getDaysAvailable());
 
         Set<DayOfWeek> availability = Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY);
-        userController.setAvailability(availability, emp1.getId());
+        employeerController.setAvailability(availability, emp1.getBody().getId());
 
-        EmployeeDTO emp2 = userController.getEmployee(emp1.getId());
-        Assertions.assertEquals(availability, emp2.getDaysAvailable());
+        ResponseEntity<EmployeeDTO> emp2 = employeerController.getEmployee(emp1.getBody().getId());
+        Assertions.assertEquals(availability, emp2.getBody().getDaysAvailable());
     }
 
-    //Test para buscar empleados por servicio y hora
-    //Aun no lo entiendo pero lo estoy comprendiendo poco a poco
     @Test
     public void testFindEmployeesByServiceAndTime() {
         EmployeeDTO emp1 = createEmployeeDTO();
@@ -356,7 +351,8 @@ public class CritterFunctionalTest {
         return scheduleDTO;
     }
 
-    private ScheduleDTO populateSchedule(int numEmployees, int numPets, LocalDate date, Set<EmployeeSkill> activities) {
+    private ScheduleDTO populateSchedule(int numEmployees, int numPets, LocalDate date
+            , Set<EmployeeSkill> activities) {
         List<Long> employeeIds = IntStream.range(0, numEmployees)
                 .mapToObj(i -> createEmployeeDTO())
                 .map(e -> {
