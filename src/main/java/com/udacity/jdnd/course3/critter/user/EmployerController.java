@@ -119,7 +119,7 @@ public class EmployerController {
     //Devolver todos los Empleados que tengan
     // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/employee/availability")
-    public ResponseEntity< List<EmployeeDTO> > findEmployeeForService(
+    public ResponseEntity< List<EmployeeDTO> > findEmployeesForService(
             @RequestBody EmployeeRequestDTO employeeRequestDTO){
         if(Objects.isNull(employeeRequestDTO))
             throw new NullPointerException();
