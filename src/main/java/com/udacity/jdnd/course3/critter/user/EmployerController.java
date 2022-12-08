@@ -38,7 +38,7 @@ public class EmployerController {
         BeanUtils.copyProperties(employeeDTO,employee, nombrePropiedadAIgnorar);
         return employee;
     }
-    @PostMapping("/employee")
+    @PostMapping
     public ResponseEntity<EmployeeDTO> saveEmployee(
             @Valid @RequestBody EmployeeDTO employeeDTO){
         if(Objects.isNull(employeeDTO))
@@ -74,7 +74,7 @@ public class EmployerController {
         BeanUtils.copyProperties(employee,employeeDTO);
         return employeeDTO;
     }
-    @GetMapping("/employee/{employeeId}")
+    @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> getEmployee(
             @PathVariable long employeeId){
         if (isErrorPathVariable(employeeId))
@@ -92,7 +92,7 @@ public class EmployerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping("/employee/{employeeId}")
+    @PutMapping("/{employeeId}")
     public ResponseEntity<EmployeeDTO> setAvailability(@RequestBody Set<DayOfWeek> dayOfWeekSet
                 ,@PathVariable long employeeId)
     {
@@ -118,7 +118,7 @@ public class EmployerController {
 
     //Devolver todos los Empleados que tengan
     // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
-    @GetMapping("/employee/availability")
+    @GetMapping("/availability")
     public ResponseEntity< List<EmployeeDTO> > findEmployeesForService(
             @RequestBody EmployeeRequestDTO employeeRequestDTO){
         if(Objects.isNull(employeeRequestDTO))
