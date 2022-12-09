@@ -155,7 +155,6 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(retrievedCustomer.getPetIds().get(0), retrievedPet.getId());
     }
 
-    //Entendido
     @Test
     public void testFindPetsByOwner() {
         CustomerDTO customerDTO = createCustomerDTO();

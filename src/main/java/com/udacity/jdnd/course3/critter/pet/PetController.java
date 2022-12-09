@@ -45,20 +45,6 @@ public class PetController  extends JasperReportController{
         this.mascotaService = petS;
     }
 
-    private Pet DTOaPet(PetDTO petDTO){
-        Pet mascota = new Pet();
-        mascota.setName(petDTO.getName());
-        mascota.setNotes(petDTO.getNotes());
-        mascota.setType(petDTO.getType());
-        mascota.setBirthDate(petDTO.getBirthDate());
-        if(petDTO.getOwnerId() != 0) {
-            Customer customer = new Customer();
-            customer.setId(petDTO.getOwnerId());
-            mascota.setClientePropietario(customer);
-        }
-            return mascota;
-    }
-
     private Pet DTOaPet(PetDTO petDTO,String nombrePropiedadAIgnorar){
         Pet pet = new Pet();
         BeanUtils.copyProperties(petDTO,pet,nombrePropiedadAIgnorar );
@@ -96,10 +82,11 @@ public class PetController  extends JasperReportController{
         return petDTO;
     }
 
+
     @PostMapping
     public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
         boolean errorDatos;
-        errorDatos = Objects.isNull(petDTO) ? true: false;
+        errorDatos = Objects.isNull(petDTO);
         if(errorDatos)
             throw new UnsupportedOperationException();
 
@@ -123,20 +110,24 @@ public class PetController  extends JasperReportController{
 
     @GetMapping("/listPets")
     ResponseEntity < CollectionModel<EntityModel<Pet>> > list(){
-        List<EntityModel<Pet> > resourcesPet = null;
-        resourcesPet = mascotaService.mascotas().stream()
-                    .map(assembler::toModel).collect(Collectors.toList());
-        log.info("All pets, size list: {}" + resourcesPet.size());
-        return ResponseEntity.ok(new CollectionModel<>( resourcesPet));
+        //List<EntityModel<Pet> > resourcesPet = null;
+        List<Pet> pets = mascotaService.mascotas();
+        if (pets.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        log.info("All pets, size list: {}" + pets.size());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                        pets.stream().map(assembler::toModel).collect(Collectors.toList())
+                ));
     }
 
     @GetMapping("/petEntity/{petId}")
-    EntityModel<Pet> getPetEntity(@PathVariable long petId) {
-        Pet pet = null;
-        pet = mascotaService.mascotaxId(petId);
+    ResponseEntity<Pet> getPetEntity(@PathVariable long petId) {
+        Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
-            return null;
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+       //ResponseEntity< EntityModel<Pet> > a;
         log.info("Pet Id: {} Name: {}" ,pet.getId(),pet.getName() );
         return assembler.toModel(pet);
     }

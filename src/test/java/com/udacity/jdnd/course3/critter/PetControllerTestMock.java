@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 /*
 * Se utiliza el enfoque donde no iniciar el servidor
 * en absoluto, sino probar solo la capa debajo de eso
-* , donde Spring maneja la solicitud HTTP entrante
+*  donde Spring maneja la solicitud HTTP entrante
 * y se la pasa a su controlador. De esa forma, se
 * usa casi toda la pila y se llamará a su código
 * exactamente de la misma manera que si estuviera
