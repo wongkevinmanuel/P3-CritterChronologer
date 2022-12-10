@@ -82,7 +82,7 @@ public class PetController  extends JasperReportController{
         return petDTO;
     }
 
-
+    //Usando ResponseEntity y Hateoas
     @PostMapping
     public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
         boolean errorDatos;
@@ -108,7 +108,7 @@ public class PetController  extends JasperReportController{
     @Autowired
     private PetResourceAssembler assembler;
 
-    @GetMapping("/listPets")
+    @GetMapping("/all2")
     ResponseEntity < CollectionModel<EntityModel<Pet>> > list(){
         //List<EntityModel<Pet> > resourcesPet = null;
         List<Pet> pets = mascotaService.mascotas();
@@ -123,15 +123,49 @@ public class PetController  extends JasperReportController{
     }
 
     @GetMapping("/petEntity/{petId}")
-    ResponseEntity<Pet> getPetEntity(@PathVariable long petId) {
+    ResponseEntity< EntityModel<Pet> > getPetEntity(@PathVariable long petId) {
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-       //ResponseEntity< EntityModel<Pet> > a;
         log.info("Pet Id: {} Name: {}" ,pet.getId(),pet.getName() );
-        return assembler.toModel(pet);
+        return ResponseEntity.ok(assembler.toModel(pet));//assembler.toModel(pet);
     }
 
+    //Funcional completamente
+    /*
+    @GetMapping("/all")
+    public List<PetDTO> getPets(){
+        List<Pet> pets = mascotaService.mascotas();
+        if(pets.isEmpty())
+            return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
+        log.info("All pets, size list: {}", pets.size());
+        return pets.stream()
+                .map(p -> petaDTO(p,"ownerId"))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{petId}")
+    public PetDTO getPet(@PathVariable long petId) {
+        Pet pet = null;
+        pet = mascotaService.mascotaxId(petId);
+        if (Objects.isNull(pet))
+            return null;
+        log.trace("Pet id: {} Name: {}",pet.getId(), pet.getName());
+        return petaDTO(pet);
+    }
+
+    @GetMapping("/owner/{ownerId}")
+    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
+        List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
+        if(pets.isEmpty())
+            return Collections.EMPTY_LIST;
+        log.info("Pets size: {}" ,pets.size());
+        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
+    }
+    */
+    //
+
+    //All for created Report using jasper
     private HttpHeaders generateHeader(String fileName){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
@@ -168,33 +202,4 @@ public class PetController  extends JasperReportController{
         }
     }
 
-    @GetMapping("/all")
-    public List<PetDTO> getPets(){
-        List<Pet> pets = mascotaService.mascotas();
-        if(pets.isEmpty())
-            return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
-        log.info("All pets, size list: {}", pets.size());
-        return pets.stream()
-                .map(p -> petaDTO(p,"ownerId"))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{petId}")
-    public PetDTO getPet(@PathVariable long petId) {
-        Pet pet = null;
-        pet = mascotaService.mascotaxId(petId);
-        if (Objects.isNull(pet))
-            return null;
-        log.trace("Pet id: {} Name: {}",pet.getId(), pet.getName());
-        return petaDTO(pet);
-    }
-
-    @GetMapping("/owner/{ownerId}")
-    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
-        if(pets.isEmpty())
-            return Collections.EMPTY_LIST;
-        log.info("Pets size: {}" ,pets.size());
-        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
-    }
 }
