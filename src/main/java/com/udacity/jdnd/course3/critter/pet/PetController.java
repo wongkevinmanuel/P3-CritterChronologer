@@ -131,6 +131,20 @@ public class PetController  extends JasperReportController{
         return ResponseEntity.ok(assembler.toModel(pet));//assembler.toModel(pet);
     }
 
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity <CollectionModel< EntityModel<PetDTO> >> getPetsByOwner(@PathVariable long ownerId) {
+
+        List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
+        if(pets.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        log.info("Pets size: {}" ,pets.size());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                    pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList())
+                )
+        );
+    }
+
     //Funcional completamente
     /*
     @GetMapping("/all")
