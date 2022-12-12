@@ -132,52 +132,19 @@ public class PetController  extends JasperReportController{
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity <CollectionModel< EntityModel<PetDTO> >> getPetsByOwner(@PathVariable long ownerId) {
+    public ResponseEntity <CollectionModel< EntityModel<PetDTO> > > getPetsByOwner(@PathVariable long ownerId) {
 
         List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
         if(pets.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        List<PetDTO> petsDTO = pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
         log.info("Pets size: {}" ,pets.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                    pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList())
+                   petsDTO.stream().map(assembler::toModel).collect(Collectors.toList())
                 )
         );
     }
-
-    //Funcional completamente
-    /*
-    @GetMapping("/all")
-    public List<PetDTO> getPets(){
-        List<Pet> pets = mascotaService.mascotas();
-        if(pets.isEmpty())
-            return new ArrayList<PetDTO>(Collections.EMPTY_LIST);
-        log.info("All pets, size list: {}", pets.size());
-        return pets.stream()
-                .map(p -> petaDTO(p,"ownerId"))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{petId}")
-    public PetDTO getPet(@PathVariable long petId) {
-        Pet pet = null;
-        pet = mascotaService.mascotaxId(petId);
-        if (Objects.isNull(pet))
-            return null;
-        log.trace("Pet id: {} Name: {}",pet.getId(), pet.getName());
-        return petaDTO(pet);
-    }
-
-    @GetMapping("/owner/{ownerId}")
-    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
-        if(pets.isEmpty())
-            return Collections.EMPTY_LIST;
-        log.info("Pets size: {}" ,pets.size());
-        return pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
-    }
-    */
-    //
 
     //All for created Report using jasper
     private HttpHeaders generateHeader(String fileName){
