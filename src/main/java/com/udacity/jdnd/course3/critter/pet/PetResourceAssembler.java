@@ -15,7 +15,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Component
-public class PetResourceAssembler implements RepresentationModelAssembler <Pet, EntityModel<Pet> > {
+public class PetResourceAssembler implements RepresentationModelAssembler<Pet, EntityModel<Pet> > {
 
     @Override
     public EntityModel<Pet> toModel(Pet pet) {
