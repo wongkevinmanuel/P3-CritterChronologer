@@ -108,8 +108,8 @@ public class PetController  extends JasperReportController{
     @Autowired
     private PetResourceAssembler assembler;
 
-    @GetMapping("/all2")
-    ResponseEntity < CollectionModel<EntityModel<Pet>> > list(){
+    @GetMapping("/all")
+    ResponseEntity < CollectionModel<EntityModel<Pet>> > getPets(){
         //List<EntityModel<Pet> > resourcesPet = null;
         List<Pet> pets = mascotaService.mascotas();
         if (pets.isEmpty())
@@ -123,7 +123,7 @@ public class PetController  extends JasperReportController{
     }
 
     @GetMapping("/petEntity/{petId}")
-    ResponseEntity< EntityModel<Pet> > getPetEntity(@PathVariable long petId) {
+    ResponseEntity< EntityModel<Pet> > getPet(@PathVariable long petId) {
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

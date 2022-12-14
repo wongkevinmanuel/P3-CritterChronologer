@@ -9,10 +9,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-
 
 @Component
 public class PetResourceAssembler implements RepresentationModelAssembler<Pet, EntityModel<Pet> > {
@@ -20,8 +17,10 @@ public class PetResourceAssembler implements RepresentationModelAssembler<Pet, E
     @Override
     public EntityModel<Pet> toModel(Pet pet) {
         EntityModel<Pet> resourcePet = new EntityModel<Pet>(pet);
-        Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPet(pet.getId() )).withSelfRel();
-        Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class).getPets()).withRel("pet/all");
+        Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
+                                                                .getPet(pet.getId() )).withSelfRel();
+        Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
+                                                                .getPets()).withRel("pet/all");
         resourcePet.add(linkToPetId);
         resourcePet.add(linkToPets);
         return  resourcePet;
@@ -32,5 +31,16 @@ public class PetResourceAssembler implements RepresentationModelAssembler<Pet, E
         // linkTo( methodOn(PetController.class).get(pet.getId()) ).withSelfRel() ,
         // linkTo(methodOn(PetController.class).list()).withRel("pets");
         // );
+    }
+
+    public EntityModel<PetDTO> toModel(PetDTO petDTO){
+        EntityModel<PetDTO> resourcePetDTO = new EntityModel<PetDTO>(petDTO);
+        Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
+                .getPet(petDTO.getId() )).withSelfRel();
+        Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
+                .getPets()).withRel("pet/all");
+        resourcePetDTO.add(linkToPetId);
+        resourcePetDTO.add(linkToPets);
+        return  resourcePetDTO;
     }
 }
