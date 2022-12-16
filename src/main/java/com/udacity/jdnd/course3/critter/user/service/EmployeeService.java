@@ -1,6 +1,6 @@
 package com.udacity.jdnd.course3.critter.user.service;
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.user.domain.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.reposity.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

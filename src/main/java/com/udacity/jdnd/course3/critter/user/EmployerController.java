@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import com.udacity.jdnd.course3.critter.user.dto.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.user.dto.EmployeeRequestDTO;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

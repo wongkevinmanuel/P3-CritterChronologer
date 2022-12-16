@@ -10,7 +10,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-
+@Component
 public class UserResourceAssembler implements RepresentationModelAssembler<User, EntityModel<User> > {
 
     @Override

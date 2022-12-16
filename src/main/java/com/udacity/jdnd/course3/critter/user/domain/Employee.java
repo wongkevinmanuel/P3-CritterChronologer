@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.user.domain;
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;

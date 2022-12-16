@@ -1,4 +1,4 @@
-package com.udacity.jdnd.course3.critter.user;
+package com.udacity.jdnd.course3.critter.user.domain;
 
 /**
  * Una lista de ejemplo de habilidades de los empleados que podrían incluirse en un empleado o en una solicitud de horario.

@@ -117,9 +117,11 @@ public class PetController  extends JasperReportController{
 
         log.info("All pets, size list: {}" + pets.size());
         return ResponseEntity.ok(
-                new CollectionModel<>(
-                        pets.stream().map(assembler::toModel).collect(Collectors.toList())
-                ));
+                    new CollectionModel<>(
+                        pets.stream().map(assembler::toModel)
+                                .collect(Collectors.toList())
+                        )
+        );
     }
 
     @GetMapping("/petEntity/{petId}")

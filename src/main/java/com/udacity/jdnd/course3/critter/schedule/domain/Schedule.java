@@ -1,7 +1,7 @@
 package com.udacity.jdnd.course3.critter.schedule.domain;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.user.domain.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import org.hibernate.annotations.Nationalized;
 

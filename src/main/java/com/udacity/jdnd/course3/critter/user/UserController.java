@@ -4,9 +4,8 @@ import com.udacity.jdnd.course3.critter.login.domain.User;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 
-import com.udacity.jdnd.course3.critter.login.domain.User;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
-import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import com.udacity.jdnd.course3.critter.user.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
@@ -15,12 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,12 +49,18 @@ public class UserController {
     private final PetService mascotaservicio;
 
     @Autowired
+    private final UserResourceAssembler assembler;
+    @Autowired
     private UserService usuarioServicio;
 
-    public UserController(CustomerService clienteService, EmployeeService empleadoService, PetService mascotaservicio) {
+    public UserController(CustomerService clienteService
+            , EmployeeService empleadoService
+            , PetService mascotaservicio
+            ,UserResourceAssembler assembler) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.mascotaservicio = mascotaservicio;
+        this.assembler = assembler;
     }
 
     private Customer DTOaCustomer(CustomerDTO customerDTO, String nombrePropiedadAIgnorar){
@@ -106,11 +111,11 @@ public class UserController {
         }
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO = customeraDTO(customer.get());
-        return ResponseEntity.ok(customerDTO);
+        return ResponseEntity.ok( assembler.toModel(customerDTO));
     }
 
     @PostMapping("/userSave")
-    public ResponseEntity saveUser(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<EntityModel<UsuarioDTO> > saveUser(@RequestBody CustomerDTO customerDTO){
         if (customerDTO == null? true:false)
             throw new UnsupportedOperationException();
 
@@ -176,14 +181,22 @@ public class UserController {
         return customerDTO;
     }
 
-    @GetMapping("/customer")
-    public List<CustomerDTO> getAllCustomers(){
+    @GetMapping("/customers")
+    public ResponseEntity<CollectionModel<EntityModel<CustomerDTO> >> getAllCustomers(){
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
-            return Collections.EMPTY_LIST;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All customers, size list: {}",customers.size());
-        return customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                    customers.stream().map(assembler::toModel)
+                            .collect(Collectors.toList())
+                )
+        );
+        //customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
+
+        //return customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
     }
 
 }

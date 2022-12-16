@@ -1,11 +1,9 @@
 package com.udacity.jdnd.course3.critter;
 
 import com.google.common.collect.Sets;
-import com.google.j2objc.annotations.AutoreleasePool;
-import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.user.dto.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.user.domain.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.user.EmployerController;
-import com.udacity.jdnd.course3.critter.user.UserController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
