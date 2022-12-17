@@ -49,14 +49,14 @@ public class UserController {
     private final PetService mascotaservicio;
 
     @Autowired
-    private final UserResourceAssembler assembler;
+    private final CustomerResourceAssembler assembler;
     @Autowired
     private UserService usuarioServicio;
 
     public UserController(CustomerService clienteService
             , EmployeeService empleadoService
             , PetService mascotaservicio
-            ,UserResourceAssembler assembler) {
+            , CustomerResourceAssembler assembler) {
         this.clienteService = clienteService;
         this.empleadoService = empleadoService;
         this.mascotaservicio = mascotaservicio;
@@ -111,11 +111,11 @@ public class UserController {
         }
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO = customeraDTO(customer.get());
-        return ResponseEntity.ok( assembler.toModel(customerDTO));
+        return ResponseEntity.ok( assembler.toModel(customer.get()));
     }
 
     @PostMapping("/userSave")
-    public ResponseEntity<EntityModel<UsuarioDTO> > saveUser(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity< EntityModel<UsuarioDTO> > saveUser(@RequestBody CustomerDTO customerDTO){
         if (customerDTO == null? true:false)
             throw new UnsupportedOperationException();
 
