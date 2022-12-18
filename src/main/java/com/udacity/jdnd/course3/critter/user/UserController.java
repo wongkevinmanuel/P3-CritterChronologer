@@ -111,9 +111,10 @@ public class UserController {
         }
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO = customeraDTO(customer.get());
-        return ResponseEntity.ok( assembler.toModel(customer.get()));
+        return ResponseEntity.ok( assembler.toModel(customerDTO));
     }
 
+    /*
     @PostMapping("/userSave")
     public ResponseEntity< EntityModel<UsuarioDTO> > saveUser(@RequestBody CustomerDTO customerDTO){
         if (customerDTO == null? true:false)
@@ -129,7 +130,7 @@ public class UserController {
             return ResponseEntity.ok(usuario);
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    }*/
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
