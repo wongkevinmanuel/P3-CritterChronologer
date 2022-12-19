@@ -187,17 +187,15 @@ public class UserController {
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
+        List<CustomerDTO> customersDTO = customers.stream()
+                                                .map(c -> customeraDTO(c,"petIds"))
+                                                .collect(Collectors.toList());
         log.info("All customers, size list: {}",customers.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                    customers.stream().map(assembler::toModel)
-                            .collect(Collectors.toList())
+                        customersDTO.stream().map(assembler::toModel).collect(Collectors.toList())
                 )
         );
-        //customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
-
-        //return customers.stream().map(c -> customeraDTO(c,"petIds")).collect(Collectors.toList());
     }
 
 }
