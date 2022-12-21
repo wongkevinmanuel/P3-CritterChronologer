@@ -14,9 +14,17 @@ public class ScheduleResourceAssember  implements RepresentationModelAssembler<S
     public EntityModel<ScheduleDTO> toModel(ScheduleDTO entity) {
         EntityModel<ScheduleDTO> resourceScheduleDTO = new EntityModel<>(entity);
 
-        Link enlaceAScheduleDTOID = WebMvcLinkBuilder
-                .linkTo(methodOn(ScheduleController.class).)
-        return null;
+        Link linkToCreateSchedule = WebMvcLinkBuilder
+                .linkTo(methodOn(ScheduleController.class)
+                        .createSchedule(new ScheduleDTO() )).withSelfRel();
+
+        Link linkToAllSchedules = WebMvcLinkBuilder
+                .linkTo(methodOn(ScheduleController.class)
+                        .getAllSchedules()).withRel("schedule/allschedules");
+
+        resourceScheduleDTO.add(linkToCreateSchedule);
+        resourceScheduleDTO.add(linkToAllSchedules);
+        return resourceScheduleDTO;
     }
 
     @Override
