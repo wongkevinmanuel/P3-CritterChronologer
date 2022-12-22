@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,7 @@ public class EmployerController {
         return employee;
     }
     @PostMapping
-    public ResponseEntity<EmployeeDTO> saveEmployee(
+    public ResponseEntity<EntityModel<EmployeeDTO>> saveEmployee(
             @Valid @RequestBody EmployeeDTO employeeDTO){
         if(Objects.isNull(employeeDTO))
             throw new NullPointerException();
@@ -76,7 +78,7 @@ public class EmployerController {
         return employeeDTO;
     }
     @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDTO> getEmployee(
+    public ResponseEntity<EntityModel<EmployeeDTO>> getEmployee(
             @PathVariable long employeeId){
         if (isErrorPathVariable(employeeId))
             throw new NullPointerException();
@@ -94,7 +96,8 @@ public class EmployerController {
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDTO> setAvailability(@RequestBody Set<DayOfWeek> dayOfWeekSet
+    public ResponseEntity<EntityModel<EmployeeDTO>> setAvailability(@RequestBody
+                 Set<DayOfWeek> dayOfWeekSet
                 ,@PathVariable long employeeId)
     {
         if(Objects.isNull(dayOfWeekSet ) || Objects.isNull(employeeId))
@@ -120,7 +123,7 @@ public class EmployerController {
     //Devolver todos los Empleados que tengan
     // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/availability")
-    public ResponseEntity< List<EmployeeDTO> > findEmployeesForService(
+    public ResponseEntity<CollectionModel<EntityModel<EmployeeDTO> > > findEmployeesForService(
             @RequestBody EmployeeRequestDTO employeeRequestDTO){
         if(Objects.isNull(employeeRequestDTO))
             throw new NullPointerException();

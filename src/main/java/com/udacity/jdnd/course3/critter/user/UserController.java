@@ -183,7 +183,7 @@ public class UserController {
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<CollectionModel<EntityModel<CustomerDTO> >> getAllCustomers(){
+    public ResponseEntity<CollectionModel<EntityModel<CustomerDTO> > > getAllCustomers(){
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
