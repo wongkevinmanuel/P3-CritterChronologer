@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
         ,@ApiResponse(code=500, message = "The server is down.")
         ,@ApiResponse(code= 501 , message = "The HTTP method is not supported by the server and cannot be handled.")
 })
-public class PetController  extends JasperReportController{
+public class PetController extends JasperReportController{
 
     public static final Logger log = LoggerFactory
                                         .getLogger(PetController.class);

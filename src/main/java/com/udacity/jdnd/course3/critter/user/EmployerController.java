@@ -123,8 +123,8 @@ public class EmployerController {
     //Devolver todos los Empleados que tengan
     // las habilidades ingresadas y que estén disponibles en la fecha ingresada.
     @GetMapping("/availability")
-    public ResponseEntity<CollectionModel<EntityModel<EmployeeDTO> > > findEmployeesForService(
-            @RequestBody EmployeeRequestDTO employeeRequestDTO){
+    public ResponseEntity<CollectionModel<EntityModel<EmployeeDTO> > >
+    findEmployeesForService(@RequestBody EmployeeRequestDTO employeeRequestDTO){
         if(Objects.isNull(employeeRequestDTO))
             throw new NullPointerException();
 
@@ -138,11 +138,14 @@ public class EmployerController {
 
         log.info("Find Employee for service list size:{}", employees.size());
         List<EmployeeDTO> employeesDTO =  employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
-        return ResponseEntity.ok(employeesDTO);
+        return ResponseEntity.ok( new CollectionModel<>(
+          employeesDTO.stream().map(asse)
+        ));
+        //employeesDTO
     }
 
     @GetMapping("/all")
-    public ResponseEntity< List<EmployeeDTO> > getAllEmployees(){
+    public ResponseEntity< CollectionModel<EmployeeDTO> > getAllEmployees(){
         List<Employee> employees = employeeService.buscarTodosEmpleados();
         if (employees.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -167,7 +167,7 @@ public class UserController {
         }
     }
     @GetMapping("/customer/pet/{petId}")
-    public CustomerDTO getOwnerByPet(@PathVariable long petId){
+    public EntityModel< CustomerDTO> getOwnerByPet(@PathVariable long petId){
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
@@ -179,7 +179,7 @@ public class UserController {
 
         log.info("Owner id is {} By Pet id:{}",customer.getId(),petId);
         CustomerDTO customerDTO = customeraDTO(customer,"petIds");
-        return customerDTO;
+        return ResponseEntity.ok( customerDTO);
     }
 
     @GetMapping("/customers")
