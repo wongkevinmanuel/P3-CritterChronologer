@@ -32,8 +32,12 @@ public class EmployerController {
     @Autowired
     private final EmployeeService employeeService;
 
-    public EmployerController(EmployeeService employeeService) {
+
+    private final EmployeeResourceAssember employeeResourceAssember;
+
+    public EmployerController(EmployeeService employeeService, EmployeeResourceAssember employeeResourceAssember) {
         this.employeeService = employeeService;
+        this.employeeResourceAssember = employeeResourceAssember;
     }
 
     private Employee DTOaEmployee(EmployeeDTO employeeDTO, String nombrePropiedadAIgnorar){

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Component
+
 public class ScheduleResourceAssember  implements RepresentationModelAssembler<ScheduleDTO, EntityModel<ScheduleDTO> > {
 
     @Override

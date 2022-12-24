@@ -10,6 +10,8 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Component
+
 public class EmployeeResourceAssember  implements RepresentationModelAssembler<EmployeeDTO, EntityModel<EmployeeDTO> > {
 
     @Override
