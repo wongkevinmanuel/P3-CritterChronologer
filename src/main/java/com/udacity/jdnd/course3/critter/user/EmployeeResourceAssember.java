@@ -7,12 +7,12 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-
-public class EmployeeResourceAssember  implements RepresentationModelAssembler<EmployeeDTO, EntityModel<EmployeeDTO> > {
+public class EmployeeResourceAssember implements RepresentationModelAssembler<EmployeeDTO, EntityModel<EmployeeDTO> > {
 
     @Override
     public EntityModel<EmployeeDTO> toModel(EmployeeDTO entity) {

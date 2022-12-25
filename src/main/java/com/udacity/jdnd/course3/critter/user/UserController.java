@@ -133,7 +133,8 @@ public class UserController {
     }*/
 
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
+    public ResponseEntity<EntityModel<CustomerDTO>>
+    saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
         boolean errorDatos;
 
         errorDatos = customerDTO == null ? true : false;
@@ -167,7 +168,7 @@ public class UserController {
         }
     }
     @GetMapping("/customer/pet/{petId}")
-    public EntityModel< CustomerDTO> getOwnerByPet(@PathVariable long petId){
+    public ResponseEntity<EntityModel<CustomerDTO>> getOwnerByPet(@PathVariable long petId){
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
@@ -183,7 +184,7 @@ public class UserController {
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<CollectionModel<EntityModel<CustomerDTO> > > getAllCustomers(){
+    public ResponseEntity< CollectionModel<EntityModel<CustomerDTO> > > getAllCustomers(){
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

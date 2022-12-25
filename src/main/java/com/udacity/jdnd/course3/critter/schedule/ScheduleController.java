@@ -8,6 +8,9 @@ import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -99,7 +102,7 @@ public class ScheduleController {
                                 eId -> schedule.getEmployees().add(createObjectForType(new Employee(),eId) ));
     }
     @PostMapping
-    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    public ResponseEntity<EntityModel< ScheduleDTO> > createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         if(Objects.isNull(scheduleDTO))
             throw new UnsupportedOperationException();
         if(Objects.isNull(scheduleDTO.getDate()))
@@ -129,7 +132,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/pet/{petId}")
-    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > > getScheduleForPet(@PathVariable long petId) {
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
@@ -142,7 +145,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
+    public ResponseEntity<CollectionModel<EntityModel< ScheduleDTO> > >getScheduleForEmployee(@PathVariable long employeeId) {
         if(isErrorPathVariable(employeeId))
             throw new UnsupportedOperationException();
 
@@ -155,7 +158,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
+    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > > getScheduleForCustomer(@PathVariable long customerId) {
         if(isErrorPathVariable(customerId))
             throw new UnsupportedOperationException();
 

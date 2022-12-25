@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.*;
 
 
+import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class PetController extends JasperReportController{
 
     //Usando ResponseEntity y Hateoas
     @PostMapping
-    public PetDTO savePet(@Valid @RequestBody PetDTO petDTO)  {
+    public ResponseEntity<EntityModel< PetDTO> > savePet(@Valid @RequestBody PetDTO petDTO)  {
         boolean errorDatos;
         errorDatos = Objects.isNull(petDTO);
         if(errorDatos)
@@ -97,7 +98,7 @@ public class PetController extends JasperReportController{
         Long id = mascotaService.guardar(pet);
 
         if (id<=0)
-            return petDTO;
+            return parpetDTO;
 
         //Entity save send response
         log.info("Created pet id: {}"+id);
@@ -125,7 +126,7 @@ public class PetController extends JasperReportController{
     }
 
     @GetMapping("/petEntity/{petId}")
-    ResponseEntity< EntityModel<Pet> > getPet(@PathVariable long petId) {
+    public ResponseEntity< EntityModel<Pet> > getPet(@PathVariable long petId) {
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
