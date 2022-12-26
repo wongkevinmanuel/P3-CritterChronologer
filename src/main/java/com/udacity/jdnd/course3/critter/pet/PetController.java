@@ -13,11 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-//USO DE LIBRERIA DE HATEOAS
 import org.springframework.hateoas.*;
 
-
-import javax.swing.text.html.parser.Entity;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,8 +34,7 @@ import org.slf4j.LoggerFactory;
 })
 public class PetController extends JasperReportController{
 
-    public static final Logger log = LoggerFactory
-                                        .getLogger(PetController.class);
+    public static final Logger log = LoggerFactory.getLogger(PetController.class);
     @Autowired
     private final PetService mascotaService;
 
@@ -98,12 +94,12 @@ public class PetController extends JasperReportController{
         Long id = mascotaService.guardar(pet);
 
         if (id<=0)
-            return parpetDTO;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response
         log.info("Created pet id: {}"+id);
         petDTO.setId(id);
-        return petDTO;
+        return ResponseEntity.ok(assembler.toModel(petDTO));
     }
 
     @Autowired
