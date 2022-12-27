@@ -38,6 +38,9 @@ public class PetController extends JasperReportController{
     @Autowired
     private final PetService mascotaService;
 
+    @Autowired
+    private PetResourceAssembler mascotaAssembler;
+
     public PetController(PetService petS){
         this.mascotaService = petS;
     }
@@ -81,10 +84,10 @@ public class PetController extends JasperReportController{
 
     //Usando ResponseEntity y Hateoas
     @PostMapping
-    public ResponseEntity<EntityModel< PetDTO> > savePet(@Valid @RequestBody PetDTO petDTO)  {
-        boolean errorDatos;
-        errorDatos = Objects.isNull(petDTO);
-        if(errorDatos)
+    public ResponseEntity< EntityModel< PetDTO> >
+            savePet(@Valid @RequestBody PetDTO petDTO)  {
+
+        if(Objects.isNull(petDTO))
             throw new UnsupportedOperationException();
 
         if (petDTO.getName().isEmpty()  || petDTO.getNotes().isEmpty())
@@ -93,17 +96,15 @@ public class PetController extends JasperReportController{
         Pet pet = DTOaPet(petDTO,"ownerId");
         Long id = mascotaService.guardar(pet);
 
-        if (id<=0)
+        if (id<= 0)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response
         log.info("Created pet id: {}"+id);
         petDTO.setId(id);
-        return ResponseEntity.ok(assembler.toModel(petDTO));
-    }
 
-    @Autowired
-    private PetResourceAssembler assembler;
+        return ResponseEntity.ok(mascotaAssembler.toModel(petDTO));
+    }
 
     @GetMapping("/all")
     ResponseEntity < CollectionModel<EntityModel<Pet>> > getPets(){
@@ -115,7 +116,7 @@ public class PetController extends JasperReportController{
         log.info("All pets, size list: {}" + pets.size());
         return ResponseEntity.ok(
                     new CollectionModel<>(
-                        pets.stream().map(assembler::toModel)
+                        pets.stream().map(mascotaAssembler::toModel)
                                 .collect(Collectors.toList())
                         )
         );
@@ -127,7 +128,7 @@ public class PetController extends JasperReportController{
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         log.info("Pet Id: {} Name: {}" ,pet.getId(),pet.getName() );
-        return ResponseEntity.ok(assembler.toModel(pet));//assembler.toModel(pet);
+        return ResponseEntity.ok(mascotaAssembler.toModel(pet));//assembler.toModel(pet);
     }
 
     @GetMapping("/owner/{ownerId}")
@@ -140,7 +141,7 @@ public class PetController extends JasperReportController{
         log.info("Pets size: {}" ,pets.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                   petsDTO.stream().map(assembler::toModel).collect(Collectors.toList())
+                   petsDTO.stream().map(mascotaAssembler::toModel).collect(Collectors.toList())
                 )
         );
     }

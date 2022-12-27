@@ -8,21 +8,70 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class PetResourceAssembler implements RepresentationModelAssembler<Pet, EntityModel<Pet> > {
+public class PetResourceAssembler
+        implements RepresentationModelAssembler<Pet, EntityModel<PetDTO> > {
+
+
+    /*
+    private Pet DTOaPet(PetDTO petDTO,String nombrePropiedadAIgnorar){
+        Pet pet = new Pet();
+        BeanUtils.copyProperties(petDTO,pet,nombrePropiedadAIgnorar );
+        if (petDTO.getOwnerId() != 0){
+            Customer customer = new Customer();
+            customer.setId(petDTO.getId());
+            pet.setClientePropietario(customer);
+        }
+        return pet;
+    }
+    private PetDTO petaDTO(Pet pet){
+        PetDTO mascotaDTO = new PetDTO();
+        mascotaDTO.setId(pet.getId());
+        mascotaDTO.setName(pet.getName());
+        mascotaDTO.setNotes(pet.getNotes());
+        mascotaDTO.setType(pet.getType());
+        mascotaDTO.setBirthDate(pet.getBirthDate());
+
+        if(!Objects.isNull(pet.getClientePropietario())){
+            if (pet.getClientePropietario().getId() != 0L)
+                mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
+            else
+                mascotaDTO.setOwnerId(0);
+        }
+        //mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
+        return mascotaDTO;
+    }
+    */
 
     @Override
-    public EntityModel<Pet> toModel(Pet pet) {
-        EntityModel<Pet> resourcePet = new EntityModel<Pet>(pet);
+    public EntityModel<PetDTO> toModel(Pet pet) {
+        EntityModel<PetDTO> resourcePetDTO = new EntityModel<>(new PetDTO());  //new EntityModel<PetDTO>(pet);
+        //
+        resourcePetDTO.getContent().setId(pet.getId());
+        resourcePetDTO.getContent().setName(pet.getName());
+        resourcePetDTO.getContent().setNotes(pet.getNotes());
+        resourcePetDTO.getContent().setType(pet.getType());
+        resourcePetDTO.getContent().setBirthDate(pet.getBirthDate());
+
+        if(!Objects.isNull(pet.getClientePropietario())){
+            if (pet.getClientePropietario().getId() != 0L)
+                resourcePetDTO.getContent().setOwnerId(pet.getClientePropietario().getId());
+            else
+                resourcePetDTO.getContent().setOwnerId(0);
+        }
+        //
+
         Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
                                                                 .getPet(pet.getId() )).withSelfRel();
         Link linkToPets = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
                                                                 .getPets()).withRel("pet/all");
-        resourcePet.add(linkToPetId);
-        resourcePet.add(linkToPets);
-        return  resourcePet;
+        resourcePetDTO.add(linkToPetId);
+        resourcePetDTO.add(linkToPets);
+        return  resourcePetDTO;
         // Se crea un link que apunta recurso que daria como resultado la
         //invocacion del metodo correspondiente en el controlador, uso
         //de metodos estaticos
