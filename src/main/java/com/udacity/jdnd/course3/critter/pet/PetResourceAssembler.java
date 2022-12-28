@@ -81,6 +81,7 @@ public class PetResourceAssembler
         // );
     }
 
+    /*
     public EntityModel<PetDTO> toModel(PetDTO petDTO){
         EntityModel<PetDTO> resourcePetDTO = new EntityModel<PetDTO>(petDTO);
         Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
@@ -90,5 +91,5 @@ public class PetResourceAssembler
         resourcePetDTO.add(linkToPetId);
         resourcePetDTO.add(linkToPets);
         return  resourcePetDTO;
-    }
+    }*/
 }

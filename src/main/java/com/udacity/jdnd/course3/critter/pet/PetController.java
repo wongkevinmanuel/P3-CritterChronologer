@@ -96,24 +96,24 @@ public class PetController extends JasperReportController{
         Pet pet = DTOaPet(petDTO,"ownerId");
         Long id = mascotaService.guardar(pet);
 
-        if (id<= 0)
+        if (id <= 0)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response
         log.info("Created pet id: {}"+id);
-        petDTO.setId(id);
+        pet.setId(id);
 
-        return ResponseEntity.ok(mascotaAssembler.toModel(petDTO));
+        return ResponseEntity.ok(mascotaAssembler.toModel(pet));
     }
 
     @GetMapping("/all")
-    ResponseEntity < CollectionModel<EntityModel<Pet>> > getPets(){
-        //List<EntityModel<Pet> > resourcesPet = null;
+    ResponseEntity < CollectionModel<EntityModel<PetDTO>> > getPets(){
         List<Pet> pets = mascotaService.mascotas();
         if (pets.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All pets, size list: {}" + pets.size());
+
         return ResponseEntity.ok(
                     new CollectionModel<>(
                         pets.stream().map(mascotaAssembler::toModel)
@@ -123,25 +123,28 @@ public class PetController extends JasperReportController{
     }
 
     @GetMapping("/petEntity/{petId}")
-    public ResponseEntity< EntityModel<Pet> > getPet(@PathVariable long petId) {
+    public ResponseEntity< EntityModel<PetDTO> > getPet(@PathVariable long petId) {
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
         log.info("Pet Id: {} Name: {}" ,pet.getId(),pet.getName() );
-        return ResponseEntity.ok(mascotaAssembler.toModel(pet));//assembler.toModel(pet);
+
+        return ResponseEntity.ok(mascotaAssembler.toModel(pet));
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity <CollectionModel< EntityModel<PetDTO> > > getPetsByOwner(@PathVariable long ownerId) {
+    public ResponseEntity <CollectionModel< EntityModel<PetDTO> > >
+            getPetsByOwner(@PathVariable long ownerId) {
 
         List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
         if(pets.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        List<PetDTO> petsDTO = pets.stream().map(p -> petaDTO(p)).collect(Collectors.toList());
+
         log.info("Pets size: {}" ,pets.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                   petsDTO.stream().map(mascotaAssembler::toModel).collect(Collectors.toList())
+                        pets.stream().map(mascotaAssembler::toModel).collect(Collectors.toList())
                 )
         );
     }
