@@ -1,19 +1,49 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.hateoas.Link;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class ScheduleResourceAssember  implements RepresentationModelAssembler<ScheduleDTO, EntityModel<ScheduleDTO> > {
+public class ScheduleResourceAssember
+        implements RepresentationModelAssembler<Schedule, EntityModel<ScheduleDTO> > {
+
+    private ScheduleDTO scheduleAScheduleDTO(Schedule schedule) {
+        ScheduleDTO scheduleDTO = new ScheduleDTO();
+        scheduleDTO.setId(schedule.getId());
+        scheduleDTO.setDate(schedule.getDate());
+        if (!schedule.getPets().isEmpty()) {
+            schedule.getPets().forEach(p -> addLongIdList(p.getId()));
+            scheduleDTO.setPetIds(listIdPet);
+        }
+        if (!schedule.getEmployees().isEmpty()) {
+            List<Long> listIdEmployees = new ArrayList<>();
+            schedule.getEmployees().stream().forEach( e -> listIdEmployees.add(e.getId()));
+            scheduleDTO.setEmployeeIds(listIdEmployees);
+        }
+        if (!schedule.getActivities().isEmpty()){
+            scheduleDTO.setActivities(schedule.getActivities());
+        }
+        return scheduleDTO;
+    }
 
     @Override
-    public EntityModel<ScheduleDTO> toModel(ScheduleDTO entity) {
-        EntityModel<ScheduleDTO> resourceScheduleDTO = new EntityModel<>(entity);
+    public EntityModel<ScheduleDTO> toModel(Schedule entity) {
+        EntityModel<ScheduleDTO> resourceScheduleDTO = new EntityModel<>(new ScheduleDTO());
+        //
+        resourceScheduleDTO.getContent().setId(entity.getId());
+        resourceScheduleDTO.getContent().setActivities(entity.getActivities());
+        resourceScheduleDTO.getContent().setDate(entity.getDate());
+        resourceScheduleDTO.getContent().setEmployeeIds(entity.getEmployees());
 
         Link linkToCreateSchedule = WebMvcLinkBuilder
                 .linkTo(methodOn(ScheduleController.class)
@@ -29,7 +59,7 @@ public class ScheduleResourceAssember  implements RepresentationModelAssembler<S
     }
 
     @Override
-    public CollectionModel<EntityModel<ScheduleDTO>> toCollectionModel(Iterable<? extends ScheduleDTO> entities) {
+    public CollectionModel<EntityModel<ScheduleDTO>> toCollectionModel(Iterable<? extends Schedule> entities) {
         return RepresentationModelAssembler.super.toCollectionModel(entities);
     }
 }

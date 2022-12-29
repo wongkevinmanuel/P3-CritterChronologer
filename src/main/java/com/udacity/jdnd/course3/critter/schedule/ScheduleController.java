@@ -36,8 +36,11 @@ public class ScheduleController {
     @Autowired
     private final ScheduleService scheduleService;
 
-    public ScheduleController(ScheduleService scheduleService) {
+    @Autowired
+    private final ScheduleResourceAssember scheduleResourceAssember;
+    public ScheduleController(ScheduleService scheduleService, ScheduleResourceAssember scheduleResourceAssember) {
         this.scheduleService = scheduleService;
+        this.scheduleResourceAssember = scheduleResourceAssember;
     }
 
     private boolean isErrorPathVariable(long Id){
@@ -112,7 +115,7 @@ public class ScheduleController {
         Long id = scheduleService.save(schedule);
 
         if(id<=0)
-            return scheduleDTO;
+            return scheduleResourceAssember.toModel(scheduleDTO);
 
         //Entity save send response with the ids save in Data base
         scheduleDTO.setId(id);

@@ -55,7 +55,8 @@ public class PetController extends JasperReportController{
         }
         return pet;
     }
-    private PetDTO petaDTO(Pet pet){
+
+    /*private PetDTO petaDTO(Pet pet){
         PetDTO mascotaDTO = new PetDTO();
         mascotaDTO.setId(pet.getId());
         mascotaDTO.setName(pet.getName());
@@ -69,18 +70,17 @@ public class PetController extends JasperReportController{
             else
                 mascotaDTO.setOwnerId(0);
         }
-        //mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
         return mascotaDTO;
-    }
+    }*/
 
-    private PetDTO petaDTO(Pet pet, String nombrePropiedadAIgnorar){
+    /*private PetDTO petaDTO(Pet pet, String nombrePropiedadAIgnorar){
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO, nombrePropiedadAIgnorar);
         petDTO.setOwnerId(
                 !Objects.isNull(pet.getClientePropietario())
                         ? pet.getClientePropietario().getId(): 0);
         return petDTO;
-    }
+    }*/
 
     //Usando ResponseEntity y Hateoas
     @PostMapping
