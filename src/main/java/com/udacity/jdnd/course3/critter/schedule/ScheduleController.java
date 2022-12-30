@@ -63,7 +63,7 @@ public class ScheduleController {
         scheduleDTO.setId(schedule.getId());
         scheduleDTO.setDate(schedule.getDate());
         if (!schedule.getPets().isEmpty()) {
-            schedule.getPets().forEach(p -> addLongIdList(p.getId()));
+            schedule.getPets().forEach(p -> { listIdPet.add(p.getId());});//addLongIdList(p.getId()));
             scheduleDTO.setPetIds(listIdPet);
         }
         if (!schedule.getEmployees().isEmpty()) {

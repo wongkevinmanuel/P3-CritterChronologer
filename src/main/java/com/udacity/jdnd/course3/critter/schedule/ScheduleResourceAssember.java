@@ -17,12 +17,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ScheduleResourceAssember
         implements RepresentationModelAssembler<Schedule, EntityModel<ScheduleDTO> > {
 
+
+    private List<Long> listIdPet= new ArrayList<>();
     private ScheduleDTO scheduleAScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         scheduleDTO.setId(schedule.getId());
         scheduleDTO.setDate(schedule.getDate());
         if (!schedule.getPets().isEmpty()) {
-            schedule.getPets().forEach(p -> addLongIdList(p.getId()));
+            schedule.getPets().forEach(p -> { listIdPet.add(p.getId());});
             scheduleDTO.setPetIds(listIdPet);
         }
         if (!schedule.getEmployees().isEmpty()) {
@@ -38,12 +40,8 @@ public class ScheduleResourceAssember
 
     @Override
     public EntityModel<ScheduleDTO> toModel(Schedule entity) {
-        EntityModel<ScheduleDTO> resourceScheduleDTO = new EntityModel<>(new ScheduleDTO());
-        //
-        resourceScheduleDTO.getContent().setId(entity.getId());
-        resourceScheduleDTO.getContent().setActivities(entity.getActivities());
-        resourceScheduleDTO.getContent().setDate(entity.getDate());
-        resourceScheduleDTO.getContent().setEmployeeIds(entity.getEmployees());
+        EntityModel<ScheduleDTO> resourceScheduleDTO =
+                                new EntityModel<>(scheduleAScheduleDTO(entity));
 
         Link linkToCreateSchedule = WebMvcLinkBuilder
                 .linkTo(methodOn(ScheduleController.class)
