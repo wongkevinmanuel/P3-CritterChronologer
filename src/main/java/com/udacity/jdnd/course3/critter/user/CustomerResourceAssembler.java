@@ -12,7 +12,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Component
-public class CustomerResourceAssembler implements RepresentationModelAssembler<CustomerDTO, EntityModel<CustomerDTO> > {
+public class CustomerResourceAssembler
+        implements RepresentationModelAssembler<Customer, EntityModel<CustomerDTO> > {
 
     @Override
     public CollectionModel toCollectionModel(Iterable entities) {
@@ -20,7 +21,7 @@ public class CustomerResourceAssembler implements RepresentationModelAssembler<C
     }
 
     @Override
-    public EntityModel<CustomerDTO> toModel(CustomerDTO customerDTO) {
+    public EntityModel<CustomerDTO> toModel(Customer customerDTO) {
         EntityModel<CustomerDTO> resourceCustomer = new EntityModel<CustomerDTO>(customerDTO);
         Link linkACustomerId = WebMvcLinkBuilder
                 .linkTo( methodOn(UserController.class).customerInformation(customerDTO.getId())).withSelfRel();

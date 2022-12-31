@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
+import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.dto.EmployeeDTO;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class EmployeeResourceAssember implements RepresentationModelAssembler<EmployeeDTO, EntityModel<EmployeeDTO> > {
+public class EmployeeResourceAssember
+        implements RepresentationModelAssembler<Employee, EntityModel<EmployeeDTO> > {
 
     @Override
-    public EntityModel<EmployeeDTO> toModel(EmployeeDTO entity) {
+    public EntityModel<EmployeeDTO> toModel(Employee entity) {
         EntityModel<EmployeeDTO> resourceEmployeeDTO = new EntityModel<>(entity);
 
         Link linkToSaveEmployee = WebMvcLinkBuilder
