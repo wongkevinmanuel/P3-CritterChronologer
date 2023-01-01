@@ -23,6 +23,15 @@ public class ScheduleService {
         }
     }
 
+    public Schedule save2(Schedule schedule){
+        try{
+            //schedule.setId(null);
+            return repository.save(schedule);
+        }catch (IllegalArgumentException exception){
+            throw new UnsupportedOperationException();
+        }
+    }
+
     public List<Schedule> allSchedules(){
         try {
             return repository.findAll();

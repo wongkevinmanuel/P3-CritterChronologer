@@ -7,9 +7,11 @@ import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jdk.nashorn.internal.AssertsEnabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,16 +114,14 @@ public class ScheduleController {
             throw new UnsupportedOperationException();
 
         scheduleDTOASchedule(scheduleDTO);
-        Long id = scheduleService.save(schedule);
+        Schedule schedule2 = scheduleService.save2(schedule);
 
-        if(id<=0)
-            return scheduleResourceAssember.toModel(scheduleDTO);
+        if(Objects.isNull( schedule2 ))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response with the ids save in Data base
-        scheduleDTO.setId(id);
-        log.info("Save Schedule ID:{}", scheduleDTO.getId());
-
-        return scheduleDTO;
+        log.info("Save Schedule ID:{}", schedule2.getId());
+        return ResponseEntity.ok(scheduleResourceAssember.toModel(schedule2));
     }
 
     @GetMapping("/allschedules")
@@ -141,10 +141,15 @@ public class ScheduleController {
 
         List<Schedule> schedules = scheduleService.scheduleXPet(petId);
         if(schedules.isEmpty())
-            return Collections.EMPTY_LIST;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();//Collections.EMPTY_LIST;
 
         log.info("Get all Schedule for pet, size list schedule {}.", schedules.size());
-        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                    schedules.stream().map(scheduleResourceAssember::toModel)//s -> scheduleAScheduleDTO(s))
+                            .collect(Collectors.toList())
+                )
+        );
     }
 
     @GetMapping("/employee/{employeeId}")
