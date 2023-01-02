@@ -109,7 +109,7 @@ public class PetController extends JasperReportController{
     @GetMapping("/all")
     ResponseEntity < CollectionModel<EntityModel<PetDTO>> > getPets(){
         List<Pet> pets = mascotaService.mascotas();
-        if (pets.isEmpty())
+        if (Objects.isNull(pets))//pets.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All pets, size list: {}" + pets.size());

@@ -7,7 +7,6 @@ import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import jdk.nashorn.internal.AssertsEnabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -79,7 +78,6 @@ public class ScheduleController {
         return scheduleDTO;
     }
 
-    private Schedule schedule;
     private <T> T createObjectForType(T type,Long id){
         if(type instanceof Pet){
             Pet pet = (Pet) type;
@@ -91,8 +89,9 @@ public class ScheduleController {
         }
         return type;
     }
-    private void scheduleDTOASchedule(ScheduleDTO scheduleDTO){
-        schedule = new Schedule();
+    private Schedule scheduleDTOASchedule(ScheduleDTO scheduleDTO){
+
+        Schedule schedule = new Schedule();
         schedule.setDate(scheduleDTO.getDate());
         schedule.setActivities(scheduleDTO.getActivities());
 
@@ -105,33 +104,43 @@ public class ScheduleController {
         schedule.setEmployees(new ArrayList<>());
         scheduleDTO.getEmployeeIds().forEach(
                                 eId -> schedule.getEmployees().add(createObjectForType(new Employee(),eId) ));
+        return schedule;
     }
     @PostMapping
-    public ResponseEntity<EntityModel< ScheduleDTO> > createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    public ResponseEntity<EntityModel< ScheduleDTO> >
+            createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+
         if(Objects.isNull(scheduleDTO))
             throw new UnsupportedOperationException();
         if(Objects.isNull(scheduleDTO.getDate()))
             throw new UnsupportedOperationException();
 
-        scheduleDTOASchedule(scheduleDTO);
-        Schedule schedule2 = scheduleService.save2(schedule);
+        Schedule schedule = scheduleDTOASchedule(scheduleDTO);
+        schedule = scheduleService.save2(schedule);
 
-        if(Objects.isNull( schedule2 ))
+        if(Objects.isNull( schedule ))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response with the ids save in Data base
-        log.info("Save Schedule ID:{}", schedule2.getId());
-        return ResponseEntity.ok(scheduleResourceAssember.toModel(schedule2));
+        log.info("Save Schedule ID:{}", schedule.getId());
+        return ResponseEntity.ok(scheduleResourceAssember.toModel(schedule));
     }
 
-    @GetMapping("/allschedules")
-    public List<ScheduleDTO> getAllSchedules() {
+    @GetMapping("/allSchedules")
+    public ResponseEntity< CollectionModel< EntityModel<ScheduleDTO> > > getAllSchedules() {
+
         List<Schedule> schedules = scheduleService.allSchedules();
-        if (Objects.isNull(schedules))
-            return Collections.EMPTY_LIST;
+        if (Objects.isNull(schedules) )
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All Schedules size list:{}", schedules.size());
-        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                        schedules.stream().map(scheduleResourceAssember::toModel)
+                                .collect(Collectors.toList())
+                )
+        );
+        //schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")
