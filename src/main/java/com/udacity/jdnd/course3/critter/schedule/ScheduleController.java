@@ -168,10 +168,15 @@ public class ScheduleController {
 
         List<Schedule> schedules = scheduleService.schedulesXEmployee(employeeId);
         if(schedules.isEmpty())
-            return Collections.EMPTY_LIST;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule For employee, size list schedule {}.",schedules.size());
-        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                        schedules.stream().map( scheduleResourceAssember::toModel)
+                                            .collect(Collectors.toList())
+                )
+        );
     }
 
     @GetMapping("/customer/{customerId}")
@@ -181,9 +186,14 @@ public class ScheduleController {
 
         List<Schedule> schedules = scheduleService.scheduleXCostumer(customerId);
         if(schedules.isEmpty())
-            return Collections.EMPTY_LIST;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule for customer, size list schedule {}.", schedules.size());
-        return schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
+        return ResponseEntity.ok(new CollectionModel<>(
+                schedules.stream().map(
+                        scheduleResourceAssember::toModel).collect(Collectors.toList()
+        ));
+
+        //schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 }
