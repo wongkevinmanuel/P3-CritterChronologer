@@ -191,8 +191,7 @@ public class ScheduleController {
         log.info("Get all Schedule for customer, size list schedule {}.", schedules.size());
         return ResponseEntity.ok(new CollectionModel<>(
                 schedules.stream().map(
-                        scheduleResourceAssember::toModel).collect(Collectors.toList()
-        ));
+                        scheduleResourceAssember::toModel).collect(Collectors.toList())));
 
         //schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }

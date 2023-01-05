@@ -21,10 +21,20 @@ public class CustomerResourceAssembler
     }
 
     @Override
-    public EntityModel<CustomerDTO> toModel(Customer customerDTO) {
-        EntityModel<CustomerDTO> resourceCustomer = new EntityModel<CustomerDTO>(customerDTO);
+    public EntityModel<CustomerDTO> toModel(Customer customer) {
+        EntityModel<CustomerDTO> resourceCustomer = new EntityModel<>(new CustomerDTO());//CustomerDTO>(customerDTO);
+        //set
+        resourceCustomer.getContent().setId(customer.getId());
+        resourceCustomer.getContent().setName(customer.getName());
+        resourceCustomer.getContent().setNotes(customer.getNotes());
+        resourceCustomer.getContent().setAge(customer.getAge());
+        resourceCustomer.getContent().setPhoneNumber(customer.getPhoneNumber());
+        // IDs pets
+        //resourceCustomer.getContent().setPetIds();
+        //customer.getMascotas();
+
         Link linkACustomerId = WebMvcLinkBuilder
-                .linkTo( methodOn(UserController.class).customerInformation(customerDTO.getId())).withSelfRel();
+                .linkTo( methodOn(UserController.class).customerInformation(customer.getId())).withSelfRel();
 
         Link linkATodosCustomers = WebMvcLinkBuilder
                 .linkTo(methodOn(UserController.class).getAllCustomers()).withRel("user/customers");
