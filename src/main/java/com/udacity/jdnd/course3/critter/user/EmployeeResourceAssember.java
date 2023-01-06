@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.user;
 import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.dto.EmployeeDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -17,8 +18,12 @@ public class EmployeeResourceAssember
         implements RepresentationModelAssembler<Employee, EntityModel<EmployeeDTO> > {
 
     @Override
-    public EntityModel<EmployeeDTO> toModel(Employee entity) {
-        EntityModel<EmployeeDTO> resourceEmployeeDTO = new EntityModel<>(entity);
+    public EntityModel<EmployeeDTO> toModel(Employee employee) {
+        EntityModel<EmployeeDTO> resourceEmployeeDTO = new EntityModel<>(new EmployeeDTO());
+
+        //Set
+        BeanUtils.copyProperties(employee,resourceEmployeeDTO);
+
 
         Link linkToSaveEmployee = WebMvcLinkBuilder
                 .linkTo(methodOn(EmployerController.class)
@@ -33,8 +38,4 @@ public class EmployeeResourceAssember
         return resourceEmployeeDTO;
     }
 
-    @Override
-    public CollectionModel<EntityModel<EmployeeDTO>> toCollectionModel(Iterable<? extends EmployeeDTO> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities);
-    }
 }

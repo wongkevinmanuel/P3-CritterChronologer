@@ -22,9 +22,9 @@ public class EmployeeService {
     public List<Employee> buscarTodosEmpleados(){
         return empleadoRepository.findAll();
     }
-    public Long guardar(Employee empleado){
+    public Employee guardar(Employee empleado){
         try{
-            return empleadoRepository.save(empleado).getId();
+            return empleadoRepository.save(empleado);
         }catch (IllegalArgumentException exception){
             throw new UnsupportedOperationException();
         }

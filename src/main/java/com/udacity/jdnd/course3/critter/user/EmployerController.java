@@ -55,13 +55,12 @@ public class EmployerController {
             throw new NullPointerException();
 
         Employee employee = DTOaEmployee(employeeDTO, "id");
-        employeeService.guardar(employee);
+        employee = employeeService.guardar(employee);
 
-        if (employee.getId() > 0) {
-            employeeDTO.setId(employee.getId());
-            return ResponseEntity.ok(employeeDTO);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (Objects.isNull(employee))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
     }
 
     private boolean isErrorPathVariable(long Id){
