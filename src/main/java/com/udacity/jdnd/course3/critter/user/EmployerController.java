@@ -93,7 +93,7 @@ public class EmployerController {
         log.info("Get employee ID:{} NAME:{}"+ employee.getId(), employee.getName());
 
         if(!Objects.isNull(employee))
-            return ResponseEntity.ok(employeeaDTO(employee));
+            return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -111,7 +111,7 @@ public class EmployerController {
         employee.setDayAvailable(dayOfWeekSet);
         Employee updateEmployee = employeeService.guardarDiasDisponibles(employee);
         log.info("Set availabity Employee id:{}", updateEmployee);
-        return ResponseEntity.ok(employeeaDTO(employee));
+        return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
     }
 
     private EmployeeDTO EmployeeaDTO(Employee employee){
