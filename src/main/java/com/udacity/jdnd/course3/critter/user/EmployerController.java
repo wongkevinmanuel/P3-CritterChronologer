@@ -140,20 +140,27 @@ public class EmployerController {
                         ,employeeRequestDTO.getSkills());
 
         log.info("Find Employee for service list size:{}", employees.size());
-        List<EmployeeDTO> employeesDTO =  employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
+        //List<EmployeeDTO> employeesDTO =  employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
+
         return ResponseEntity.ok( new CollectionModel<>(
-          employeesDTO.stream().map(asse)
-        ));
+          employees.stream().map(employeeResourceAssember::toModel).collect(Collectors.toList())
+            )
+        );
         //employeesDTO
     }
 
     @GetMapping("/all")
-    public ResponseEntity< CollectionModel<EmployeeDTO> > getAllEmployees(){
+    public ResponseEntity< CollectionModel<EntityModel<EmployeeDTO>> > getAllEmployees(){
         List<Employee> employees = employeeService.buscarTodosEmpleados();
         if (employees.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         log.info("All employees, size list:{}", employees.size());
-        List<EmployeeDTO> employeesDTO = employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
-        return ResponseEntity.ok(employeesDTO);
+        //List<EmployeeDTO> employeesDTO = employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
+        return ResponseEntity.ok(
+                new CollectionModel<>(
+                        employees.stream().map(employeeResourceAssember::toModel)
+                                                .collect(Collectors.toList())
+                )
+        );
     }
 }
