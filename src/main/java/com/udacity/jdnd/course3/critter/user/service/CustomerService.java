@@ -21,9 +21,9 @@ public class CustomerService {
         return clienteRepository.findById(id);
     }
     //save Customer
-    public Long guardar(Customer customer){
+    public Customer guardar(Customer customer){
         try{
-            return clienteRepository.save(customer).getId();
+            return clienteRepository.save(customer);
         }catch (IllegalArgumentException exception){
             throw exception;
         }

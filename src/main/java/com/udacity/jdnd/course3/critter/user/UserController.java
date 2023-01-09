@@ -109,9 +109,8 @@ public class UserController {
             log.error("Error in get information Customer:"+customerId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO = customeraDTO(customer.get());
-        return ResponseEntity.ok( assembler.toModel(customerDTO));
+
+        return ResponseEntity.ok( assembler.toModel(customer.get()));
     }
 
     /*
@@ -145,15 +144,14 @@ public class UserController {
             throw new UnsupportedOperationException();
 
         Customer customer = DTOaCustomer(customerDTO,"petIds");
-        Long id = clienteService.guardar(customer);
+        customer = clienteService.guardar(customer);
 
-        if(id < 0)
-            return customerDTO;
+        if(Objects.isNull(customer))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response
-        customerDTO.setId(id);
-        log.info("Customer id:{} save",customerDTO.getId());
-        return customerDTO;
+        log.info("Customer id:{} save",customer.getId());
+        return ResponseEntity.ok(assembler.toModel(customer));
     }
 
     private boolean isErrorPathVariable(long Id){
