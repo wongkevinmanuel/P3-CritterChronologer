@@ -177,8 +177,8 @@ public class UserController {
             throw new NullPointerException();
 
         log.info("Owner id is {} By Pet id:{}",customer.getId(),petId);
-        CustomerDTO customerDTO = customeraDTO(customer,"petIds");
-        return ResponseEntity.ok( customerDTO);
+        //CustomerDTO customerDTO = customeraDTO(customer,"petIds");
+        return ResponseEntity.ok( assembler.toModel(customer));
     }
 
     @GetMapping("/customers")
@@ -186,13 +186,13 @@ public class UserController {
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        List<CustomerDTO> customersDTO = customers.stream()
-                                                .map(c -> customeraDTO(c,"petIds"))
-                                                .collect(Collectors.toList());
+        //List<CustomerDTO> customersDTO = customers.stream()
+        //                                        .map(c -> customeraDTO(c,"petIds"))
+        //                                        .collect(Collectors.toList());
         log.info("All customers, size list: {}",customers.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                        customersDTO.stream().map(assembler::toModel).collect(Collectors.toList())
+                        customers.stream().map(assembler::toModel).collect(Collectors.toList())
                 )
         );
     }
