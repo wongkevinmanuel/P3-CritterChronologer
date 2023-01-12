@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.user;
 
-import com.udacity.jdnd.course3.critter.login.domain.User;
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 
@@ -133,7 +132,7 @@ public class UserController {
 
     @PostMapping("/customer")
     public ResponseEntity<EntityModel<CustomerDTO>>
-    saveCustomer(@RequestBody CustomerDTO customerDTO){//@Valid CustomerDTO customerDTO){
+    saveCustomer(@RequestBody CustomerDTO customerDTO){
         boolean errorDatos;
 
         errorDatos = customerDTO == null ? true : false;
@@ -177,7 +176,6 @@ public class UserController {
             throw new NullPointerException();
 
         log.info("Owner id is {} By Pet id:{}",customer.getId(),petId);
-        //CustomerDTO customerDTO = customeraDTO(customer,"petIds");
         return ResponseEntity.ok( assembler.toModel(customer));
     }
 
@@ -186,9 +184,7 @@ public class UserController {
         List<Customer> customers = clienteService.clientes();
         if (customers.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        //List<CustomerDTO> customersDTO = customers.stream()
-        //                                        .map(c -> customeraDTO(c,"petIds"))
-        //                                        .collect(Collectors.toList());
+
         log.info("All customers, size list: {}",customers.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(

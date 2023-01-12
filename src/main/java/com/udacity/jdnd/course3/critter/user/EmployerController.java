@@ -32,7 +32,6 @@ public class EmployerController {
     @Autowired
     private final EmployeeService employeeService;
 
-
     private final EmployeeResourceAssember employeeResourceAssember;
 
     public EmployerController(EmployeeService employeeService, EmployeeResourceAssember employeeResourceAssember) {
@@ -75,11 +74,6 @@ public class EmployerController {
         }
     }
 
-    private EmployeeDTO employeeaDTO(Employee employee){
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        BeanUtils.copyProperties(employee,employeeDTO);
-        return employeeDTO;
-    }
     @GetMapping("/{employeeId}")
     public ResponseEntity<EntityModel<EmployeeDTO>> getEmployee(
             @PathVariable long employeeId){
@@ -101,8 +95,8 @@ public class EmployerController {
     @PutMapping("/{employeeId}")
     public ResponseEntity<EntityModel<EmployeeDTO>> setAvailability(@RequestBody
                  Set<DayOfWeek> dayOfWeekSet
-                ,@PathVariable long employeeId)
-    {
+                ,@PathVariable long employeeId){
+
         if(Objects.isNull(dayOfWeekSet ) || Objects.isNull(employeeId))
             throw new NullPointerException();
 
@@ -111,16 +105,8 @@ public class EmployerController {
         employee.setDayAvailable(dayOfWeekSet);
         Employee updateEmployee = employeeService.guardarDiasDisponibles(employee);
         log.info("Set availabity Employee id:{}", updateEmployee);
-        return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
-    }
 
-    private EmployeeDTO EmployeeaDTO(Employee employee){
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setId(employee.getId());
-        employeeDTO.setName(employee.getName());
-        employeeDTO.setSkills(employee.getSkills());
-        employeeDTO.setDaysAvailable(employee.getDayAvailable());
-        return employeeDTO;
+        return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
     }
 
     //Devolver todos los Empleados que tengan
@@ -140,13 +126,11 @@ public class EmployerController {
                         ,employeeRequestDTO.getSkills());
 
         log.info("Find Employee for service list size:{}", employees.size());
-        //List<EmployeeDTO> employeesDTO =  employees.stream().map(e -> EmployeeaDTO(e)).collect(Collectors.toList());
 
         return ResponseEntity.ok( new CollectionModel<>(
           employees.stream().map(employeeResourceAssember::toModel).collect(Collectors.toList())
             )
         );
-        //employeesDTO
     }
 
     @GetMapping("/all")
@@ -154,8 +138,9 @@ public class EmployerController {
         List<Employee> employees = employeeService.buscarTodosEmpleados();
         if (employees.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
         log.info("All employees, size list:{}", employees.size());
-        //List<EmployeeDTO> employeesDTO = employees.stream().map(e -> employeeaDTO(e)).collect(Collectors.toList());
+
         return ResponseEntity.ok(
                 new CollectionModel<>(
                         employees.stream().map(employeeResourceAssember::toModel)

@@ -22,7 +22,7 @@ public class CustomerResourceAssembler
 
     @Override
     public EntityModel<CustomerDTO> toModel(Customer customer) {
-        EntityModel<CustomerDTO> resourceCustomer = new EntityModel<>(new CustomerDTO());//CustomerDTO>(customerDTO);
+        EntityModel<CustomerDTO> resourceCustomer = new EntityModel<>(new CustomerDTO());
 
         //set
         resourceCustomer.getContent().setId(customer.getId());
