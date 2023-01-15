@@ -119,7 +119,6 @@ public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHand
 
     //Maneja problemas en la persistencia de datos
     //Tiene diferente causas
-    //
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
