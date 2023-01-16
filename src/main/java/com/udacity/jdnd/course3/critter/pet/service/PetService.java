@@ -17,9 +17,9 @@ public class PetService {
     @Autowired
     PetRepository mascotaRepository;
 
-    public Long guardar(Pet pet){
+    public Pet guardar(Pet pet){
         try{
-            return mascotaRepository.save(pet).getId();
+            return mascotaRepository.save(pet);
         }catch (IllegalArgumentException exception) {
             throw new PetNotFoundException(exception);
         }

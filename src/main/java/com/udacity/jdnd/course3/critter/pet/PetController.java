@@ -94,14 +94,14 @@ public class PetController extends JasperReportController{
             throw new UnsupportedOperationException();
 
         Pet pet = DTOaPet(petDTO,"ownerId");
-        Long id = mascotaService.guardar(pet);
+        pet = mascotaService.guardar(pet);
 
-        if (id <= 0)
+        if ( pet.getId() <= 0)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         //Entity save send response
-        log.info("Created pet id: {}"+id);
-        pet.setId(id);
+        log.info("Created pet id: {}"+ pet.getId());
+        //pet.setId(id);
 
         return ResponseEntity.ok(mascotaAssembler.toModel(pet));
     }

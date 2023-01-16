@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.pet.domain;
 
 import com.udacity.jdnd.course3.critter.pet.PetType;
-import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
