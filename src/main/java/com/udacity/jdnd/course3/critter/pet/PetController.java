@@ -56,32 +56,6 @@ public class PetController extends JasperReportController{
         return pet;
     }
 
-    /*private PetDTO petaDTO(Pet pet){
-        PetDTO mascotaDTO = new PetDTO();
-        mascotaDTO.setId(pet.getId());
-        mascotaDTO.setName(pet.getName());
-        mascotaDTO.setNotes(pet.getNotes());
-        mascotaDTO.setType(pet.getType());
-        mascotaDTO.setBirthDate(pet.getBirthDate());
-
-        if(!Objects.isNull(pet.getClientePropietario())){
-            if (pet.getClientePropietario().getId() != 0L)
-                mascotaDTO.setOwnerId(pet.getClientePropietario().getId());
-            else
-                mascotaDTO.setOwnerId(0);
-        }
-        return mascotaDTO;
-    }*/
-
-    /*private PetDTO petaDTO(Pet pet, String nombrePropiedadAIgnorar){
-        PetDTO petDTO = new PetDTO();
-        BeanUtils.copyProperties(pet, petDTO, nombrePropiedadAIgnorar);
-        petDTO.setOwnerId(
-                !Objects.isNull(pet.getClientePropietario())
-                        ? pet.getClientePropietario().getId(): 0);
-        return petDTO;
-    }*/
-
     //Usando ResponseEntity y Hateoas
     @PostMapping
     public ResponseEntity< EntityModel< PetDTO> >
@@ -101,7 +75,6 @@ public class PetController extends JasperReportController{
 
         //Entity save send response
         log.info("Created pet id: {}"+ pet.getId());
-        //pet.setId(id);
 
         return ResponseEntity.ok(mascotaAssembler.toModel(pet));
     }
@@ -109,7 +82,7 @@ public class PetController extends JasperReportController{
     @GetMapping("/all")
     ResponseEntity < CollectionModel<EntityModel<PetDTO>> > getPets(){
         List<Pet> pets = mascotaService.mascotas();
-        if (Objects.isNull(pets))//pets.isEmpty())
+        if (Objects.isNull(pets))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All pets, size list: {}" + pets.size());
@@ -122,7 +95,7 @@ public class PetController extends JasperReportController{
         );
     }
 
-    @GetMapping("/petEntity/{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity< EntityModel<PetDTO> > getPet(@PathVariable long petId) {
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
