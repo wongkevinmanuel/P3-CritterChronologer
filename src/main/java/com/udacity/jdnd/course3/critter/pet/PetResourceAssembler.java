@@ -49,8 +49,8 @@ public class PetResourceAssembler
 
     @Override
     public EntityModel<PetDTO> toModel(Pet pet) {
-        EntityModel<PetDTO> resourcePetDTO = new EntityModel<>(new PetDTO());  //new EntityModel<PetDTO>(pet);
-        //
+        EntityModel<PetDTO> resourcePetDTO = new EntityModel<>(new PetDTO());
+
         resourcePetDTO.getContent().setId(pet.getId());
         resourcePetDTO.getContent().setName(pet.getName());
         resourcePetDTO.getContent().setNotes(pet.getNotes());
@@ -63,7 +63,6 @@ public class PetResourceAssembler
             else
                 resourcePetDTO.getContent().setOwnerId(0);
         }
-        //
 
         Link linkToPetId = WebMvcLinkBuilder.linkTo( methodOn(PetController.class)
                                                                 .getPet(pet.getId() )).withSelfRel();
