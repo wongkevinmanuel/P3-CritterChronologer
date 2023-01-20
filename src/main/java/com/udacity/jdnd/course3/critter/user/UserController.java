@@ -68,7 +68,7 @@ public class UserController {
         return customer;
     }
 
-    private CustomerDTO customeraDTO(Customer customer,String nombrePropiedadAIgnorar){
+    /*private CustomerDTO customeraDTO(Customer customer,String nombrePropiedadAIgnorar){
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer,customerDTO,nombrePropiedadAIgnorar);
         if (Objects.isNull(customer.getMascotas()))
@@ -81,8 +81,8 @@ public class UserController {
             }
         }
         return customerDTO;
-    }
-    private CustomerDTO customeraDTO(Customer customer){
+    }*/
+    /*private CustomerDTO customeraDTO(Customer customer){
         CustomerDTO clienteDTO = new CustomerDTO();
         clienteDTO.setName(customer.getName());
         clienteDTO.setNotes(customer.getNotes());
@@ -99,11 +99,12 @@ public class UserController {
             }
         }
         return clienteDTO;
-    }
+    }*/
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<EntityModel <CustomerDTO> > customerInformation(@PathVariable long customerId){
         Optional<Customer> customer = clienteService.getCustomer(customerId);
+
         if (!customer.isPresent()) {
             log.error("Error in get information Customer:"+customerId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -131,12 +132,9 @@ public class UserController {
     }*/
 
     @PostMapping("/customer")
-    public ResponseEntity<EntityModel<CustomerDTO>>
-    saveCustomer(@RequestBody CustomerDTO customerDTO){
-        boolean errorDatos;
+    public ResponseEntity<EntityModel<CustomerDTO>> saveCustomer(@RequestBody CustomerDTO customerDTO){
 
-        errorDatos = customerDTO == null ? true : false;
-        if (errorDatos)
+        if (Objects.isNull(customerDTO))
             throw new UnsupportedOperationException();
 
         if(customerDTO.getName().isEmpty() || customerDTO.getPhoneNumber().isEmpty())
@@ -147,13 +145,16 @@ public class UserController {
 
         if(Objects.isNull(customer))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        else
+            if(customer.getId() <= 0)
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
         //Entity save send response
         log.info("Customer id:{} save",customer.getId());
         return ResponseEntity.ok(assembler.toModel(customer));
     }
 
-    private boolean isErrorPathVariable(long Id){
+    private boolean errorPathVariable(long Id){
         try{
             if(Objects.isNull(Id))
                 return true;
@@ -166,7 +167,7 @@ public class UserController {
     }
     @GetMapping("/customer/pet/{petId}")
     public ResponseEntity<EntityModel<CustomerDTO>> getOwnerByPet(@PathVariable long petId){
-        if(isErrorPathVariable(petId))
+        if(errorPathVariable(petId))
             throw new UnsupportedOperationException();
 
         Customer customer = clienteService.buscarClienteXMascota(petId);
