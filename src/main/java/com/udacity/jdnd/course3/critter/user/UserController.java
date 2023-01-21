@@ -9,6 +9,7 @@ import com.udacity.jdnd.course3.critter.user.service.CustomerService;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
 
 import com.udacity.jdnd.course3.critter.user.service.UserService;
+import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -154,20 +155,9 @@ public class UserController {
         return ResponseEntity.ok(assembler.toModel(customer));
     }
 
-    private boolean errorPathVariable(long Id){
-        try{
-            if(Objects.isNull(Id))
-                return true;
-
-            Long.valueOf(Id);
-            return false;
-        }catch (Exception exception){
-            return true;
-        }
-    }
     @GetMapping("/customer/pet/{petId}")
     public ResponseEntity<EntityModel<CustomerDTO>> getOwnerByPet(@PathVariable long petId){
-        if(errorPathVariable(petId))
+        if(AyudaValidador.errorVarNulloLong(petId))
             throw new UnsupportedOperationException();
 
         Customer customer = clienteService.buscarClienteXMascota(petId);
@@ -193,5 +183,4 @@ public class UserController {
                 )
         );
     }
-
 }
