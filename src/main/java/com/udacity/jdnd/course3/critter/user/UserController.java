@@ -69,39 +69,6 @@ public class UserController {
         return customer;
     }
 
-    /*private CustomerDTO customeraDTO(Customer customer,String nombrePropiedadAIgnorar){
-        CustomerDTO customerDTO = new CustomerDTO();
-        BeanUtils.copyProperties(customer,customerDTO,nombrePropiedadAIgnorar);
-        if (Objects.isNull(customer.getMascotas()))
-            return customerDTO;
-
-        if(!customer.getMascotas().isEmpty()) {
-            customerDTO.setPetIds(new ArrayList<>());
-            for (Pet p:customer.getMascotas() ) {
-                customerDTO.getPetIds().add(p.getId());
-            }
-        }
-        return customerDTO;
-    }*/
-    /*private CustomerDTO customeraDTO(Customer customer){
-        CustomerDTO clienteDTO = new CustomerDTO();
-        clienteDTO.setName(customer.getName());
-        clienteDTO.setNotes(customer.getNotes());
-        clienteDTO.setPhoneNumber(customer.getPhoneNumber());
-        clienteDTO.setId(customer.getId());
-        clienteDTO.setAge(customer.getAge());
-
-        if (customer.getMascotas() != null){
-            if(!customer.getMascotas().isEmpty()) {
-                clienteDTO.setPetIds(new ArrayList<>());
-                for (Pet p:customer.getMascotas() ) {
-                    clienteDTO.getPetIds().add(p.getId());
-                }
-            }
-        }
-        return clienteDTO;
-    }*/
-
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<EntityModel <CustomerDTO> > customerInformation(@PathVariable long customerId){
         Optional<Customer> customer = clienteService.getCustomer(customerId);
@@ -114,23 +81,6 @@ public class UserController {
         return ResponseEntity.ok( assembler.toModel(customer.get()));
     }
 
-    /*
-    @PostMapping("/userSave")
-    public ResponseEntity< EntityModel<UsuarioDTO> > saveUser(@RequestBody CustomerDTO customerDTO){
-        if (customerDTO == null? true:false)
-            throw new UnsupportedOperationException();
-
-        if(customerDTO.getName().isEmpty())
-            throw new UnsupportedOperationException();
-
-        User usuario = new User();
-        usuario.setFirstName(customerDTO.getName());
-        Long id = usuarioServicio.guardar(usuario);
-        if(id>0)
-            return ResponseEntity.ok(usuario);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }*/
 
     @PostMapping("/customer")
     public ResponseEntity<EntityModel<CustomerDTO>> saveCustomer(@RequestBody CustomerDTO customerDTO){
