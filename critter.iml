@@ -209,5 +209,7 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.woodstox:stax2-api:4.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.woodstox:woodstox-core:6.0.2" level="project" />
+    <orderEntry type="library" name="Maven: me.paulschwarz:spring-dotenv:2.5.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.github.cdimascio:dotenv-java:2.2.3" level="project" />
   </component>
 </module>
