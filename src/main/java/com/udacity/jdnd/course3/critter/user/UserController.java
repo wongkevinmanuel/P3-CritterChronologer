@@ -31,8 +31,8 @@ import io.swagger.annotations.ApiResponse;
  * Incluye solicitudes tanto para clientes
  */
 @RestController
-//@RequestMapping("/user")
-@RequestMapping("${env.BASE_USER_PATH}")
+@RequestMapping("/user")
+//@RequestMapping("${env.BASE_USER_PATH}")
 @ApiResponses(value={
         @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
         ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
