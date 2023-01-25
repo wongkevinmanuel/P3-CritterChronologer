@@ -16,5 +16,16 @@ public class AyudaValidador {
         }
     }
 
+    public static boolean errorVarNulloInt(int Id){
+        try{
+            if(Objects.isNull(Id))
+                return true;
+
+            int.valueOf(Id);
+            return false;
+        }catch (Exception exception){
+            return true;
+        }
+    }
 
 }

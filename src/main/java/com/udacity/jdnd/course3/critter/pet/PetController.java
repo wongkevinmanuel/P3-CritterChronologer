@@ -4,8 +4,10 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.pet.service.PetService;
 import com.udacity.jdnd.course3.critter.pet.utils.CustomJasperReport;
 import com.udacity.jdnd.course3.critter.user.domain.Customer;
+import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jdk.nashorn.internal.ir.IfNode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -97,6 +99,9 @@ public class PetController extends JasperReportController{
 
     @GetMapping("/{petId}")
     public ResponseEntity< EntityModel<PetDTO> > getPet(@PathVariable long petId) {
+        if(AyudaValidador.errorVarNulloLong(petId))
+            throw new UnsupportedOperationException();
+
         Pet pet = mascotaService.mascotaxId(petId);
         if (Objects.isNull(pet))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -109,6 +114,8 @@ public class PetController extends JasperReportController{
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity <CollectionModel< EntityModel<PetDTO> > >
             getPetsByOwner(@PathVariable long ownerId) {
+        if(AyudaValidador.errorVarNulloLong(ownerId))
+            throw new UnsupportedOperationException();
 
         List<Pet> pets = mascotaService.mascotasXCliente(ownerId);
         if(pets.isEmpty())
@@ -131,6 +138,9 @@ public class PetController extends JasperReportController{
     }
     @GetMapping("/records/{petId}")
     ResponseEntity<byte[]> getPetRecordReport(@PathVariable(required = false) long petId){
+        if (AyudaValidador.errorVarNulloLong(petId))
+            throw new UnsupportedOperationException();
+
         CustomJasperReport report = mascotaService.generatePetReport(petId);
         setJasperReport(report);
         //Configuracion a formato pdf
@@ -145,7 +155,7 @@ public class PetController extends JasperReportController{
     }
     @GetMapping("/records/reportJasper/{numberPet}")
     public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false) int numberPet){
-
+        if (AyudaValidador.errorVarNulloLong(numberPet))
         CustomJasperReport report = mascotaService.generatePetsReport(numberPet);
         setJasperReport(report);
 

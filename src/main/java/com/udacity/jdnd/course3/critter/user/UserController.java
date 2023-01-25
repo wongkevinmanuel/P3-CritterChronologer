@@ -72,6 +72,9 @@ public class UserController {
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<EntityModel <CustomerDTO> > customerInformation(@PathVariable long customerId){
+        if(AyudaValidador.errorVarNulloLong(customerId))
+            throw new UnsupportedOperationException();
+
         Optional<Customer> customer = clienteService.getCustomer(customerId);
 
         if (!customer.isPresent()) {
