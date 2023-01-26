@@ -137,7 +137,9 @@ public class PetController extends JasperReportController{
         return headers;
     }
     @GetMapping("/records/{petId}")
-    ResponseEntity<byte[]> getPetRecordReport(@PathVariable(required = false) long petId){
+    ResponseEntity<byte[]> getPetRecordReport(@PathVariable(required = false)
+                                              long petId){
+
         if (AyudaValidador.errorVarNulloLong(petId))
             throw new UnsupportedOperationException();
 
@@ -153,9 +155,14 @@ public class PetController extends JasperReportController{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/records/reportJasper/{numberPet}")
-    public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false) int numberPet){
+    public ResponseEntity<byte[]> getPetsRecordReport(@PathVariable(required = false)
+                                                          long numberPet){
+
         if (AyudaValidador.errorVarNulloLong(numberPet))
+            throw new UnsupportedOperationException();
+
         CustomJasperReport report = mascotaService.generatePetsReport(numberPet);
         setJasperReport(report);
 

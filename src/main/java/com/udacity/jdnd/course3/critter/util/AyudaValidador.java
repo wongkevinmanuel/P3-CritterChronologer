@@ -16,14 +16,15 @@ public class AyudaValidador {
         }
     }
 
-    public static boolean errorVarNulloInt(int Id){
+    public static boolean errorVarNulloInt(String Id){
         try{
             if(Objects.isNull(Id))
                 return true;
 
-            int.valueOf(Id);
+            int valor = Integer.parseInt(Id);
             return false;
-        }catch (Exception exception){
+
+        }catch (NumberFormatException exception){
             return true;
         }
     }

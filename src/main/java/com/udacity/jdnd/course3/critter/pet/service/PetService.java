@@ -74,7 +74,7 @@ public class PetService {
 
         return null;
     }
-    public CustomJasperReport generatePetsReport(int numberPet){
+    public CustomJasperReport generatePetsReport(long numberPet){
         List<Pet> pets = mascotas();
         if(Objects.isNull(pets))
             throw new NullPointerException();
