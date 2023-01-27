@@ -76,7 +76,8 @@ public class EmployerController {
 
     @GetMapping("/{employeeId}")
     public ResponseEntity<EntityModel<EmployeeDTO>> getEmployee(
-            @PathVariable long employeeId){
+            @PathVariable(required = true) long employeeId){
+
         if (isErrorPathVariable(employeeId))
             throw new NullPointerException();
 
@@ -95,7 +96,7 @@ public class EmployerController {
     @PutMapping("/{employeeId}")
     public ResponseEntity<EntityModel<EmployeeDTO>> setAvailability(@RequestBody
                  Set<DayOfWeek> dayOfWeekSet
-                ,@PathVariable long employeeId){
+                ,@PathVariable(required = true) long employeeId){
 
         if(Objects.isNull(dayOfWeekSet ) || Objects.isNull(employeeId))
             throw new NullPointerException();

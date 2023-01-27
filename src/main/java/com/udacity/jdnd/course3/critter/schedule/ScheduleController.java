@@ -140,11 +140,12 @@ public class ScheduleController {
                                 .collect(Collectors.toList())
                 )
         );
-        //schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 
     @GetMapping("/pet/{petId}")
-    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > > getScheduleForPet(@PathVariable long petId) {
+    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > >
+    getScheduleForPet(@PathVariable(required = true) long petId) {
+
         if(isErrorPathVariable(petId))
             throw new UnsupportedOperationException();
 
@@ -162,7 +163,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<CollectionModel<EntityModel< ScheduleDTO> > >getScheduleForEmployee(@PathVariable long employeeId) {
+    public ResponseEntity<CollectionModel<EntityModel< ScheduleDTO> > >
+        getScheduleForEmployee(@PathVariable(required = true) long employeeId) {
+
         if(isErrorPathVariable(employeeId))
             throw new UnsupportedOperationException();
 
@@ -180,7 +183,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > > getScheduleForCustomer(@PathVariable long customerId) {
+    public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > >
+    getScheduleForCustomer(@PathVariable(required = true) long customerId) {
         if(isErrorPathVariable(customerId))
             throw new UnsupportedOperationException();
 
@@ -192,7 +196,5 @@ public class ScheduleController {
         return ResponseEntity.ok(new CollectionModel<>(
                 schedules.stream().map(
                         scheduleResourceAssember::toModel).collect(Collectors.toList())));
-
-        //schedules.stream().map(s -> scheduleAScheduleDTO(s)).collect(Collectors.toList());
     }
 }

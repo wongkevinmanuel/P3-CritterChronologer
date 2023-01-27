@@ -7,7 +7,6 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import jdk.nashorn.internal.ir.IfNode;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -98,7 +97,8 @@ public class PetController extends JasperReportController{
     }
 
     @GetMapping("/{petId}")
-    public ResponseEntity< EntityModel<PetDTO> > getPet(@PathVariable long petId) {
+    public ResponseEntity< EntityModel<PetDTO> > getPet(@PathVariable(required = true) long petId) {
+
         if(AyudaValidador.errorVarNulloLong(petId))
             throw new UnsupportedOperationException();
 
@@ -113,7 +113,8 @@ public class PetController extends JasperReportController{
 
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity <CollectionModel< EntityModel<PetDTO> > >
-            getPetsByOwner(@PathVariable long ownerId) {
+            getPetsByOwner(@PathVariable(required = true) long ownerId) {
+
         if(AyudaValidador.errorVarNulloLong(ownerId))
             throw new UnsupportedOperationException();
 
