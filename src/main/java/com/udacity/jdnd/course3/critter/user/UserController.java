@@ -71,7 +71,8 @@ public class UserController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<EntityModel <CustomerDTO> > customerInformation(@PathVariable long customerId){
+    public ResponseEntity<EntityModel <CustomerDTO> > customerInformation(
+            @PathVariable(required = true) long customerId){
         if(AyudaValidador.errorVarNulloLong(customerId))
             throw new UnsupportedOperationException();
 
@@ -87,7 +88,8 @@ public class UserController {
 
 
     @PostMapping("/customer")
-    public ResponseEntity<EntityModel<CustomerDTO>> saveCustomer(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<EntityModel<CustomerDTO>> saveCustomer(
+            @RequestBody(required = true) CustomerDTO customerDTO){
 
         if (Objects.isNull(customerDTO))
             throw new UnsupportedOperationException();
@@ -110,7 +112,9 @@ public class UserController {
     }
 
     @GetMapping("/customer/pet/{petId}")
-    public ResponseEntity<EntityModel<CustomerDTO>> getOwnerByPet(@PathVariable long petId){
+    public ResponseEntity<EntityModel<CustomerDTO>> getOwnerByPet(
+            @PathVariable(required = true) long petId){
+
         if(AyudaValidador.errorVarNulloLong(petId))
             throw new UnsupportedOperationException();
 
