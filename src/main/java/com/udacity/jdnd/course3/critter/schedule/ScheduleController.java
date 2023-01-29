@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 import com.udacity.jdnd.course3.critter.schedule.domain.Schedule;
 import com.udacity.jdnd.course3.critter.schedule.service.ScheduleService;
 import com.udacity.jdnd.course3.critter.user.domain.Employee;
+import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,21 +45,11 @@ public class ScheduleController {
         this.scheduleResourceAssember = scheduleResourceAssember;
     }
 
-    private boolean isErrorPathVariable(long Id){
-        try{
-            if(Objects.isNull(Id))
-                return true;
-
-            Long.valueOf(Id);
-            return false;
-        }catch (Exception exception){
-            return true;
-        }
-    }
     private List<Long> listIdPet= new ArrayList<>();
     private void addLongIdList(Long id){
         listIdPet.add(id);
     }
+
     private ScheduleDTO scheduleAScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         scheduleDTO.setId(schedule.getId());
@@ -146,7 +137,7 @@ public class ScheduleController {
     public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > >
     getScheduleForPet(@PathVariable(required = true) long petId) {
 
-        if(isErrorPathVariable(petId))
+        if(AyudaValidador.errorVarNulloLong(petId))
             throw new UnsupportedOperationException();
 
         List<Schedule> schedules = scheduleService.scheduleXPet(petId);
@@ -166,7 +157,7 @@ public class ScheduleController {
     public ResponseEntity<CollectionModel<EntityModel< ScheduleDTO> > >
         getScheduleForEmployee(@PathVariable(required = true) long employeeId) {
 
-        if(isErrorPathVariable(employeeId))
+        if(AyudaValidador.errorVarNulloLong(employeeId))
             throw new UnsupportedOperationException();
 
         List<Schedule> schedules = scheduleService.schedulesXEmployee(employeeId);
@@ -184,8 +175,9 @@ public class ScheduleController {
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<CollectionModel<EntityModel<ScheduleDTO> > >
-    getScheduleForCustomer(@PathVariable(required = true) long customerId) {
-        if(isErrorPathVariable(customerId))
+        getScheduleForCustomer(@PathVariable(required = true) long customerId) {
+
+        if(AyudaValidador.errorVarNulloLong(customerId))
             throw new UnsupportedOperationException();
 
         List<Schedule> schedules = scheduleService.scheduleXCostumer(customerId);
