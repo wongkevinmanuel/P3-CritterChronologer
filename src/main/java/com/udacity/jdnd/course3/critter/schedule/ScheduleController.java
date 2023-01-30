@@ -142,12 +142,12 @@ public class ScheduleController {
 
         List<Schedule> schedules = scheduleService.scheduleXPet(petId);
         if(schedules.isEmpty())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();//Collections.EMPTY_LIST;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule for pet, size list schedule {}.", schedules.size());
         return ResponseEntity.ok(
                 new CollectionModel<>(
-                    schedules.stream().map(scheduleResourceAssember::toModel)//s -> scheduleAScheduleDTO(s))
+                    schedules.stream().map(scheduleResourceAssember::toModel)
                             .collect(Collectors.toList())
                 )
         );

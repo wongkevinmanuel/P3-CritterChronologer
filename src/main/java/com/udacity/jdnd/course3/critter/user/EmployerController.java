@@ -32,10 +32,11 @@ public class EmployerController {
     @Autowired
     private final EmployeeService employeeService;
 
+    @Autowired
     private final EmployeeResourceAssember employeeResourceAssember;
 
     public EmployerController(EmployeeService employeeService, EmployeeResourceAssember employeeResourceAssember) {
-        this.employeeService = employeeService;
+       this.employeeService = employeeService;
         this.employeeResourceAssember = employeeResourceAssember;
     }
 
