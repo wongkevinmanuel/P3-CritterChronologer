@@ -4,6 +4,7 @@ import com.udacity.jdnd.course3.critter.user.domain.Employee;
 import com.udacity.jdnd.course3.critter.user.dto.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.user.dto.EmployeeRequestDTO;
 import com.udacity.jdnd.course3.critter.user.service.EmployeeService;
+import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
@@ -45,14 +46,18 @@ public class EmployerController {
         BeanUtils.copyProperties(employeeDTO,employee, nombrePropiedadAIgnorar);
         return employee;
     }
+
     @PostMapping
     public ResponseEntity<EntityModel<EmployeeDTO>> saveEmployee(
-            @Valid @RequestBody EmployeeDTO employeeDTO){
-        if(Objects.isNull(employeeDTO))
-            throw new NullPointerException();
+                @Valid @RequestBody EmployeeDTO employeeDTO){
 
-        if(employeeDTO.getName().isEmpty())
+        try {
+            if(employeeDTO.getName().isEmpty())
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        }catch (NullPointerException exception){
             throw new NullPointerException();
+        }
 
         Employee employee = DTOaEmployee(employeeDTO, "id");
         employee = employeeService.guardar(employee);
@@ -63,26 +68,15 @@ public class EmployerController {
         return ResponseEntity.ok(employeeResourceAssember.toModel(employee));
     }
 
-    private boolean isErrorPathVariable(long Id){
-        try{
-            if(Objects.isNull(Id))
-                return true;
-
-            Long.valueOf(Id);
-            return false;
-        }catch (Exception exception){
-            return true;
-        }
-    }
-
     @GetMapping("/{employeeId}")
     public ResponseEntity<EntityModel<EmployeeDTO>> getEmployee(
             @PathVariable(required = true) long employeeId){
 
-        if (isErrorPathVariable(employeeId))
+        if (AyudaValidador.errorVarNulloLong(employeeId))
             throw new NullPointerException();
 
         Employee employee = employeeService.empleado(employeeId);
+
         if (Objects.isNull(employee))
             throw new NullPointerException();
 
