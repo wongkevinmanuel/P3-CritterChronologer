@@ -34,6 +34,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User credentials = null;
         try {
             credentials = new ObjectMapper().readValue(req.getInputStream(), User.class);
+
         }catch (IOException ioException){
             logger.error("Error - IOException on auth.",ioException);
             throw new RuntimeException(ioException);
