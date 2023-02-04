@@ -1,27 +1,20 @@
 package com.udacity.jdnd.course3.critter.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.udacity.jdnd.course3.critter.login.domain.User;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
-//Encargada de procesar la autenticacion.
-//La clase base analiza las credenciales
-//de usuario(username y password)
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
+//Encargada de configurar el filtro.
+//La clase base extiende OncePerRequestFilter
+// (Seria Una filtro por cada solicitud)
+@Component
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
+    /*private AuthenticationManager authenticationManager;
     public  JWTAuthenticationFilter(AuthenticationManager authManager){
         this.authenticationManager = authManager;
     }
@@ -46,27 +39,28 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         new ArrayList<>()
                 )
         );
-    }
+    }*/
 
-    //Es presente en el padre de la clase base.
-    //Depues de anular, se llamara al metodo
-    //despues que usuario inicie session correctamente.
-    //Genera un Token de cadena JWT para este usuario
+    private boolean authHeaderNUllorNotBearer(String header){
+        return header == null || !header.startsWith("Bearer ") ? true : false;
+    }
     @Override
-    protected void successfulAuthentication(HttpServletRequest request,
-                                            HttpServletResponse response,
-                                            FilterChain chain,
-                                            Authentication authentication)
-        throws IOException, ServletException {
-        String token = JWT.create()
-                .withSubject(
-                        ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername()
-                ).withExpiresAt(
-                        new Date(System.currentTimeMillis() + JWTPersonalSecurityConstants.EXPIRATION_TIME)
-                ).sign(
-                        Algorithm.HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes()));
-        response.addHeader(JWTPersonalSecurityConstants.HEADER_STRING
-                ,JWTPersonalSecurityConstants.TOKEN_PREFIX + token);
+    protected void doFilterInternal(
+            HttpServletRequest request
+            , HttpServletResponse response
+            , FilterChain filterChain) throws ServletException, IOException {
+        //Realizar el proceso de filtrar la solicitud
+        //Cuando hacemos una llamada necesitamos pasar el JWT (token autenticacion)
+        //dentro del header (encabezado) procesar el encabezado
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+
+        if (authHeaderNUllorNotBearer(authHeader)){
+            filterChain.doFilter(request, response);
+            return;
+        }
     }
 
+    public JWTAuthenticationFilter() {
+    }
 }

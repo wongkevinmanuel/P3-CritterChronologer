@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.tools.javac.util.List;
 
 import javax.management.relation.Role;
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +30,7 @@ public class User implements UserDetails {
     private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column (nullable = false)
+    @Column(nullable = false)
     @Nationalized
     private String password;
 
@@ -67,7 +68,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //La app solo puede tener un rol
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
     }
 
     @Override
