@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,21 @@ public class JwtService {
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(),userDetails);
     }
+
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        final String userName = extraerUserName(token);
+        boolean tokenValid = userName.equals(userDetails.getUsername()) && !isTokenExpired(token) ? true: false;
+        return tokenValid;
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extracExpiration(token).before(new Date());
+    }
+
+    private Date extracExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
     private Key getSignInkey(){
         byte[] keyBytes = Decoders.BASE64.decode("${env.SECRET_KEY}");
         return Keys.hmacShaKeyFor(keyBytes);

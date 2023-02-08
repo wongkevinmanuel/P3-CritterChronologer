@@ -5,6 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -43,7 +46,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     }*/
 
     private final JwtService jwtService;
-
+    private UserDetailsService userDetailsService;
     private boolean authHeaderNUllorNotBearer(String header){
         return header == null || !header.startsWith("Bearer ") ? true : false;
     }
@@ -66,7 +69,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         userEmail = jwtService.extraerUserName(jwt);
-
+        //Verificar si el usuario esta autenticado
+        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null)
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
     }
 
     public JWTAuthenticationFilter() {
