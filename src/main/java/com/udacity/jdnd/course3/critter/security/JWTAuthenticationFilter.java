@@ -74,6 +74,4 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
     }
 
-    public JWTAuthenticationFilter() {
-    }
 }
