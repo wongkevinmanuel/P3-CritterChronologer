@@ -10,8 +10,13 @@ public class ApplicationConfig {
 
     private final UserRepository repository;
 
+    public ApplicationConfig(UserRepository repository) {
+        this.repository = repository;
+    }
+
     @Bean
     public UserDetailsService userDetailsService(){
-        return
+         return username -> repository.findByUserName(username)
+                 .orElseThrow();
     }
 }
