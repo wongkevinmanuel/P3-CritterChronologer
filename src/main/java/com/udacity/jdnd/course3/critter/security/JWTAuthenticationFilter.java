@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -48,6 +49,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
+    public JWTAuthenticationFilter() {
+    }
+
     private boolean authHeaderNUllorNotBearer(String header){
         return header == null || !header.startsWith("Bearer ") ? true : false;
     }
@@ -74,7 +79,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if(jwtService.isTokenValid(jwt, userDetails)){
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken()
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                   userDetails, null, userDetails.getAuthorities()
+                );
+                //Configurar detalles del token
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
