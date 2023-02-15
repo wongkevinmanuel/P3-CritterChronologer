@@ -3,8 +3,11 @@ package com.udacity.jdnd.course3.critter.config;
 import com.udacity.jdnd.course3.critter.login.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
@@ -19,5 +22,16 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService(){
          return username -> repository.findByUserName(username)
                  .orElseThrow(()-> new UsernameNotFoundException("User nor found"));
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    private PasswordEncoder passwordEncoder() {
     }
 }
