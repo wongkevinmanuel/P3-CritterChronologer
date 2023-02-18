@@ -7,6 +7,7 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,14 +17,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.*;
 
-import javax.validation.Valid;
+
+//import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/pet")
+@RequestMapping("/api/v1/pet")
 @ApiResponses(value={
         @ApiResponse(code= 400, message = "Bad request, please follow the API documentation for the proper request format.")
         ,@ApiResponse(code = 401, message = "Due to security contraints, your access request cannot be authorized.")
