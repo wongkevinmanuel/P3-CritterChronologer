@@ -125,12 +125,11 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("All Schedules size list:{}", schedules.size());
-        return ResponseEntity.ok(
-                new CollectionModel<>(
-                        schedules.stream().map(scheduleResourceAssember::toModel)
-                                .collect(Collectors.toList())
-                )
-        );
+
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
+                schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/pet/{petId}")
