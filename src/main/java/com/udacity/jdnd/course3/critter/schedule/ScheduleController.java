@@ -144,12 +144,11 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule for pet, size list schedule {}.", schedules.size());
-        return ResponseEntity.ok(
-                new CollectionModel<>(
-                    schedules.stream().map(scheduleResourceAssember::toModel)
-                            .collect(Collectors.toList())
-                )
-        );
+
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
+                schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/employee/{employeeId}")
@@ -164,12 +163,11 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule For employee, size list schedule {}.",schedules.size());
-        return ResponseEntity.ok(
-                new CollectionModel<>(
-                        schedules.stream().map( scheduleResourceAssember::toModel)
-                                            .collect(Collectors.toList())
-                )
-        );
+
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
+                schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
+        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/customer/{customerId}")
@@ -184,8 +182,10 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Get all Schedule for customer, size list schedule {}.", schedules.size());
-        return ResponseEntity.ok(new CollectionModel<>(
-                schedules.stream().map(
-                        scheduleResourceAssember::toModel).collect(Collectors.toList())));
+
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
+                schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
+        return ResponseEntity.ok(collectionModel);
     }
 }
