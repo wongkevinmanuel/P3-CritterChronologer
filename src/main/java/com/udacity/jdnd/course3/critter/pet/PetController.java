@@ -127,7 +127,6 @@ public class PetController extends JasperReportController{
         collectionModel = (CollectionModel<EntityModel<PetDTO>>)
                 pets.stream().map(mascotaAssembler::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
-
     }
 
     //All for created Report using jasper
