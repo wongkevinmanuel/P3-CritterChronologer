@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -46,6 +47,13 @@ public class PetResourceAssembler
         return mascotaDTO;
     }
     */
+
+    @Autowired
+    private ModelMapperPet modelMapperPet;
+
+    public PetResourceAssembler(ModelMapperPet modelMapperPet) {
+        this.modelMapperPet = modelMapperPet;
+    }
 
     @Override
     public EntityModel<PetDTO> toModel(Pet pet) {
