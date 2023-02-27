@@ -57,7 +57,8 @@ public class PetResourceAssembler
 
     @Override
     public EntityModel<PetDTO> toModel(Pet pet) {
-        EntityModel<PetDTO> resourcePetDTO = new EntityModel<>(new PetDTO());
+        EntityModel<PetDTO> resourcePetDTO =
+                new EntityModel<>( modelMapperPet.covertEntityToDto(pet) );
 
         resourcePetDTO.getContent().setId(pet.getId());
         resourcePetDTO.getContent().setName(pet.getName());
