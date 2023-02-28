@@ -23,4 +23,13 @@ public class ModelMapperPet {
 
         return petDTO;
     }
+
+    public Pet covertDtoToEntity(PetDTO petDTO){
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
+        Pet pet = new Pet();
+        pet = modelMapper.map(petDTO, Pet.class);
+        return pet;
+
+    }
 }

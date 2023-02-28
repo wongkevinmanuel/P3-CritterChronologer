@@ -60,11 +60,11 @@ public class PetResourceAssembler
         EntityModel<PetDTO> resourcePetDTO =
                 new EntityModel<>( modelMapperPet.covertEntityToDto(pet) );
 
-        resourcePetDTO.getContent().setId(pet.getId());
+        /*resourcePetDTO.getContent().setId(pet.getId());
         resourcePetDTO.getContent().setName(pet.getName());
         resourcePetDTO.getContent().setNotes(pet.getNotes());
         resourcePetDTO.getContent().setType(pet.getType());
-        resourcePetDTO.getContent().setBirthDate(pet.getBirthDate());
+        resourcePetDTO.getContent().setBirthDate(pet.getBirthDate());*/
 
         if(!Objects.isNull(pet.getClientePropietario())){
             if (pet.getClientePropietario().getId() != 0L)
