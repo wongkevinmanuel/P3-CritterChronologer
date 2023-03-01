@@ -1,7 +1,6 @@
 package com.udacity.jdnd.course3.critter.exception;
 
 import com.udacity.jdnd.course3.critter.pet.service.PetNotFoundException;
-import javassist.NotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
