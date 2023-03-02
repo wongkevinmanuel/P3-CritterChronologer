@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHandler {
+public class ControllerHandleExceptionAdvice extends ResponseEntityExceptionHandler implements HandleExceptionAdviceController {
     Log log = LogFactory.getLog(this.getClass());
 
     //Send message for invalid field value
