@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.tools.javac.util.List;
 
 import javax.management.relation.Role;
+import javax.persistence.*;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
 import org.springframework.security.core.GrantedAuthority;

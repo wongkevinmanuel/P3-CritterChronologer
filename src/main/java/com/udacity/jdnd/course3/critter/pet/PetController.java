@@ -7,7 +7,6 @@ import com.udacity.jdnd.course3.critter.user.domain.Customer;
 import com.udacity.jdnd.course3.critter.util.AyudaValidador;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +22,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/pet")
