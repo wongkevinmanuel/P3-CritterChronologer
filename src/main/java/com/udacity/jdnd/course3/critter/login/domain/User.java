@@ -1,7 +1,7 @@
 package com.udacity.jdnd.course3.critter.login.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.tools.javac.util.List;
+//import com.sun.tools.javac.util.List;
 
 import javax.management.relation.Role;
 import javax.persistence.*;
@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="User")

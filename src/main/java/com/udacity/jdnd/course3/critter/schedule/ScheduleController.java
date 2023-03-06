@@ -126,7 +126,7 @@ public class ScheduleController {
 
         log.info("All Schedules size list:{}", schedules.size());
 
-        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = null;
         collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
                 schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
@@ -145,7 +145,7 @@ public class ScheduleController {
 
         log.info("Get all Schedule for pet, size list schedule {}.", schedules.size());
 
-        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = null;
         collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
                 schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
@@ -164,7 +164,7 @@ public class ScheduleController {
 
         log.info("Get all Schedule For employee, size list schedule {}.",schedules.size());
 
-        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = null;
         collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
                 schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
@@ -183,7 +183,7 @@ public class ScheduleController {
 
         log.info("Get all Schedule for customer, size list schedule {}.", schedules.size());
 
-        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = CollectionModel.empty();
+        CollectionModel < EntityModel<ScheduleDTO> > collectionModel = null;
         collectionModel = (CollectionModel<EntityModel<ScheduleDTO>>)
                 schedules.stream().map(scheduleResourceAssember::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);

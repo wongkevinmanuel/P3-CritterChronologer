@@ -91,7 +91,7 @@ public class PetController extends JasperReportController{
 
         log.info("All pets, size list: {}" + pets.size());
 
-        CollectionModel<EntityModel<PetDTO>> collectionModel = CollectionModel.empty();
+        CollectionModel<EntityModel<PetDTO>> collectionModel = null;
         collectionModel = (CollectionModel<EntityModel<PetDTO>>)
                 pets.stream().map(mascotaAssembler::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
@@ -124,7 +124,8 @@ public class PetController extends JasperReportController{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         log.info("Pets size: {}" ,pets.size());
-        CollectionModel<EntityModel<PetDTO>> collectionModel = CollectionModel.empty();
+        CollectionModel<EntityModel<PetDTO>> collectionModel = null;
+
         collectionModel = (CollectionModel<EntityModel<PetDTO>>)
                 pets.stream().map(mascotaAssembler::toModel).collect(Collectors.toList());
         return ResponseEntity.ok(collectionModel);
