@@ -1,10 +1,9 @@
 package com.udacity.jdnd.course3.critter.user.domain;
 
 import com.udacity.jdnd.course3.critter.pet.domain.Pet;
-import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import org.hibernate.annotations.Nationalized;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
