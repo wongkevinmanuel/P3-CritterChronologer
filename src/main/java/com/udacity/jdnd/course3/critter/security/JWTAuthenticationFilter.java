@@ -1,21 +1,29 @@
 package com.udacity.jdnd.course3.critter.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.udacity.jdnd.course3.critter.login.domain.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 //Encargada de configurar el filtro.
 //La clase base extiende OncePerRequestFilter
 // (Seria Una filtro por cada solicitud)
 @Component
-public class JWTAuthenticationFilter extends OncePerRequestFilter {
-    /*private AuthenticationManager authenticationManager;
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    private AuthenticationManager authenticationManager;
+
     public  JWTAuthenticationFilter(AuthenticationManager authManager){
         this.authenticationManager = authManager;
     }
@@ -24,7 +32,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     //de credenciales de usuario
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res){
+                                                HttpServletResponse res)
+    throws AuthenticationException {
         User credentials = null;
         try {
             credentials = new ObjectMapper().readValue(req.getInputStream(), User.class);
@@ -40,55 +49,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                         new ArrayList<>()
                 )
         );
-    }*/
-
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-
-    public JWTAuthenticationFilter(JwtService jwtS, UserDetailsService userDet) {
-        this.jwtService = jwtS;
-        this.userDetailsService = userDet;
     }
 
-    private boolean authHeaderNUllorNotBearer(String header){
-        return header == null || !header.startsWith("Bearer ") ? true : false;
-    }
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request
-            , HttpServletResponse response
-            , FilterChain filterChain) throws ServletException, IOException {
-        //Realizar el proceso de filtrar la solicitud
-        //Cuando hacemos una llamada necesitamos pasar el JWT (token autenticacion)
-        //dentro del header (encabezado) procesar el encabezado
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-
-        if (authHeaderNUllorNotBearer(authHeader)){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extraerUserName(jwt);
-        //Verificar si el usuario esta autenticado
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-
-            if(jwtService.isTokenValid(jwt, userDetails)){
-                //Token Valido
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                   userDetails, null, userDetails.getAuthorities()
-                );
-                //Configurar detalles del token
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
-        }
-        filterChain.doFilter(request,response);
+    protected void successfulAuthentication(HttpServletRequest req,
+                                            HttpServletResponse res,
+                                            FilterChain chain,
+                                            Authentication auth) throws IOException, ServletException {
 
     }
-
 }
