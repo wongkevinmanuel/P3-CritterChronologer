@@ -27,9 +27,9 @@ public class User implements UserDetails {
     private Long id;
 
     @Nationalized
-    @Column(name="userName", length = 8, nullable = true, unique = true)
+    @Column( length = 8, unique = true)
     @JsonProperty
-    private String userName;
+    private String nameuser;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
@@ -56,13 +56,6 @@ public class User implements UserDetails {
     }
 
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     //METODOS DE LA IMPLEMENTACION
     //return una lista de roles
@@ -72,11 +65,6 @@ public class User implements UserDetails {
         //La app solo puede tener un rol
         //return List.of(new SimpleGrantedAuthority(role.getRoleName()));
         return new ArrayList<>();
-    }
-
-    @Override
-    public String getUsername() {
-        return userName;
     }
 
     @Override
@@ -103,6 +91,15 @@ public class User implements UserDetails {
     public String getPassword() {
 
         return password;
+    }
+
+    public void setNameuser(String nameuser) {
+        this.nameuser = nameuser;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nameuser;
     }
 
     public void setPassword(String password) {

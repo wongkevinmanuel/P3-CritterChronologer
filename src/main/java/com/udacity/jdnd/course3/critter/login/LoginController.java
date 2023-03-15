@@ -87,7 +87,7 @@ public class LoginController {
         }
 
         User user = new User();
-        user.setUserName(request.getUserName());
+        user.setNameUser(request.getUserName());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setFirstName("Kevin");
         userRepository.save(user);
