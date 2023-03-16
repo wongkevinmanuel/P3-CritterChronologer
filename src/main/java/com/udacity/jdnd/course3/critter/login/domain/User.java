@@ -1,24 +1,14 @@
 package com.udacity.jdnd.course3.critter.login.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.sun.tools.javac.util.List;
-
 import javax.management.relation.Role;
 import javax.persistence.*;
-
 import org.hibernate.annotations.Nationalized;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name="User")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +19,7 @@ public class User implements UserDetails {
     @Nationalized
     @Column( length = 8, unique = true)
     @JsonProperty
-    private String nameuser;
+    private String userName;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
@@ -55,51 +45,12 @@ public class User implements UserDetails {
         return id;
     }
 
-
-
-    //METODOS DE LA IMPLEMENTACION
-    //return una lista de roles
-    //
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        //La app solo puede tener un rol
-        //return List.of(new SimpleGrantedAuthority(role.getRoleName()));
-        return new ArrayList<>();
+    public void setUserName(String nameuser) {
+        this.userName = nameuser;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String getPassword() {
-
-        return password;
-    }
-
-    public void setNameuser(String nameuser) {
-        this.nameuser = nameuser;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.nameuser;
+    public String getUserName() {
+        return this.userName;
     }
 
     public void setPassword(String password) {
@@ -122,4 +73,7 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
 }
