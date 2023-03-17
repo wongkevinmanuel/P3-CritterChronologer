@@ -1,13 +1,11 @@
 package com.udacity.jdnd.course3.critter.security;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,46 +15,36 @@ import com.auth0.jwt.JWT;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
-public class JWTAuthenticationVerficationFilter extends BasicAuthenticationFilter {
+public class JWTAuthenticationVerficationFilter
+        extends UsernamePasswordAuthenticationFilter {
 
-    public JWTAuthenticationVerficationFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
-    }
-
-    //Valida el token leido del encabezado de autorizacion
-    private UsernamePasswordAuthenticationToken getAuthenticationToken(
-            HttpServletRequest request){
-        String token = request
-                .getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
-
-        if(!Objects.isNull(token)){
-            String user = JWT.require(
-                    HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes())).build()
-                    .verify(token.replace(JWTPersonalSecurityConstants.TOKEN_PREFIX, ""))
-                    .getSubject();
-            if(user!= null){
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
-        }
-        return null;
-    }
-
-    //Este metodo se usa cuando se tiene varios roles
-    //y una politica para RBAC.
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response
-                                    , FilterChain chain) throws ServletException, IOException {
-        String header = request.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
+    public Authentication attemptAuthentication(HttpServletRequest req,
+                                                HttpServletResponse res) throws AuthenticationException {
+        try {
+            User credentials = new ObjectMapper()
+                    .readValue(req.getInputStream(), User.class);
 
-        if (header == null || !header.startsWith(JWTPersonalSecurityConstants.TOKEN_PREFIX)) {
-                chain.doFilter(request, response);
-                return;
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            credentials.getUsername(),
+                            credentials.getPassword(),
+                            new ArrayList<>()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthenticationToken(request);
+    @Override
+    protected void successfulAuthentication(HttpServletRequest req,
+                                            HttpServletResponse res,
+                                            FilterChain chain,
+                                            Authentication auth) throws IOException, ServletException {
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(request, response);
+        String token = JWT.create()
+                .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
+        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     }
 }
