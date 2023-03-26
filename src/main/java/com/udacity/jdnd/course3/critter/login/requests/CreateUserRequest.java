@@ -9,6 +9,9 @@ public class CreateUserRequest {
     @JsonProperty
     private String password;
 
+    @JsonProperty
+    private String confirmPassword;
+
     public String getUserName() {
         return userName;
     }
@@ -33,8 +36,7 @@ public class CreateUserRequest {
         this.confirmPassword = confirmPassword;
     }
 
-    @JsonProperty
-    private String confirmPassword;
+
 
 
 }

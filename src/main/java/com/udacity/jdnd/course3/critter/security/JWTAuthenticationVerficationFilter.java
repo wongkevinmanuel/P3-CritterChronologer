@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
-import sun.security.util.SecurityConstants;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -58,8 +57,8 @@ public class JWTAuthenticationVerficationFilter
 
         String token = JWT.create()
                 .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
-        res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWTPersonalSecurityConstants.EXPIRATION_TIME))
+                .sign(HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes()));
+        res.addHeader(JWTPersonalSecurityConstants.HEADER_STRING, JWTPersonalSecurityConstants.TOKEN_PREFIX + token);
     }
 }

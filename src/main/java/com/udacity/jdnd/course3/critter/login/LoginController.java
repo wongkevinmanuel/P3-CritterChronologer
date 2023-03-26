@@ -86,6 +86,7 @@ public class LoginController {
             return ResponseEntity.badRequest().build();
         }
 
+        log.info("Usuario nombre a crear {}", request.getUserName());
         User user = new User();
         user.setUserName(request.getUserName());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
