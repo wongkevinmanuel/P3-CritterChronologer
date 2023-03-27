@@ -3,62 +3,63 @@ package com.udacity.jdnd.course3.critter.security;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.udacity.jdnd.course3.critter.login.domain.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.auth0.jwt.JWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
+/***
+ * Archivo necesario par escanear y aplicar los filtros de jwt
+ *
+ */
 @Component
 public class JWTAuthenticationVerficationFilter
-        extends UsernamePasswordAuthenticationFilter {
-
-    private AuthenticationManager authenticationManager;
+        extends BasicAuthenticationFilter {
 
     public JWTAuthenticationVerficationFilter(AuthenticationManager authenticationManager){
-        this.authenticationManager = authenticationManager;
+        super( authenticationManager);
     }
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
-        try {
-            User credentials = new ObjectMapper()
-                    .readValue(req.getInputStream(), User.class);
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest   request){
+        String token = request.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
 
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            credentials.getUserName(),
-                            credentials.getPassword(),
-                            new ArrayList<>()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(token!= null){
+            String user = JWT.require(HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes()))
+                    .build().verify(token.replace(JWTPersonalSecurityConstants.TOKEN_PREFIX, ""))
+                    .getSubject();
+            if (user != null){
+                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            }
+            return null;
         }
+        return null;
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest  req,HttpServletResponse res
+                                , FilterChain cadena) throws IOException, ServletException {
+        String header = req.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
 
-        String token = JWT.create()
-                .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JWTPersonalSecurityConstants.EXPIRATION_TIME))
-                .sign(HMAC512(JWTPersonalSecurityConstants.SECRET.getBytes()));
-        res.addHeader(JWTPersonalSecurityConstants.HEADER_STRING, JWTPersonalSecurityConstants.TOKEN_PREFIX + token);
+        if(header == null || !header.startsWith(JWTPersonalSecurityConstants.TOKEN_PREFIX)){
+            cadena.doFilter(req,res);
+            return;
+            //Porque retornar en un metodo void????
+        }
+
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        cadena.doFilter(req,res);
     }
 }
