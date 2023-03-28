@@ -32,6 +32,11 @@ public class JWTAuthenticationVerficationFilter
         super( authenticationManager);
     }
 
+    /***
+     * Valida el token leído del encabezado de autorización.
+     * @param request
+     * @return
+     */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest   request){
         String token = request.getHeader(JWTPersonalSecurityConstants.HEADER_STRING);
 
@@ -40,12 +45,14 @@ public class JWTAuthenticationVerficationFilter
                     .build().verify(token.replace(JWTPersonalSecurityConstants.TOKEN_PREFIX, ""))
                     .getSubject();
             if (user != null){
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(user
+                        , null, new ArrayList<>());
             }
             return null;
         }
         return null;
     }
+
 
     @Override
     public void doFilterInternal(HttpServletRequest  req,HttpServletResponse res

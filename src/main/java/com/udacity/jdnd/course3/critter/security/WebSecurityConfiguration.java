@@ -14,6 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/***
+ * Configura la cadena de filtros de Spring Boot
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -26,8 +30,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             this.bCryptPasswordEncoder = BCrypt;
     }
 
+    /***
+     * Define los recursos publicos SIGN_UP_URL.
+     * Y http.cors() se utiliza para que spring security
+     * admita CORS (Cross-Origin Resourse Sharing)
+     * Y CSRF (Cross-Site Request Forgery)
+     * @param http
+     * @throws Exception
+     */
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf()
                 .disable().authorizeRequests()
